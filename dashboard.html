@@ -8,7 +8,6 @@
 
   <link rel="stylesheet" href="style.css">
 
-  <!-- Supabase JavaScript -->
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
@@ -78,7 +77,6 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
-      gap: 15px;
     }
 
     .add-property-button {
@@ -147,6 +145,25 @@
       background: #f2f2f2;
     }
 
+    .action-button {
+      border: 0;
+      padding: 8px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 700;
+      margin-right: 5px;
+    }
+
+    .confirm-button {
+      background: #e7f6ec;
+      color: #217a3a;
+    }
+
+    .decline-button {
+      background: #fdecec;
+      color: #b42318;
+    }
+
     @media (max-width: 800px) {
 
       .dashboard {
@@ -165,441 +182,541 @@
       .section-top {
         flex-direction: column;
         align-items: flex-start;
+        gap: 15px;
       }
-
     }
   </style>
 </head>
 
 <body>
 
-  <header class="navbar">
+<header class="navbar">
 
-    <div class="logo">
-      StayHaven<span>UK</span>
+  <div class="logo">
+    StayHaven<span>UK</span>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="properties.html">Holiday Lets</a>
+  </nav>
+
+</header>
+
+
+<main class="dashboard">
+
+  <div class="dashboard-header">
+
+    <div>
+      <p class="eyebrow">OWNER DASHBOARD</p>
+      <h1>Welcome back</h1>
+      <p id="ownerEmail">Loading account...</p>
     </div>
 
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="properties.html">Holiday Lets</a>
-    </nav>
+    <button id="logoutButton" class="logout-button">
+      Logout
+    </button>
 
-  </header>
+  </div>
 
 
-  <main class="dashboard">
+  <div class="stats">
 
-    <div class="dashboard-header">
+    <div class="stat-card">
+      <span>Your Properties</span>
+      <strong id="propertyCount">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Total Bookings</span>
+      <strong id="bookingCount">0</strong>
+    </div>
+
+    <div class="stat-card">
+      <span>Pending Requests</span>
+      <strong id="pendingCount">0</strong>
+    </div>
+
+  </div>
+
+
+  <section class="dashboard-section">
+
+    <div class="section-top">
 
       <div>
-        <p class="eyebrow">OWNER DASHBOARD</p>
-        <h1>Welcome back</h1>
-        <p id="ownerEmail">Loading account...</p>
+        <p class="eyebrow">YOUR LISTINGS</p>
+        <h2>Holiday Properties</h2>
       </div>
 
-      <button id="logoutButton" class="logout-button">
-        Logout
+      <button
+        class="add-property-button"
+        onclick="window.location.href='add-property.html'"
+      >
+        + Add Property
       </button>
 
     </div>
 
+    <div id="propertiesContainer">
+      Loading properties...
+    </div>
 
-    <!-- STATISTICS -->
+  </section>
 
-    <div class="stats">
 
-      <div class="stat-card">
-        <span>Your Properties</span>
-        <strong id="propertyCount">0</strong>
-      </div>
+  <section class="dashboard-section">
 
-      <div class="stat-card">
-        <span>Total Bookings</span>
-        <strong id="bookingCount">0</strong>
-      </div>
+    <div class="section-top">
 
-      <div class="stat-card">
-        <span>Pending Requests</span>
-        <strong id="pendingCount">0</strong>
+      <div>
+        <p class="eyebrow">BOOKING MANAGEMENT</p>
+        <h2>Booking Requests</h2>
       </div>
 
     </div>
 
 
-    <!-- PROPERTIES -->
+    <div class="booking-table-wrapper">
 
-    <section class="dashboard-section">
+      <table>
 
-      <div class="section-top">
+        <thead>
 
-        <div>
-          <p class="eyebrow">YOUR LISTINGS</p>
-          <h2>Holiday Properties</h2>
+          <tr>
+            <th>Guest</th>
+            <th>Property</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Guests</th>
+            <th>Status</th>
+            <th>Action</th>
+          </tr>
+
+        </thead>
+
+        <tbody id="bookingsContainer">
+
+          <tr>
+            <td colspan="7">
+              Loading bookings...
+            </td>
+          </tr>
+
+        </tbody>
+
+      </table>
+
+    </div>
+
+  </section>
+
+</main>
+
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+let currentUser = null;
+
+
+async function loadDashboard() {
+
+  try {
+
+    const {
+      data: {
+        user
+      }
+    } = await supabaseClient.auth.getUser();
+
+
+    if (!user) {
+
+      window.location.href = "login.html";
+
+      return;
+
+    }
+
+
+    currentUser = user;
+
+
+    document.getElementById("ownerEmail").textContent =
+      user.email;
+
+
+    const {
+      data: properties,
+      error: propertyError
+    } = await supabaseClient
+
+      .from("properties")
+
+      .select("*")
+
+      .eq("owner_id", user.id)
+
+      .order("created_at", {
+        ascending: false
+      });
+
+
+    if (propertyError) {
+
+      throw propertyError;
+
+    }
+
+
+    document.getElementById("propertyCount").textContent =
+      properties.length;
+
+
+    const propertiesContainer =
+      document.getElementById("propertiesContainer");
+
+
+    if (properties.length === 0) {
+
+      propertiesContainer.innerHTML = `
+
+        <div class="empty">
+
+          <h3>No properties yet</h3>
+
+          <p>
+            Add your first holiday property to start receiving enquiries.
+          </p>
+
         </div>
 
-        <button
-          class="add-property-button"
-          onclick="window.location.href='add-property.html'"
-        >
-          + Add Property
-        </button>
-
-      </div>
-
-
-      <div id="propertiesContainer">
-        Loading properties...
-      </div>
-
-    </section>
-
-
-    <!-- BOOKINGS -->
-
-    <section class="dashboard-section">
-
-      <div class="section-top">
-
-        <div>
-          <p class="eyebrow">BOOKING MANAGEMENT</p>
-          <h2>Booking Requests</h2>
-        </div>
-
-      </div>
-
-
-      <div class="booking-table-wrapper">
-
-        <table>
-
-          <thead>
-
-            <tr>
-              <th>Guest</th>
-              <th>Property</th>
-              <th>Check-in</th>
-              <th>Check-out</th>
-              <th>Guests</th>
-              <th>Status</th>
-            </tr>
-
-          </thead>
-
-          <tbody id="bookingsContainer">
-
-            <tr>
-              <td colspan="6">
-                Loading bookings...
-              </td>
-            </tr>
-
-          </tbody>
-
-        </table>
-
-      </div>
-
-    </section>
-
-  </main>
-
-
-  <script src="supabase.js"></script>
-
-
-  <script>
-
-    let currentUser = null;
-
-
-    async function loadDashboard() {
-
-      try {
-
-        // Check logged-in user
-
-        const {
-          data: {
-            user
-          }
-        } = await supabaseClient.auth.getUser();
-
-
-        if (!user) {
-
-          window.location.href = "login.html";
-
-          return;
-
-        }
-
-
-        currentUser = user;
-
-
-        document.getElementById("ownerEmail").textContent =
-          user.email;
-
-
-        // Load properties
-
-        const {
-          data: properties,
-          error: propertyError
-        } = await supabaseClient
-
-          .from("properties")
-
-          .select("*")
-
-          .eq("owner_id", user.id)
-
-          .order("created_at", {
-            ascending: false
-          });
-
-
-        if (propertyError) {
-
-          throw propertyError;
-
-        }
-
-
-        document.getElementById("propertyCount").textContent =
-          properties.length;
-
-
-        const propertiesContainer =
-          document.getElementById("propertiesContainer");
-
-
-        if (properties.length === 0) {
-
-          propertiesContainer.innerHTML = `
-
-            <div class="empty">
-
-              <h3>No properties yet</h3>
-
-              <p>
-                Add your first holiday property to start receiving enquiries.
-              </p>
-
-            </div>
-
-          `;
-
-        } else {
-
-          propertiesContainer.innerHTML =
-            properties.map(property => `
-
-              <div class="property-card">
-
-                <h3>${escapeHtml(property.name)}</h3>
-
-                <p>
-                  ${escapeHtml(property.location || "Location not provided")}
-                </p>
-
-                <p>
-                  £${Number(property.price_per_night).toFixed(2)}
-                  per night
-                </p>
-
-              </div>
-
-            `).join("");
-
-        }
-
-
-        // Load bookings for owner's properties
-
-        const propertyIds =
-          properties.map(property => property.id);
-
-
-        if (propertyIds.length === 0) {
-
-          document.getElementById("bookingCount").textContent = "0";
-
-          document.getElementById("pendingCount").textContent = "0";
-
-          document.getElementById("bookingsContainer").innerHTML = `
-
-            <tr>
-              <td colspan="6">
-                No booking requests yet.
-              </td>
-            </tr>
-
-          `;
-
-          return;
-
-        }
-
-
-        const {
-          data: bookings,
-          error: bookingError
-        } = await supabaseClient
-
-          .from("bookings")
-
-          .select("*")
-
-          .in("property_id", propertyIds)
-
-          .order("created_at", {
-            ascending: false
-          });
-
-
-        if (bookingError) {
-
-          throw bookingError;
-
-        }
-
-
-        document.getElementById("bookingCount").textContent =
-          bookings.length;
-
-
-        const pendingBookings =
-          bookings.filter(
-            booking => booking.status === "pending"
-          );
-
-
-        document.getElementById("pendingCount").textContent =
-          pendingBookings.length;
-
-
-        const bookingsContainer =
-          document.getElementById("bookingsContainer");
-
-
-        if (bookings.length === 0) {
-
-          bookingsContainer.innerHTML = `
-
-            <tr>
-              <td colspan="6">
-                No booking requests yet.
-              </td>
-            </tr>
-
-          `;
-
-        } else {
-
-          const propertyMap = {};
-
-          properties.forEach(property => {
-
-            propertyMap[property.id] =
-              property.name;
-
-          });
-
-
-          bookingsContainer.innerHTML =
-            bookings.map(booking => `
-
-              <tr>
-
-                <td>
-                  ${escapeHtml(booking.guest_name)}
-                </td>
-
-                <td>
-                  ${escapeHtml(
-                    propertyMap[booking.property_id] || "Property"
-                  )}
-                </td>
-
-                <td>
-                  ${escapeHtml(booking.check_in)}
-                </td>
-
-                <td>
-                  ${escapeHtml(booking.check_out)}
-                </td>
-
-                <td>
-                  ${booking.guests}
-                </td>
-
-                <td>
-                  <span class="status">
-                    ${escapeHtml(booking.status)}
-                  </span>
-                </td>
-
-              </tr>
-
-            `).join("");
-
-        }
-
-      } catch (error) {
-
-        console.error(error);
-
-        document.getElementById("propertiesContainer").innerHTML = `
-
-          <div class="empty">
-
-            Unable to load dashboard.
-
-            <br><br>
-
-            ${escapeHtml(error.message)}
+      `;
+
+    } else {
+
+      propertiesContainer.innerHTML =
+        properties.map(property => `
+
+          <div class="property-card">
+
+            <h3>
+              ${escapeHtml(property.name)}
+            </h3>
+
+            <p>
+              ${escapeHtml(
+                property.location || "Location not provided"
+              )}
+            </p>
+
+            <p>
+              £${Number(
+                property.price_per_night
+              ).toFixed(2)}
+              per night
+            </p>
 
           </div>
 
-        `;
-
-      }
+        `).join("");
 
     }
 
 
-    function escapeHtml(value) {
+    const propertyIds =
+      properties.map(property => property.id);
 
-      return String(value)
 
-        .replaceAll("&", "&amp;")
+    if (propertyIds.length === 0) {
 
-        .replaceAll("<", "&lt;")
+      document.getElementById("bookingCount").textContent = "0";
 
-        .replaceAll(">", "&gt;")
+      document.getElementById("pendingCount").textContent = "0";
 
-        .replaceAll('"', "&quot;")
+      document.getElementById("bookingsContainer").innerHTML = `
 
-        .replaceAll("'", "&#039;");
+        <tr>
+          <td colspan="7">
+            No booking requests yet.
+          </td>
+        </tr>
+
+      `;
+
+      return;
 
     }
 
 
-    document
-      .getElementById("logoutButton")
-      .addEventListener("click", async function() {
+    const {
+      data: bookings,
+      error: bookingError
+    } = await supabaseClient
 
-        await supabaseClient.auth.signOut();
+      .from("bookings")
 
-        window.location.href = "login.html";
+      .select("*")
 
+      .in("property_id", propertyIds)
+
+      .order("created_at", {
+        ascending: false
       });
+
+
+    if (bookingError) {
+
+      throw bookingError;
+
+    }
+
+
+    document.getElementById("bookingCount").textContent =
+      bookings.length;
+
+
+    const pendingBookings =
+      bookings.filter(
+        booking => booking.status === "pending"
+      );
+
+
+    document.getElementById("pendingCount").textContent =
+      pendingBookings.length;
+
+
+    const propertyMap = {};
+
+    properties.forEach(property => {
+
+      propertyMap[property.id] =
+        property.name;
+
+    });
+
+
+    const bookingsContainer =
+      document.getElementById("bookingsContainer");
+
+
+    if (bookings.length === 0) {
+
+      bookingsContainer.innerHTML = `
+
+        <tr>
+          <td colspan="7">
+            No booking requests yet.
+          </td>
+        </tr>
+
+      `;
+
+    } else {
+
+      bookingsContainer.innerHTML =
+        bookings.map(booking => {
+
+          const isPending =
+            booking.status === "pending";
+
+
+          return `
+
+            <tr>
+
+              <td>
+                ${escapeHtml(booking.guest_name)}
+              </td>
+
+              <td>
+                ${escapeHtml(
+                  propertyMap[booking.property_id] || "Property"
+                )}
+              </td>
+
+              <td>
+                ${escapeHtml(booking.check_in)}
+              </td>
+
+              <td>
+                ${escapeHtml(booking.check_out)}
+              </td>
+
+              <td>
+                ${booking.guests}
+              </td>
+
+              <td>
+                <span class="status">
+                  ${escapeHtml(booking.status)}
+                </span>
+              </td>
+
+              <td>
+
+                ${
+                  isPending
+
+                    ? `
+
+                      <button
+                        class="action-button confirm-button"
+                        onclick="updateBookingStatus('${booking.id}', 'confirmed')"
+                      >
+                        Confirm
+                      </button>
+
+                      <button
+                        class="action-button decline-button"
+                        onclick="updateBookingStatus('${booking.id}', 'declined')"
+                      >
+                        Decline
+                      </button>
+
+                    `
+
+                    : "—"
+                }
+
+              </td>
+
+            </tr>
+
+          `;
+
+        }).join("");
+
+    }
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    document.getElementById("propertiesContainer").innerHTML = `
+
+      <div class="empty">
+
+        Unable to load dashboard.
+
+        <br><br>
+
+        ${escapeHtml(error.message)}
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+async function updateBookingStatus(
+  bookingId,
+  newStatus
+) {
+
+  const action =
+    newStatus === "confirmed"
+      ? "confirm"
+      : "decline";
+
+
+  const confirmed =
+    window.confirm(
+      `Are you sure you want to ${action} this booking?`
+    );
+
+
+  if (!confirmed) {
+
+    return;
+
+  }
+
+
+  try {
+
+    const {
+      error
+    } = await supabaseClient
+
+      .from("bookings")
+
+      .update({
+        status: newStatus
+      })
+
+      .eq("id", bookingId);
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    alert(
+      `Booking ${newStatus} successfully.`
+    );
 
 
     loadDashboard();
 
-  </script>
+
+  } catch (error) {
+
+    console.error(error);
+
+    alert(
+      "Unable to update booking: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replaceAll("&", "&amp;")
+
+    .replaceAll("<", "&lt;")
+
+    .replaceAll(">", "&gt;")
+
+    .replaceAll('"', "&quot;")
+
+    .replaceAll("'", "&#039;");
+
+}
+
+
+document
+  .getElementById("logoutButton")
+  .addEventListener("click", async function() {
+
+    await supabaseClient.auth.signOut();
+
+    window.location.href =
+      "login.html";
+
+  });
+
+
+loadDashboard();
+
+</script>
 
 </body>
-        </html>
+  </html>
