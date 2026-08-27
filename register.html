@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Create Owner Account | StayHaven UK</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <!-- Supabase -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="logo">
+      StayHaven<span>UK</span>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="properties.html">Holiday Lets</a>
+      <a href="login.html">Owner Login</a>
+    </nav>
+  </header>
+
+
+  <main style="max-width:520px;margin:70px auto;padding:20px;">
+
+    <div style="text-align:center;margin-bottom:35px;">
+      <p class="eyebrow">PROPERTY OWNERS</p>
+
+      <h1>Create your owner account</h1>
+
+      <p style="color:#667085;margin-top:10px;">
+        Create an account to list and manage your holiday property.
+      </p>
+    </div>
+
+
+    <form id="registerForm">
+
+      <label>Full Name</label>
+
+      <input
+        type="text"
+        id="fullName"
+        placeholder="Your full name"
+        required
+        style="width:100%;padding:14px;margin:8px 0 20px;border:1px solid #ddd;border-radius:7px;"
+      >
+
+
+      <label>Email Address</label>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="you@example.com"
+        required
+        style="width:100%;padding:14px;margin:8px 0 20px;border:1px solid #ddd;border-radius:7px;"
+      >
+
+
+      <label>Password</label>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Create a password"
+        minlength="6"
+        required
+        style="width:100%;padding:14px;margin:8px 0 20px;border:1px solid #ddd;border-radius:7px;"
+      >
+
+
+      <button
+        type="submit"
+        class="primary-button"
+        style="border:0;width:100%;cursor:pointer;"
+      >
+        Create Account
+      </button>
+
+    </form>
+
+
+    <p id="message" style="text-align:center;margin-top:20px;"></p>
+
+
+    <p style="text-align:center;margin-top:25px;color:#667085;">
+      Already have an account?
+      <a href="login.html" style="color:#b88945;font-weight:700;">
+        Login
+      </a>
+    </p>
+
+  </main>
+
+
+  <script src="supabase.js"></script>
+
+  <script>
+
+    const registerForm = document.getElementById("registerForm");
+    const message = document.getElementById("message");
+
+    registerForm.addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+      const fullName =
+        document.getElementById("fullName").value.trim();
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+
+      message.textContent = "Creating your account...";
+      message.style.color = "#667085";
+
+
+      try {
+
+        const { data, error } =
+          await supabaseClient.auth.signUp({
+
+            email: email,
+
+            password: password,
+
+            options: {
+              data: {
+                full_name: fullName
+              }
+            }
+
+          });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        message.textContent =
+          "Account created successfully! Check your email if confirmation is required.";
+
+        message.style.color = "green";
+
+
+        registerForm.reset();
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        message.textContent =
+          error.message || "Registration failed.";
+
+        message.style.color = "red";
+
+      }
+
+    });
+
+  </script>
+
+</body>
+        </html>
