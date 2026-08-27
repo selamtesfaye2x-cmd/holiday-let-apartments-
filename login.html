@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Owner Login | StayHaven UK</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body>
+
+  <header class="navbar">
+    <div class="logo">
+      StayHaven<span>UK</span>
+    </div>
+
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="properties.html">Holiday Lets</a>
+      <a href="register.html" class="nav-button">List Your Property</a>
+    </nav>
+  </header>
+
+
+  <main style="max-width:520px;margin:70px auto;padding:20px;">
+
+    <div style="text-align:center;margin-bottom:35px;">
+      <p class="eyebrow">PROPERTY OWNERS</p>
+
+      <h1>Welcome back</h1>
+
+      <p style="color:#667085;margin-top:10px;">
+        Login to manage your holiday property and bookings.
+      </p>
+    </div>
+
+
+    <form id="loginForm">
+
+      <label>Email Address</label>
+
+      <input
+        type="email"
+        id="email"
+        placeholder="you@example.com"
+        required
+        style="width:100%;padding:14px;margin:8px 0 20px;border:1px solid #ddd;border-radius:7px;"
+      >
+
+
+      <label>Password</label>
+
+      <input
+        type="password"
+        id="password"
+        placeholder="Your password"
+        required
+        style="width:100%;padding:14px;margin:8px 0 20px;border:1px solid #ddd;border-radius:7px;"
+      >
+
+
+      <button
+        type="submit"
+        class="primary-button"
+        style="border:0;width:100%;cursor:pointer;"
+      >
+        Login
+      </button>
+
+    </form>
+
+
+    <p id="message" style="text-align:center;margin-top:20px;"></p>
+
+
+    <p style="text-align:center;margin-top:25px;color:#667085;">
+      Don't have an account?
+      <a
+        href="register.html"
+        style="color:#b88945;font-weight:700;"
+      >
+        Create one
+      </a>
+    </p>
+
+  </main>
+
+
+  <script src="supabase.js"></script>
+
+  <script>
+
+    const loginForm =
+      document.getElementById("loginForm");
+
+    const message =
+      document.getElementById("message");
+
+
+    loginForm.addEventListener("submit", async function(event) {
+
+      event.preventDefault();
+
+
+      const email =
+        document.getElementById("email").value.trim();
+
+      const password =
+        document.getElementById("password").value;
+
+
+      message.textContent = "Logging in...";
+      message.style.color = "#667085";
+
+
+      try {
+
+        const { data, error } =
+          await supabaseClient.auth.signInWithPassword({
+
+            email: email,
+
+            password: password
+
+          });
+
+
+        if (error) {
+          throw error;
+        }
+
+
+        message.textContent =
+          "Login successful. Redirecting...";
+
+        message.style.color = "green";
+
+
+        setTimeout(function() {
+
+          window.location.href = "dashboard.html";
+
+        }, 700);
+
+
+      } catch (error) {
+
+        console.error(error);
+
+        message.textContent =
+          error.message || "Login failed.";
+
+        message.style.color = "red";
+
+      }
+
+    });
+
+  </script>
+
+</body>
+  </html>
