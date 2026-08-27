@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Holiday Lets | StayHaven UK</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    .properties-page {
+      max-width: 1200px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+
+    .properties-heading {
+      margin-bottom: 40px;
+    }
+
+    .properties-heading h1 {
+      font-size: 48px;
+      line-height: 1.1;
+      margin-bottom: 12px;
+    }
+
+    .properties-heading p {
+      color: #667085;
+      max-width: 650px;
+    }
+
+    .property-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 25px;
+    }
+
+    .listing-card {
+      border: 1px solid #eeeeee;
+      border-radius: 14px;
+      overflow: hidden;
+      background: white;
+      transition: transform 0.2s ease;
+    }
+
+    .listing-card:hover {
+      transform: translateY(-3px);
+    }
+
+    .listing-image {
+      height: 220px;
+      background:
+        linear-gradient(
+          rgba(20, 28, 43, 0.15),
+          rgba(20, 28, 43, 0.15)
+        ),
+        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80")
+        center / cover no-repeat;
+    }
+
+    .listing-content {
+      padding: 22px;
+    }
+
+    .listing-content h2 {
+      font-size: 22px;
+      margin-bottom: 5px;
+    }
+
+    .listing-location {
+      color: #667085;
+      margin-bottom: 15px;
+    }
+
+    .listing-details {
+      display: flex;
+      gap: 15px;
+      color: #667085;
+      font-size: 14px;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+    }
+
+    .listing-price {
+      font-size: 21px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .listing-price span {
+      font-size: 14px;
+      font-weight: 400;
+      color: #667085;
+    }
+
+    .view-button {
+      display: block;
+      text-align: center;
+      padding: 12px;
+      background: #172033;
+      color: white;
+      border-radius: 7px;
+      font-weight: 700;
+    }
+
+    .loading,
+    .empty {
+      text-align: center;
+      padding: 60px 20px;
+      color: #667085;
+      grid-column: 1 / -1;
+    }
+
+    @media (max-width: 900px) {
+      .property-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      .properties-page {
+        margin: 25px auto;
+      }
+
+      .properties-heading h1 {
+        font-size: 38px;
+      }
+
+      .property-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+  <div class="logo">
+    StayHaven<span>UK</span>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="login.html">Owner Login</a>
+    <a href="register.html" class="nav-button">
+      List Your Property
+    </a>
+  </nav>
+
+</header>
+
+
+<main class="properties-page">
+
+  <div class="properties-heading">
+
+    <p class="eyebrow">EXPLORE THE UK</p>
+
+    <h1>Find your perfect holiday let.</h1>
+
+    <p>
+      Browse beautiful properties and discover your next
+      UK getaway.
+    </p>
+
+  </div>
+
+
+  <div
+    id="propertyGrid"
+    class="property-grid"
+  >
+
+    <div class="loading">
+      Loading holiday lets...
+    </div>
+
+  </div>
+
+</main>
+
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+async function loadProperties() {
+
+  const propertyGrid =
+    document.getElementById("propertyGrid");
+
+
+  try {
+
+    const {
+      data: properties,
+      error
+    } = await supabaseClient
+
+      .from("properties")
+
+      .select("*")
+
+      .order("created_at", {
+        ascending: false
+      });
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    if (!properties || properties.length === 0) {
+
+      propertyGrid.innerHTML = `
+
+        <div class="empty">
+
+          <h2>No holiday lets yet</h2>
+
+          <p>
+            New properties will appear here when owners list them.
+          </p>
+
+        </div>
+
+      `;
+
+      return;
+
+    }
+
+
+    propertyGrid.innerHTML =
+      properties.map(property => `
+
+        <article class="listing-card">
+
+          <div class="listing-image"></div>
+
+          <div class="listing-content">
+
+            <h2>
+              ${escapeHtml(property.name)}
+            </h2>
+
+            <p class="listing-location">
+              ${escapeHtml(
+                property.location || "UK"
+              )}
+            </p>
+
+            <div class="listing-details">
+
+              <span>
+                ${property.bedrooms} bedrooms
+              </span>
+
+              <span>
+                ${property.bathrooms} bathrooms
+              </span>
+
+              <span>
+                Up to ${property.max_guests} guests
+              </span>
+
+            </div>
+
+            <div class="listing-price">
+
+              £${Number(
+                property.price_per_night
+              ).toFixed(2)}
+
+              <span>
+                / night
+              </span>
+
+            </div>
+
+            <a
+              class="view-button"
+              href="property.html?id=${encodeURIComponent(property.id)}"
+            >
+              View Property
+            </a>
+
+          </div>
+
+        </article>
+
+      `).join("");
+
+
+  } catch (error) {
+
+    console.error(error);
+
+
+    propertyGrid.innerHTML = `
+
+      <div class="empty">
+
+        <h2>Unable to load properties</h2>
+
+        <p>
+          ${escapeHtml(error.message)}
+        </p>
+
+      </div>
+
+    `;
+
+  }
+
+}
+
+
+function escapeHtml(value) {
+
+  return String(value)
+
+    .replaceAll("&", "&amp;")
+
+    .replaceAll("<", "&lt;")
+
+    .replaceAll(">", "&gt;")
+
+    .replaceAll('"', "&quot;")
+
+    .replaceAll("'", "&#039;");
+
+}
+
+
+loadProperties();
+
+</script>
+
+</body>
+  </html>
