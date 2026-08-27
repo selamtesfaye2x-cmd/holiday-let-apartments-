@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <title>Holiday Property | StayHaven UK</title>
+
+  <link rel="stylesheet" href="style.css">
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
+    .property-page {
+      max-width: 1100px;
+      margin: 50px auto;
+      padding: 20px;
+    }
+
+    .property-layout {
+      display: grid;
+      grid-template-columns: 1.4fr 0.8fr;
+      gap: 40px;
+      align-items: start;
+    }
+
+    .property-photo {
+      height: 450px;
+      border-radius: 16px;
+      background:
+        linear-gradient(
+          rgba(20, 28, 43, 0.12),
+          rgba(20, 28, 43, 0.12)
+        ),
+        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1400&q=85")
+        center / cover no-repeat;
+    }
+
+    .property-info h1 {
+      font-size: 46px;
+      line-height: 1.1;
+      margin-bottom: 8px;
+    }
+
+    .location {
+      color: #667085;
+      margin-bottom: 20px;
+    }
+
+    .property-description {
+      color: #667085;
+      margin: 25px 0;
+      white-space: pre-line;
+    }
+
+    .details {
+      display: flex;
+      gap: 18px;
+      flex-wrap: wrap;
+      margin: 20px 0;
+    }
+
+    .detail {
+      padding: 10px 14px;
+      background: #f7f7f7;
+      border-radius: 7px;
+      font-size: 14px;
+    }
+
+    .booking-card {
+      border: 1px solid #eeeeee;
+      border-radius: 14px;
+      padding: 25px;
+      background: white;
+      position: sticky;
+      top: 20px;
+    }
+
+    .price {
+      font-size: 27px;
+      font-weight: 800;
+      margin-bottom: 22px;
+    }
+
+    .price span {
+      font-size: 14px;
+      font-weight: 400;
+      color: #667085;
+    }
+
+    .booking-card label {
+      display: block;
+      margin-top: 15px;
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .booking-card input,
+    .booking-card textarea,
+    .booking-card select {
+      width: 100%;
+      padding: 13px;
+      margin-top: 7px;
+      border: 1px solid #ddd;
+      border-radius: 7px;
+      font: inherit;
+    }
+
+    .booking-card textarea {
+      resize: vertical;
+    }
+
+    .booking-card button {
+      width: 100%;
+      margin-top: 22px;
+      border: 0;
+      cursor: pointer;
+    }
+
+    #message {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    @media (max-width: 850px) {
+
+      .property-layout {
+        grid-template-columns: 1fr;
+      }
+
+      .property-photo {
+        height: 320px;
+      }
+
+      .property-info h1 {
+        font-size: 36px;
+      }
+
+      .booking-card {
+        position: static;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="navbar">
+
+  <div class="logo">
+    StayHaven<span>UK</span>
+  </div>
+
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="properties.html">Holiday Lets</a>
+    <a href="login.html">Owner Login</a>
+  </nav>
+
+</header>
+
+
+<main class="property-page">
+
+  <div id="loading">
+    Loading property...
+  </div>
+
+
+  <div
+    id="propertyContent"
+    style="display:none;"
+  >
+
+    <div class="property-layout">
+
+
+      <!-- PROPERTY INFORMATION -->
+
+      <section>
+
+        <div class="property-photo"></div>
+
+        <div class="property-info" style="margin-top:30px;">
+
+          <p class="eyebrow">HOLIDAY LET</p>
+
+          <h1 id="propertyName"></h1>
+
+          <p
+            id="propertyLocation"
+            class="location"
+          ></p>
+
+
+          <div
+            id="propertyDetails"
+            class="details"
+          ></div>
+
+
+          <h2>About this property</h2>
+
+          <p
+            id="propertyDescription"
+            class="property-description"
+          ></p>
+
+        </div>
+
+      </section>
+
+
+      <!-- BOOKING FORM -->
+
+      <aside class="booking-card">
+
+        <div
+          id="propertyPrice"
+          class="price"
+        ></div>
+
+        <p style="color:#667085;">
+          Send a booking request to the property owner.
+        </p>
+
+
+        <form id="bookingForm">
+
+
+          <label>Check-in</label>
+
+          <input
+            type="date"
+            id="checkIn"
+            required
+          >
+
+
+          <label>Check-out</label>
+
+          <input
+            type="date"
+            id="checkOut"
+            required
+          >
+
+
+          <label>Number of Guests</label>
+
+          <input
+            type="number"
+            id="guests"
+            min="1"
+            value="1"
+            required
+          >
+
+
+          <label>Your Name</label>
+
+          <input
+            type="text"
+            id="guestName"
+            placeholder="Full name"
+            required
+          >
+
+
+          <label>Email Address</label>
+
+          <input
+            type="email"
+            id="guestEmail"
+            placeholder="you@example.com"
+            required
+          >
+
+
+          <label>Phone</label>
+
+          <input
+            type="tel"
+            id="guestPhone"
+            placeholder="Optional"
+          >
+
+
+          <label>Message</label>
+
+          <textarea
+            id="guestMessage"
+            rows="4"
+            placeholder="Any questions for the owner?"
+          ></textarea>
+
+
+          <button
+            type="submit"
+            class="primary-button"
+          >
+            Send Booking Request
+          </button>
+
+
+        </form>
+
+
+        <p id="message"></p>
+
+      </aside>
+
+    </div>
+
+  </div>
+
+</main>
+
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+const params =
+  new URLSearchParams(window.location.search);
+
+const propertyId =
+  params.get("id");
+
+
+let currentProperty = null;
+
+
+async function loadProperty() {
+
+  const loading =
+    document.getElementById("loading");
+
+  const content =
+    document.getElementById("propertyContent");
+
+
+  if (!propertyId) {
+
+    loading.textContent =
+      "Property not found.";
+
+    return;
+
+  }
+
+
+  try {
+
+    const {
+      data: property,
+      error
+    } = await supabaseClient
+
+      .from("properties")
+
+      .select("*")
+
+      .eq("id", propertyId)
+
+      .single();
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+    currentProperty =
+      property;
+
+
+    document.title =
+      property.name + " | StayHaven UK";
+
+
+    document.getElementById("propertyName")
+      .textContent =
+      property.name;
+
+
+    document.getElementById("propertyLocation")
+      .textContent =
+      property.location || "United Kingdom";
+
+
+    document.getElementById("propertyDescription")
+      .textContent =
+      property.description || "No description provided.";
+
+
+    document.getElementById("propertyPrice")
+      .innerHTML =
+      `£${Number(property.price_per_night).toFixed(2)}
+      <span>/ night</span>`;
+
+
+    document.getElementById("propertyDetails")
+      .innerHTML = `
+
+        <div class="detail">
+          ${property.bedrooms} bedrooms
+        </div>
+
+        <div class="detail">
+          ${property.bathrooms} bathrooms
+        </div>
+
+        <div class="detail">
+          Up to ${property.max_guests} guests
+        </div>
+
+      `;
+
+
+    document.getElementById("guests").max =
+      property.max_guests;
+
+
+    loading.style.display =
+      "none";
+
+    content.style.display =
+      "block";
+
+
+  } catch (error) {
+
+    console.error(error);
+
+    loading.textContent =
+      "Unable to load property: " +
+      error.message;
+
+  }
+
+}
+
+
+document
+  .getElementById("bookingForm")
+  .addEventListener("submit", async function(event) {
+
+    event.preventDefault();
+
+
+    const message =
+      document.getElementById("message");
+
+
+    const checkIn =
+      document.getElementById("checkIn").value;
+
+
+    const checkOut =
+      document.getElementById("checkOut").value;
+
+
+    const guests =
+      Number(
+        document.getElementById("guests").value
+      );
+
+
+    const guestName =
+      document.getElementById("guestName").value.trim();
+
+
+    const guestEmail =
+      document.getElementById("guestEmail").value.trim();
+
+
+    const guestPhone =
+      document.getElementById("guestPhone").value.trim();
+
+
+    const guestMessage =
+      document.getElementById("guestMessage").value.trim();
+
+
+    if (checkOut <= checkIn) {
+
+      message.textContent =
+        "Check-out must be after check-in.";
+
+      message.style.color =
+        "red";
+
+      return;
+
+    }
+
+
+    if (
+      currentProperty &&
+      guests > currentProperty.max_guests
+    ) {
+
+      message.textContent =
+        `This property allows a maximum of ${currentProperty.max_guests} guests.`;
+
+      message.style.color =
+        "red";
+
+      return;
+
+    }
+
+
+    message.textContent =
+      "Sending booking request...";
+
+    message.style.color =
+      "#667085";
+
+
+    try {
+
+      const {
+        error
+      } = await supabaseClient
+
+        .from("bookings")
+
+        .insert({
+
+          property_id:
+            propertyId,
+
+          guest_name:
+            guestName,
+
+          guest_email:
+            guestEmail,
+
+          guest_phone:
+            guestPhone || null,
+
+          check_in:
+            checkIn,
+
+          check_out:
+            checkOut,
+
+          guests:
+            guests,
+
+          message:
+            guestMessage || null,
+
+          status:
+            "pending"
+
+        });
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+      message.textContent =
+        "Booking request sent successfully! The property owner will review your request.";
+
+      message.style.color =
+        "green";
+
+
+      document
+        .getElementById("bookingForm")
+        .reset();
+
+
+    } catch (error) {
+
+      console.error(error);
+
+      message.textContent =
+        error.message ||
+        "Unable to send booking request.";
+
+      message.style.color =
+        "red";
+
+    }
+
+  });
+
+
+loadProperty();
+
+</script>
+
+</body>
+          </html>
