@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Owner Dashboard | StayHaven UK</title>
+  <title>Owner Dashboard | StayHaven</title>
 
   <link rel="stylesheet" href="style.css">
 
@@ -98,12 +98,50 @@
     }
 
     .property-card h3 {
-      margin-bottom: 5px;
+      margin-bottom: 7px;
     }
 
     .property-card p {
       color: #667085;
       margin-bottom: 8px;
+    }
+
+    .property-location {
+      font-weight: 600;
+      color: #333 !important;
+    }
+
+    .property-price {
+      font-size: 19px;
+      font-weight: 800;
+      color: #172033 !important;
+    }
+
+    .property-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 15px 0;
+    }
+
+    .meta-item {
+      background: #f7f7f7;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+      color: #555;
+    }
+
+    .view-property {
+      display: inline-block;
+      margin-top: 10px;
+      padding: 10px 15px;
+      background: #172033;
+      color: white;
+      text-decoration: none;
+      border-radius: 7px;
+      font-size: 13px;
+      font-weight: 700;
     }
 
     .empty {
@@ -112,10 +150,12 @@
       border: 1px dashed #cccccc;
       border-radius: 12px;
       color: #667085;
+      background: white;
     }
 
     .booking-table-wrapper {
       overflow-x: auto;
+      border-radius: 12px;
     }
 
     table {
@@ -143,6 +183,28 @@
       font-size: 12px;
       font-weight: 700;
       background: #f2f2f2;
+      text-transform: capitalize;
+    }
+
+    .status-pending {
+      background: #fff4d6;
+      color: #8a6500;
+    }
+
+    .status-confirmed {
+      background: #e7f6ec;
+      color: #217a3a;
+    }
+
+    .status-declined,
+    .status-cancelled {
+      background: #fdecec;
+      color: #b42318;
+    }
+
+    .status-completed {
+      background: #e9e7ff;
+      color: #5145a5;
     }
 
     .action-button {
@@ -162,6 +224,14 @@
     .decline-button {
       background: #fdecec;
       color: #b42318;
+    }
+
+    .message {
+      padding: 15px;
+      border-radius: 8px;
+      margin-bottom: 20px;
+      background: #fff4d6;
+      color: #665000;
     }
 
     @media (max-width: 800px) {
@@ -193,7 +263,7 @@
 <header class="navbar">
 
   <div class="logo">
-    StayHaven<span>UK</span>
+    StayHaven
   </div>
 
   <nav>
@@ -210,11 +280,18 @@
 
     <div>
       <p class="eyebrow">OWNER DASHBOARD</p>
+
       <h1>Welcome back</h1>
-      <p id="ownerEmail">Loading account...</p>
+
+      <p id="ownerEmail">
+        Loading account...
+      </p>
     </div>
 
-    <button id="logoutButton" class="logout-button">
+    <button
+      id="logoutButton"
+      class="logout-button"
+    >
       Logout
     </button>
 
@@ -241,12 +318,15 @@
   </div>
 
 
+  <!-- PROPERTIES -->
+
   <section class="dashboard-section">
 
     <div class="section-top">
 
       <div>
         <p class="eyebrow">YOUR LISTINGS</p>
+
         <h2>Holiday Properties</h2>
       </div>
 
@@ -259,6 +339,7 @@
 
     </div>
 
+
     <div id="propertiesContainer">
       Loading properties...
     </div>
@@ -266,12 +347,15 @@
   </section>
 
 
+  <!-- BOOKINGS -->
+
   <section class="dashboard-section">
 
     <div class="section-top">
 
       <div>
         <p class="eyebrow">BOOKING MANAGEMENT</p>
+
         <h2>Booking Requests</h2>
       </div>
 
@@ -287,6 +371,7 @@
           <tr>
             <th>Guest</th>
             <th>Property</th>
+            <th>Location</th>
             <th>Check-in</th>
             <th>Check-out</th>
             <th>Guests</th>
@@ -299,7 +384,7 @@
         <tbody id="bookingsContainer">
 
           <tr>
-            <td colspan="7">
+            <td colspan="8">
               Loading bookings...
             </td>
           </tr>
@@ -323,6 +408,58 @@
 let currentUser = null;
 
 
+/* =====================================
+   CURRENCY
+===================================== */
+
+function currencySymbol(currency) {
+
+  const symbols = {
+
+    GBP: "£",
+
+    CAD: "C$",
+
+    USD: "$",
+
+    AUD: "A$",
+
+    EUR: "€",
+
+    NZD: "NZ$",
+
+    CHF: "CHF",
+
+    JPY: "¥"
+
+  };
+
+  return symbols[currency] || currency || "";
+
+}
+
+
+/* =====================================
+   ESCAPE HTML
+===================================== */
+
+function escapeHtml(value) {
+
+  return String(value ?? "")
+
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+
+}
+
+
+/* =====================================
+   LOAD DASHBOARD
+===================================== */
+
 async function loadDashboard() {
 
   try {
@@ -336,7 +473,8 @@ async function loadDashboard() {
 
     if (!user) {
 
-      window.location.href = "login.html";
+      window.location.href =
+        "login.html";
 
       return;
 
@@ -346,9 +484,15 @@ async function loadDashboard() {
     currentUser = user;
 
 
-    document.getElementById("ownerEmail").textContent =
+    document
+      .getElementById("ownerEmail")
+      .textContent =
       user.email;
 
+
+    /* ================================
+       LOAD PROPERTIES
+    ================================= */
 
     const {
       data: properties,
@@ -361,9 +505,12 @@ async function loadDashboard() {
 
       .eq("owner_id", user.id)
 
-      .order("created_at", {
-        ascending: false
-      });
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
 
     if (propertyError) {
@@ -373,15 +520,25 @@ async function loadDashboard() {
     }
 
 
-    document.getElementById("propertyCount").textContent =
-      properties.length;
+    const propertyList =
+      properties || [];
+
+
+    document
+      .getElementById("propertyCount")
+      .textContent =
+      propertyList.length;
 
 
     const propertiesContainer =
-      document.getElementById("propertiesContainer");
+      document.getElementById(
+        "propertiesContainer"
+      );
 
 
-    if (properties.length === 0) {
+    if (
+      propertyList.length === 0
+    ) {
 
       propertiesContainer.innerHTML = `
 
@@ -400,58 +557,203 @@ async function loadDashboard() {
     } else {
 
       propertiesContainer.innerHTML =
-        properties.map(property => `
+        propertyList.map(
+          property => {
 
-          <div class="property-card">
 
-            <h3>
-              ${escapeHtml(property.name)}
-            </h3>
+            const symbol =
+              currencySymbol(
+                property.currency
+              );
 
-            <p>
-              ${escapeHtml(
-                property.location || "Location not provided"
-              )}
-            </p>
 
-            <p>
-              £${Number(
-                property.price_per_night
-              ).toFixed(2)}
-              per night
-            </p>
+            const locationParts =
+              [];
 
-          </div>
 
-        `).join("");
+            if (property.city) {
+
+              locationParts.push(
+                property.city
+              );
+
+            }
+
+
+            if (property.country) {
+
+              locationParts.push(
+                property.country
+              );
+
+            }
+
+
+            const location =
+              locationParts.join(", ") ||
+              property.location ||
+              "Location not provided";
+
+
+            const cleaningFee =
+              Number(
+                property.cleaning_fee || 0
+              );
+
+
+            const minimumStay =
+              Number(
+                property.minimum_stay || 1
+              );
+
+
+            return `
+
+              <div class="property-card">
+
+                <h3>
+                  ${escapeHtml(
+                    property.name
+                  )}
+                </h3>
+
+
+                <p class="property-location">
+                  📍 ${escapeHtml(location)}
+                </p>
+
+
+                ${
+                  property.location
+                    ? `
+                      <p>
+                        ${escapeHtml(
+                          property.location
+                        )}
+                      </p>
+                    `
+                    : ""
+                }
+
+
+                <p class="property-price">
+
+                  ${escapeHtml(symbol)}
+                  ${Number(
+                    property.price_per_night || 0
+                  ).toFixed(2)}
+
+                  per night
+
+                </p>
+
+
+                <div class="property-meta">
+
+                  <span class="meta-item">
+                    ${property.bedrooms} bedrooms
+                  </span>
+
+                  <span class="meta-item">
+                    ${property.bathrooms} bathrooms
+                  </span>
+
+                  <span class="meta-item">
+                    Up to ${property.max_guests} guests
+                  </span>
+
+                  <span class="meta-item">
+                    Min ${minimumStay}
+                    ${minimumStay === 1 ? "night" : "nights"}
+                  </span>
+
+                  ${
+                    cleaningFee > 0
+                      ? `
+                        <span class="meta-item">
+                          Cleaning:
+                          ${escapeHtml(symbol)}
+                          ${cleaningFee.toFixed(2)}
+                        </span>
+                      `
+                      : ""
+                  }
+
+                </div>
+
+
+                <a
+                  class="view-property"
+                  href="property.html?id=${encodeURIComponent(property.id)}"
+                >
+                  View Property
+                </a>
+
+              </div>
+
+            `;
+
+          }
+        ).join("");
 
     }
 
 
+    /* ================================
+       PROPERTY IDS
+    ================================= */
+
     const propertyIds =
-      properties.map(property => property.id);
+      propertyList.map(
+        property => property.id
+      );
 
 
-    if (propertyIds.length === 0) {
+    if (
+      propertyIds.length === 0
+    ) {
 
-      document.getElementById("bookingCount").textContent = "0";
+      document
+        .getElementById(
+          "bookingCount"
+        )
+        .textContent =
+        "0";
 
-      document.getElementById("pendingCount").textContent = "0";
 
-      document.getElementById("bookingsContainer").innerHTML = `
+      document
+        .getElementById(
+          "pendingCount"
+        )
+        .textContent =
+        "0";
 
-        <tr>
-          <td colspan="7">
-            No booking requests yet.
-          </td>
-        </tr>
 
-      `;
+      document
+        .getElementById(
+          "bookingsContainer"
+        )
+        .innerHTML = `
+
+          <tr>
+
+            <td colspan="8">
+              No booking requests yet.
+            </td>
+
+          </tr>
+
+        `;
+
 
       return;
 
     }
 
+
+    /* ================================
+       LOAD BOOKINGS
+    ================================= */
 
     const {
       data: bookings,
@@ -462,11 +764,17 @@ async function loadDashboard() {
 
       .select("*")
 
-      .in("property_id", propertyIds)
+      .in(
+        "property_id",
+        propertyIds
+      )
 
-      .order("created_at", {
-        ascending: false
-      });
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
 
     if (bookingError) {
@@ -476,53 +784,124 @@ async function loadDashboard() {
     }
 
 
-    document.getElementById("bookingCount").textContent =
-      bookings.length;
+    const bookingList =
+      bookings || [];
+
+
+    document
+      .getElementById(
+        "bookingCount"
+      )
+      .textContent =
+      bookingList.length;
 
 
     const pendingBookings =
-      bookings.filter(
-        booking => booking.status === "pending"
+      bookingList.filter(
+        booking =>
+          booking.status === "pending"
       );
 
 
-    document.getElementById("pendingCount").textContent =
+    document
+      .getElementById(
+        "pendingCount"
+      )
+      .textContent =
       pendingBookings.length;
 
 
+    /* ================================
+       PROPERTY MAP
+    ================================= */
+
     const propertyMap = {};
 
-    properties.forEach(property => {
 
-      propertyMap[property.id] =
-        property.name;
+    propertyList.forEach(
+      property => {
 
-    });
+        propertyMap[
+          property.id
+        ] =
+        property;
 
+      }
+    );
+
+
+    /* ================================
+       BOOKINGS TABLE
+    ================================= */
 
     const bookingsContainer =
-      document.getElementById("bookingsContainer");
+      document.getElementById(
+        "bookingsContainer"
+      );
 
 
-    if (bookings.length === 0) {
+    if (
+      bookingList.length === 0
+    ) {
 
       bookingsContainer.innerHTML = `
 
         <tr>
-          <td colspan="7">
+
+          <td colspan="8">
             No booking requests yet.
           </td>
+
         </tr>
 
       `;
 
-    } else {
+      return;
 
-      bookingsContainer.innerHTML =
-        bookings.map(booking => {
+    }
+
+
+    bookingsContainer.innerHTML =
+      bookingList.map(
+        booking => {
+
+
+          const property =
+            propertyMap[
+              booking.property_id
+            ];
+
+
+          const propertyName =
+            property
+              ? property.name
+              : "Property";
+
+
+          const propertyLocation =
+            property
+              ? (
+                  [
+                    property.city,
+                    property.country
+                  ]
+                  .filter(Boolean)
+                  .join(", ")
+                )
+              : "—";
+
 
           const isPending =
-            booking.status === "pending";
+            booking.status ===
+            "pending";
+
+
+          const statusClass =
+            "status-" +
+            String(
+              booking.status
+            )
+            .toLowerCase();
 
 
           return `
@@ -530,32 +909,57 @@ async function loadDashboard() {
             <tr>
 
               <td>
-                ${escapeHtml(booking.guest_name)}
-              </td>
-
-              <td>
                 ${escapeHtml(
-                  propertyMap[booking.property_id] || "Property"
+                  booking.guest_name
                 )}
               </td>
 
-              <td>
-                ${escapeHtml(booking.check_in)}
-              </td>
 
               <td>
-                ${escapeHtml(booking.check_out)}
+                ${escapeHtml(
+                  propertyName
+                )}
               </td>
+
+
+              <td>
+                ${escapeHtml(
+                  propertyLocation
+                )}
+              </td>
+
+
+              <td>
+                ${escapeHtml(
+                  booking.check_in
+                )}
+              </td>
+
+
+              <td>
+                ${escapeHtml(
+                  booking.check_out
+                )}
+              </td>
+
 
               <td>
                 ${booking.guests}
               </td>
 
+
               <td>
-                <span class="status">
-                  ${escapeHtml(booking.status)}
+
+                <span
+                  class="status ${statusClass}"
+                >
+                  ${escapeHtml(
+                    booking.status
+                  )}
                 </span>
+
               </td>
+
 
               <td>
 
@@ -566,14 +970,21 @@ async function loadDashboard() {
 
                       <button
                         class="action-button confirm-button"
-                        onclick="updateBookingStatus('${booking.id}', 'confirmed')"
+                        onclick="updateBookingStatus(
+                          '${booking.id}',
+                          'confirmed'
+                        )"
                       >
                         Confirm
                       </button>
 
+
                       <button
                         class="action-button decline-button"
-                        onclick="updateBookingStatus('${booking.id}', 'declined')"
+                        onclick="updateBookingStatus(
+                          '${booking.id}',
+                          'declined'
+                        )"
                       >
                         Decline
                       </button>
@@ -589,33 +1000,45 @@ async function loadDashboard() {
 
           `;
 
-        }).join("");
-
-    }
+        }
+      ).join("");
 
 
   } catch (error) {
 
     console.error(error);
 
-    document.getElementById("propertiesContainer").innerHTML = `
 
-      <div class="empty">
+    document
+      .getElementById(
+        "propertiesContainer"
+      )
+      .innerHTML = `
 
-        Unable to load dashboard.
+        <div class="empty">
 
-        <br><br>
+          <h3>
+            Unable to load dashboard
+          </h3>
 
-        ${escapeHtml(error.message)}
+          <p>
+            ${escapeHtml(
+              error.message
+            )}
+          </p>
 
-      </div>
+        </div>
 
-    `;
+      `;
 
   }
 
 }
 
+
+/* =====================================
+   UPDATE BOOKING
+===================================== */
 
 async function updateBookingStatus(
   bookingId,
@@ -653,7 +1076,10 @@ async function updateBookingStatus(
         status: newStatus
       })
 
-      .eq("id", bookingId);
+      .eq(
+        "id",
+        bookingId
+      );
 
 
     if (error) {
@@ -675,6 +1101,7 @@ async function updateBookingStatus(
 
     console.error(error);
 
+
     alert(
       "Unable to update booking: " +
       error.message
@@ -685,34 +1112,28 @@ async function updateBookingStatus(
 }
 
 
-function escapeHtml(value) {
-
-  return String(value)
-
-    .replaceAll("&", "&amp;")
-
-    .replaceAll("<", "&lt;")
-
-    .replaceAll(">", "&gt;")
-
-    .replaceAll('"', "&quot;")
-
-    .replaceAll("'", "&#039;");
-
-}
-
+/* =====================================
+   LOGOUT
+===================================== */
 
 document
   .getElementById("logoutButton")
-  .addEventListener("click", async function() {
+  .addEventListener(
+    "click",
+    async function() {
 
-    await supabaseClient.auth.signOut();
+      await supabaseClient.auth.signOut();
 
-    window.location.href =
-      "login.html";
+      window.location.href =
+        "login.html";
 
-  });
+    }
+  );
 
+
+/* =====================================
+   START
+===================================== */
 
 loadDashboard();
 
