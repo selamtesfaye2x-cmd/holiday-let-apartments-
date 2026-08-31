@@ -3,140 +3,334 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>StayHaven UK | Beautiful Holiday Lets</title>
-  <meta name="description" content="Discover beautiful UK holiday lets and enquire directly with property owners.">
+
+  <title>StayHaven | Holiday Lets & Short Stays</title>
 
   <link rel="stylesheet" href="style.css">
+
+  <style>
+
+    .hero {
+      min-height: 620px;
+      display: flex;
+      align-items: center;
+      padding: 70px 20px;
+      background:
+        linear-gradient(
+          rgba(15, 23, 42, 0.55),
+          rgba(15, 23, 42, 0.55)
+        ),
+        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85")
+        center / cover no-repeat;
+      color: white;
+    }
+
+    .hero-content {
+      max-width: 1100px;
+      width: 100%;
+      margin: auto;
+    }
+
+    .hero h1 {
+      max-width: 760px;
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1.05;
+      margin-bottom: 20px;
+    }
+
+    .hero p {
+      max-width: 650px;
+      font-size: 19px;
+      line-height: 1.6;
+      margin-bottom: 30px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+
+    .hero-button {
+      display: inline-block;
+      padding: 14px 22px;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 700;
+    }
+
+    .hero-primary {
+      background: #b88945;
+      color: white;
+    }
+
+    .hero-secondary {
+      background: white;
+      color: #172033;
+    }
+
+    .intro {
+      max-width: 1100px;
+      margin: 70px auto;
+      padding: 0 20px;
+      text-align: center;
+    }
+
+    .intro h2 {
+      font-size: 38px;
+      margin-bottom: 15px;
+    }
+
+    .intro p {
+      max-width: 700px;
+      margin: auto;
+      color: #667085;
+      line-height: 1.7;
+    }
+
+    .features {
+      max-width: 1100px;
+      margin: 50px auto 90px;
+      padding: 0 20px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+
+    .feature {
+      padding: 30px;
+      border: 1px solid #eeeeee;
+      border-radius: 12px;
+      background: white;
+    }
+
+    .feature-icon {
+      font-size: 30px;
+      margin-bottom: 15px;
+    }
+
+    .feature h3 {
+      margin-bottom: 10px;
+    }
+
+    .feature p {
+      color: #667085;
+      line-height: 1.6;
+    }
+
+    .owner-cta {
+      background: #172033;
+      color: white;
+      padding: 70px 20px;
+      text-align: center;
+    }
+
+    .owner-cta h2 {
+      font-size: 38px;
+      margin-bottom: 15px;
+    }
+
+    .owner-cta p {
+      max-width: 650px;
+      margin: 0 auto 25px;
+      line-height: 1.7;
+      color: #d5d9e2;
+    }
+
+    .owner-button {
+      display: inline-block;
+      padding: 14px 22px;
+      background: #b88945;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 800px) {
+
+      .features {
+        grid-template-columns: 1fr;
+      }
+
+      .hero {
+        min-height: 540px;
+      }
+
+    }
+
+  </style>
 </head>
 
 <body>
 
-  <!-- NAVIGATION -->
-  <header class="navbar">
-    <div class="logo">StayHaven<span>UK</span></div>
+<header class="navbar">
 
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="properties.html">Holiday Lets</a>
-      <a href="login.html">Owner Login</a>
-      <a href="register.html" class="nav-button">List Your Property</a>
-    </nav>
-  </header>
+  <div class="logo">
+    StayHaven
+  </div>
 
+  <nav>
 
-  <!-- HERO -->
-  <section class="hero">
+    <a href="index.html">
+      Home
+    </a>
 
-    <div class="hero-content">
+    <a href="properties.html">
+      Holiday Lets
+    </a>
 
-      <p class="eyebrow">UK HOLIDAY LETS</p>
+    <a href="login.html">
+      Owner Login
+    </a>
 
-      <h1>
-        Your next unforgettable
-        <span>UK escape</span>
-      </h1>
+  </nav>
 
-      <p class="hero-text">
-        Discover beautiful holiday homes across the UK and enquire
-        directly with property owners.
-      </p>
-
-      <div class="hero-buttons">
-        <a href="properties.html" class="primary-button">
-          Explore Holiday Lets
-        </a>
-
-        <a href="register.html" class="secondary-button">
-          List Your Property
-        </a>
-      </div>
-
-    </div>
-
-  </section>
+</header>
 
 
-  <!-- WHY STAYHAVEN -->
-  <section class="features">
+<!-- HERO -->
 
-    <div class="section-heading">
-      <p class="eyebrow">WHY STAYHAVEN</p>
-      <h2>A better way to find your stay</h2>
-    </div>
+<section class="hero">
 
-    <div class="feature-grid">
+  <div class="hero-content">
 
-      <div class="feature-card">
-        <div class="feature-icon">⌂</div>
-        <h3>Beautiful Properties</h3>
-        <p>
-          Discover carefully presented holiday homes in
-          some of the UK's most desirable destinations.
-        </p>
-      </div>
+    <p class="eyebrow">
+      HOLIDAY LETS & SHORT STAYS
+    </p>
 
-      <div class="feature-card">
-        <div class="feature-icon">✓</div>
-        <h3>Direct Enquiries</h3>
-        <p>
-          Connect directly with property owners about
-          your preferred dates and stay.
-        </p>
-      </div>
+    <h1>
+      Find your next place to stay.
+    </h1>
 
-      <div class="feature-card">
-        <div class="feature-icon">♡</div>
-        <h3>Made for Memorable Stays</h3>
-        <p>
-          Find the perfect space for weekend escapes,
-          family breaks and longer holidays.
-        </p>
-      </div>
+    <p>
+      Discover beautiful holiday homes, apartments and short-stay properties from destinations around the world.
+    </p>
 
-    </div>
+    <div class="hero-buttons">
 
-  </section>
+      <a
+        href="properties.html"
+        class="hero-button hero-primary"
+      >
+        Explore Holiday Lets
+      </a>
 
-
-  <!-- OWNER CTA -->
-  <section class="owner-section">
-
-    <div class="owner-content">
-
-      <p class="eyebrow">FOR PROPERTY OWNERS</p>
-
-      <h2>Turn your holiday home into your next opportunity.</h2>
-
-      <p>
-        Showcase your property, manage enquiries and keep
-        track of your bookings from one simple dashboard.
-      </p>
-
-      <a href="register.html" class="primary-button">
+      <a
+        href="login.html"
+        class="hero-button hero-secondary"
+      >
         List Your Property
       </a>
 
     </div>
 
-  </section>
+  </div>
+
+</section>
 
 
-  <!-- FOOTER -->
-  <footer>
+<!-- INTRO -->
 
-    <div class="footer-logo">
-      StayHaven<span>UK</span>
+<section class="intro">
+
+  <p class="eyebrow">
+    WHY STAYHAVEN
+  </p>
+
+  <h2>
+    Stay somewhere you'll love.
+  </h2>
+
+  <p>
+    StayHaven connects guests with independent property owners offering comfortable holiday accommodation for short stays, vacations and getaways.
+  </p>
+
+</section>
+
+
+<!-- FEATURES -->
+
+<section class="features">
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      🏡
     </div>
 
+    <h3>
+      Unique Properties
+    </h3>
+
     <p>
-      Beautiful UK holiday lets, made simple.
+      Browse apartments, holiday homes, villas and other properties in destinations around the world.
     </p>
 
-    <p class="copyright">
-      © 2026 StayHaven UK. All rights reserved.
+  </div>
+
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      📅
+    </div>
+
+    <h3>
+      Simple Enquiries
+    </h3>
+
+    <p>
+      Choose your dates and send a booking request directly to the property owner.
     </p>
 
-  </footer>
+  </div>
+
+
+  <div class="feature">
+
+    <div class="feature-icon">
+      🌎
+    </div>
+
+    <h3>
+      Worldwide Stays
+    </h3>
+
+    <p>
+      StayHaven is designed for holiday properties across different countries and currencies.
+    </p>
+
+  </div>
+
+</section>
+
+
+<!-- OWNER CTA -->
+
+<section class="owner-cta">
+
+  <p class="eyebrow">
+    FOR PROPERTY OWNERS
+  </p>
+
+  <h2>
+    Turn your property into a holiday destination.
+  </h2>
+
+  <p>
+    Create your property listing, showcase your accommodation and manage booking enquiries from one simple dashboard.
+  </p>
+
+  <a
+    href="login.html"
+    class="owner-button"
+  >
+    List Your Property
+  </a>
+
+</section>
+
 
 </body>
   </html>
