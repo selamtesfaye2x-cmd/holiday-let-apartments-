@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Holiday Lets | StayHaven UK</title>
+  <title>Holiday Properties | StayHaven</title>
 
   <link rel="stylesheet" href="style.css">
 
@@ -17,19 +17,34 @@
       padding: 20px;
     }
 
-    .properties-heading {
-      margin-bottom: 40px;
+    .page-heading {
+      margin-bottom: 30px;
     }
 
-    .properties-heading h1 {
-      font-size: 48px;
-      line-height: 1.1;
-      margin-bottom: 12px;
+    .page-heading h1 {
+      font-size: 42px;
+      margin-bottom: 8px;
     }
 
-    .properties-heading p {
+    .page-heading p {
       color: #667085;
-      max-width: 650px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .filters input,
+    .filters select {
+      padding: 13px;
+      border: 1px solid #d0d5dd;
+      border-radius: 8px;
+      font: inherit;
+      width: 100%;
+      box-sizing: border-box;
     }
 
     .property-grid {
@@ -38,80 +53,82 @@
       gap: 25px;
     }
 
-    .listing-card {
-      border: 1px solid #eeeeee;
+    .property-card {
+      background: white;
+      border: 1px solid #e9e9e9;
       border-radius: 14px;
       overflow: hidden;
-      background: white;
-      transition: transform 0.2s ease;
     }
 
-    .listing-card:hover {
-      transform: translateY(-3px);
-    }
-
-    .listing-image {
+    .property-image {
       height: 220px;
       background:
         linear-gradient(
-          rgba(20, 28, 43, 0.15),
-          rgba(20, 28, 43, 0.15)
+          rgba(20,28,43,0.08),
+          rgba(20,28,43,0.08)
         ),
-        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80")
+        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80")
         center / cover no-repeat;
     }
 
-    .listing-content {
-      padding: 22px;
+    .property-body {
+      padding: 20px;
     }
 
-    .listing-content h2 {
-      font-size: 22px;
-      margin-bottom: 5px;
+    .property-body h2 {
+      font-size: 21px;
+      margin-bottom: 7px;
     }
 
-    .listing-location {
+    .location {
       color: #667085;
+      font-size: 14px;
       margin-bottom: 15px;
     }
 
-    .listing-details {
+    .details {
       display: flex;
-      gap: 15px;
-      color: #667085;
-      font-size: 14px;
-      margin-bottom: 20px;
+      gap: 10px;
       flex-wrap: wrap;
-    }
-
-    .listing-price {
-      font-size: 21px;
-      font-weight: 800;
       margin-bottom: 18px;
     }
 
-    .listing-price span {
-      font-size: 14px;
-      font-weight: 400;
+    .detail {
+      background: #f7f7f7;
+      padding: 7px 10px;
+      border-radius: 6px;
+      font-size: 13px;
+    }
+
+    .price {
+      font-size: 20px;
+      font-weight: 800;
+    }
+
+    .price span {
       color: #667085;
+      font-size: 13px;
+      font-weight: 400;
     }
 
     .view-button {
       display: block;
-      text-align: center;
+      width: 100%;
+      margin-top: 18px;
       padding: 12px;
+      text-align: center;
+      text-decoration: none;
+      border-radius: 8px;
       background: #172033;
       color: white;
-      border-radius: 7px;
       font-weight: 700;
+      box-sizing: border-box;
     }
 
-    .loading,
-    .empty {
+    #status {
       text-align: center;
-      padding: 60px 20px;
       color: #667085;
-      grid-column: 1 / -1;
+      padding: 30px;
     }
 
     @media (max-width: 900px) {
@@ -121,16 +138,16 @@
     }
 
     @media (max-width: 600px) {
-      .properties-page {
-        margin: 25px auto;
-      }
-
-      .properties-heading h1 {
-        font-size: 38px;
-      }
-
       .property-grid {
         grid-template-columns: 1fr;
+      }
+
+      .filters {
+        grid-template-columns: 1fr;
+      }
+
+      .page-heading h1 {
+        font-size: 34px;
       }
     }
   </style>
@@ -141,15 +158,13 @@
 <header class="navbar">
 
   <div class="logo">
-    StayHaven<span>UK</span>
+    StayHaven
   </div>
 
   <nav>
     <a href="index.html">Home</a>
+    <a href="properties.html">Holiday Lets</a>
     <a href="login.html">Owner Login</a>
-    <a href="register.html" class="nav-button">
-      List Your Property
-    </a>
   </nav>
 
 </header>
@@ -157,30 +172,94 @@
 
 <main class="properties-page">
 
-  <div class="properties-heading">
+  <section class="page-heading">
 
-    <p class="eyebrow">EXPLORE THE UK</p>
-
-    <h1>Find your perfect holiday let.</h1>
-
-    <p>
-      Browse beautiful properties and discover your next
-      UK getaway.
+    <p class="eyebrow">
+      DESTINATIONS
     </p>
 
+    <h1>
+      Find your next stay
+    </h1>
+
+    <p>
+      Discover holiday properties from destinations around the world.
+    </p>
+
+  </section>
+
+
+  <!-- SEARCH -->
+
+  <section class="filters">
+
+    <input
+      type="search"
+      id="search"
+      placeholder="Search by property, city or location..."
+    >
+
+
+    <select id="countryFilter">
+
+      <option value="">
+        All countries
+      </option>
+
+      <option value="United Kingdom">
+        🇬🇧 United Kingdom
+      </option>
+
+      <option value="Canada">
+        🇨🇦 Canada
+      </option>
+
+      <option value="United States">
+        🇺🇸 United States
+      </option>
+
+      <option value="Australia">
+        🇦🇺 Australia
+      </option>
+
+      <option value="France">
+        🇫🇷 France
+      </option>
+
+      <option value="Spain">
+        🇪🇸 Spain
+      </option>
+
+      <option value="Germany">
+        🇩🇪 Germany
+      </option>
+
+      <option value="Italy">
+        🇮🇹 Italy
+      </option>
+
+      <option value="Portugal">
+        🇵🇹 Portugal
+      </option>
+
+      <option value="Other">
+        🌎 Other
+      </option>
+
+    </select>
+
+  </section>
+
+
+  <div id="status">
+    Loading properties...
   </div>
 
 
-  <div
+  <section
     id="propertyGrid"
     class="property-grid"
-  >
-
-    <div class="loading">
-      Loading holiday lets...
-    </div>
-
-  </div>
+  ></section>
 
 </main>
 
@@ -190,16 +269,51 @@
 
 <script>
 
+let allProperties = [];
+
+
+/* ================================
+   CURRENCY SYMBOL
+================================ */
+
+
+function currencySymbol(currency) {
+
+  const symbols = {
+
+    GBP: "£",
+
+    CAD: "C$",
+
+    USD: "$",
+
+    AUD: "A$",
+
+    EUR: "€"
+
+  };
+
+
+  return symbols[currency] || currency;
+
+}
+
+
+/* ================================
+   LOAD PROPERTIES
+================================ */
+
+
 async function loadProperties() {
 
-  const propertyGrid =
-    document.getElementById("propertyGrid");
+  const status =
+    document.getElementById("status");
 
 
   try {
 
     const {
-      data: properties,
+      data,
       error
     } = await supabaseClient
 
@@ -207,9 +321,12 @@ async function loadProperties() {
 
       .select("*")
 
-      .order("created_at", {
-        ascending: false
-      });
+      .order(
+        "created_at",
+        {
+          ascending: false
+        }
+      );
 
 
     if (error) {
@@ -219,86 +336,13 @@ async function loadProperties() {
     }
 
 
-    if (!properties || properties.length === 0) {
-
-      propertyGrid.innerHTML = `
-
-        <div class="empty">
-
-          <h2>No holiday lets yet</h2>
-
-          <p>
-            New properties will appear here when owners list them.
-          </p>
-
-        </div>
-
-      `;
-
-      return;
-
-    }
+    allProperties =
+      data || [];
 
 
-    propertyGrid.innerHTML =
-      properties.map(property => `
-
-        <article class="listing-card">
-
-          <div class="listing-image"></div>
-
-          <div class="listing-content">
-
-            <h2>
-              ${escapeHtml(property.name)}
-            </h2>
-
-            <p class="listing-location">
-              ${escapeHtml(
-                property.location || "UK"
-              )}
-            </p>
-
-            <div class="listing-details">
-
-              <span>
-                ${property.bedrooms} bedrooms
-              </span>
-
-              <span>
-                ${property.bathrooms} bathrooms
-              </span>
-
-              <span>
-                Up to ${property.max_guests} guests
-              </span>
-
-            </div>
-
-            <div class="listing-price">
-
-              £${Number(
-                property.price_per_night
-              ).toFixed(2)}
-
-              <span>
-                / night
-              </span>
-
-            </div>
-
-            <a
-              class="view-button"
-              href="property.html?id=${encodeURIComponent(property.id)}"
-            >
-              View Property
-            </a>
-
-          </div>
-
-        </article>
-
-      `).join("");
+    renderProperties(
+      allProperties
+    );
 
 
   } catch (error) {
@@ -306,41 +350,290 @@ async function loadProperties() {
     console.error(error);
 
 
-    propertyGrid.innerHTML = `
-
-      <div class="empty">
-
-        <h2>Unable to load properties</h2>
-
-        <p>
-          ${escapeHtml(error.message)}
-        </p>
-
-      </div>
-
-    `;
+    status.textContent =
+      "Unable to load properties: " +
+      error.message;
 
   }
 
 }
 
 
-function escapeHtml(value) {
+/* ================================
+   RENDER
+================================ */
 
-  return String(value)
 
-    .replaceAll("&", "&amp;")
+function renderProperties(properties) {
 
-    .replaceAll("<", "&lt;")
+  const grid =
+    document.getElementById(
+      "propertyGrid"
+    );
 
-    .replaceAll(">", "&gt;")
+  const status =
+    document.getElementById(
+      "status"
+    );
 
-    .replaceAll('"', "&quot;")
 
-    .replaceAll("'", "&#039;");
+  grid.innerHTML = "";
+
+
+  if (!properties.length) {
+
+    status.textContent =
+      "No properties found.";
+
+    return;
+
+  }
+
+
+  status.textContent =
+    `${properties.length} ${
+      properties.length === 1
+        ? "property"
+        : "properties"
+    } available`;
+
+
+  properties.forEach(
+    function(property) {
+
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+
+      card.className =
+        "property-card";
+
+
+      const symbol =
+        currencySymbol(
+          property.currency
+        );
+
+
+      const locationParts =
+        [];
+
+
+      if (property.city) {
+
+        locationParts.push(
+          property.city
+        );
+
+      }
+
+
+      if (property.country) {
+
+        locationParts.push(
+          property.country
+        );
+
+      }
+
+
+      const location =
+        locationParts.join(
+          ", "
+        ) ||
+        property.location ||
+        "Location unavailable";
+
+
+      card.innerHTML = `
+
+        <div class="property-image"></div>
+
+        <div class="property-body">
+
+          <h2>
+            ${escapeHtml(property.name)}
+          </h2>
+
+          <p class="location">
+            ${escapeHtml(location)}
+          </p>
+
+          <div class="details">
+
+            <div class="detail">
+              ${property.bedrooms} bedrooms
+            </div>
+
+            <div class="detail">
+              ${property.bathrooms} bathrooms
+            </div>
+
+            <div class="detail">
+              Up to ${property.max_guests} guests
+            </div>
+
+          </div>
+
+          <div class="price">
+
+            ${symbol}${Number(
+              property.price_per_night
+            ).toFixed(2)}
+
+            <span>
+              / night
+            </span>
+
+          </div>
+
+          <a
+            class="view-button"
+            href="property.html?id=${encodeURIComponent(property.id)}"
+          >
+            View Property
+          </a>
+
+        </div>
+
+      `;
+
+
+      grid.appendChild(card);
+
+    }
+  );
 
 }
 
+
+/* ================================
+   SEARCH / FILTER
+================================ */
+
+
+function filterProperties() {
+
+  const search =
+    document
+      .getElementById("search")
+      .value
+      .toLowerCase()
+      .trim();
+
+
+  const country =
+    document
+      .getElementById("countryFilter")
+      .value;
+
+
+  const filtered =
+    allProperties.filter(
+      function(property) {
+
+
+        const searchable = (
+
+          (property.name || "") +
+          " " +
+          (property.city || "") +
+          " " +
+          (property.country || "") +
+          " " +
+          (property.location || "")
+
+        ).toLowerCase();
+
+
+        const matchesSearch =
+          !search ||
+          searchable.includes(search);
+
+
+        const matchesCountry =
+          !country ||
+          property.country === country;
+
+
+        return (
+          matchesSearch &&
+          matchesCountry
+        );
+
+      }
+    );
+
+
+  renderProperties(
+    filtered
+  );
+
+}
+
+
+/* ================================
+   SECURITY
+================================ */
+
+
+function escapeHtml(value) {
+
+  return String(value || "")
+
+    .replace(
+      /&/g,
+      "&amp;"
+    )
+
+    .replace(
+      /</g,
+      "&lt;"
+    )
+
+    .replace(
+      />/g,
+      "&gt;"
+    )
+
+    .replace(
+      /"/g,
+      "&quot;"
+    )
+
+    .replace(
+      /'/g,
+      "&#039;"
+    );
+
+}
+
+
+/* ================================
+   EVENTS
+================================ */
+
+
+document
+  .getElementById("search")
+  .addEventListener(
+    "input",
+    filterProperties
+  );
+
+
+document
+  .getElementById("countryFilter")
+  .addEventListener(
+    "change",
+    filterProperties
+  );
+
+
+/* START */
 
 loadProperties();
 
