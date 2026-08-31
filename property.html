@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Holiday Property | StayHaven UK</title>
+  <title>Holiday Property | StayHaven</title>
 
   <link rel="stylesheet" href="style.css">
 
@@ -51,11 +51,12 @@
       color: #667085;
       margin: 25px 0;
       white-space: pre-line;
+      line-height: 1.7;
     }
 
     .details {
       display: flex;
-      gap: 18px;
+      gap: 12px;
       flex-wrap: wrap;
       margin: 20px 0;
     }
@@ -79,13 +80,19 @@
     .price {
       font-size: 27px;
       font-weight: 800;
-      margin-bottom: 22px;
+      margin-bottom: 6px;
     }
 
     .price span {
       font-size: 14px;
       font-weight: 400;
       color: #667085;
+    }
+
+    .fee-info {
+      color: #667085;
+      font-size: 13px;
+      margin-bottom: 20px;
     }
 
     .booking-card label {
@@ -96,14 +103,14 @@
     }
 
     .booking-card input,
-    .booking-card textarea,
-    .booking-card select {
+    .booking-card textarea {
       width: 100%;
       padding: 13px;
       margin-top: 7px;
       border: 1px solid #ddd;
       border-radius: 7px;
       font: inherit;
+      box-sizing: border-box;
     }
 
     .booking-card textarea {
@@ -121,10 +128,29 @@
       text-align: center;
       margin-top: 15px;
       font-size: 14px;
+      line-height: 1.5;
+    }
+
+    .availability {
+      margin-top: 15px;
+      padding: 12px;
+      border-radius: 7px;
+      background: #f7f7f7;
+      font-size: 13px;
+      color: #667085;
+      line-height: 1.5;
+    }
+
+    .country-badge {
+      display: inline-block;
+      margin-top: 5px;
+      padding: 6px 10px;
+      background: #f7f7f7;
+      border-radius: 20px;
+      font-size: 13px;
     }
 
     @media (max-width: 850px) {
-
       .property-layout {
         grid-template-columns: 1fr;
       }
@@ -149,7 +175,7 @@
 <header class="navbar">
 
   <div class="logo">
-    StayHaven<span>UK</span>
+    StayHaven
   </div>
 
   <nav>
@@ -176,15 +202,20 @@
     <div class="property-layout">
 
 
-      <!-- PROPERTY INFORMATION -->
+      <!-- PROPERTY -->
 
       <section>
 
         <div class="property-photo"></div>
 
-        <div class="property-info" style="margin-top:30px;">
+        <div
+          class="property-info"
+          style="margin-top:30px;"
+        >
 
-          <p class="eyebrow">HOLIDAY LET</p>
+          <p class="eyebrow">
+            HOLIDAY LET
+          </p>
 
           <h1 id="propertyName"></h1>
 
@@ -193,6 +224,11 @@
             class="location"
           ></p>
 
+          <div
+            id="countryBadge"
+            class="country-badge"
+          ></div>
+
 
           <div
             id="propertyDetails"
@@ -200,7 +236,9 @@
           ></div>
 
 
-          <h2>About this property</h2>
+          <h2>
+            About this property
+          </h2>
 
           <p
             id="propertyDescription"
@@ -212,7 +250,7 @@
       </section>
 
 
-      <!-- BOOKING FORM -->
+      <!-- BOOKING -->
 
       <aside class="booking-card">
 
@@ -221,15 +259,30 @@
           class="price"
         ></div>
 
+        <div
+          id="feeInfo"
+          class="fee-info"
+        ></div>
+
         <p style="color:#667085;">
           Send a booking request to the property owner.
         </p>
 
 
+        <div class="availability">
+
+          Your selected dates will be checked
+          automatically before your request is submitted.
+
+        </div>
+
+
         <form id="bookingForm">
 
 
-          <label>Check-in</label>
+          <label for="checkIn">
+            Check-in
+          </label>
 
           <input
             type="date"
@@ -238,7 +291,9 @@
           >
 
 
-          <label>Check-out</label>
+          <label for="checkOut">
+            Check-out
+          </label>
 
           <input
             type="date"
@@ -247,7 +302,9 @@
           >
 
 
-          <label>Number of Guests</label>
+          <label for="guests">
+            Number of Guests
+          </label>
 
           <input
             type="number"
@@ -258,7 +315,9 @@
           >
 
 
-          <label>Your Name</label>
+          <label for="guestName">
+            Your Name
+          </label>
 
           <input
             type="text"
@@ -268,7 +327,9 @@
           >
 
 
-          <label>Email Address</label>
+          <label for="guestEmail">
+            Email Address
+          </label>
 
           <input
             type="email"
@@ -278,7 +339,9 @@
           >
 
 
-          <label>Phone</label>
+          <label for="guestPhone">
+            Phone
+          </label>
 
           <input
             type="tel"
@@ -287,7 +350,9 @@
           >
 
 
-          <label>Message</label>
+          <label for="guestMessage">
+            Message
+          </label>
 
           <textarea
             id="guestMessage"
@@ -299,6 +364,7 @@
           <button
             type="submit"
             class="primary-button"
+            id="submitButton"
           >
             Send Booking Request
           </button>
@@ -323,15 +389,55 @@
 
 <script>
 
+/* =====================================
+   GET PROPERTY ID
+===================================== */
+
 const params =
-  new URLSearchParams(window.location.search);
+  new URLSearchParams(
+    window.location.search
+  );
 
 const propertyId =
   params.get("id");
 
-
 let currentProperty = null;
 
+
+/* =====================================
+   CURRENCY SYMBOL
+===================================== */
+
+function currencySymbol(currency) {
+
+  const symbols = {
+
+    GBP: "£",
+
+    CAD: "C$",
+
+    USD: "$",
+
+    AUD: "A$",
+
+    EUR: "€",
+
+    NZD: "NZ$",
+
+    CHF: "CHF",
+
+    JPY: "¥"
+
+  };
+
+  return symbols[currency] || currency || "";
+
+}
+
+
+/* =====================================
+   LOAD PROPERTY
+===================================== */
 
 async function loadProperty() {
 
@@ -339,7 +445,9 @@ async function loadProperty() {
     document.getElementById("loading");
 
   const content =
-    document.getElementById("propertyContent");
+    document.getElementById(
+      "propertyContent"
+    );
 
 
   if (!propertyId) {
@@ -379,32 +487,139 @@ async function loadProperty() {
       property;
 
 
+    /* TITLE */
+
     document.title =
-      property.name + " | StayHaven UK";
+      property.name +
+      " | StayHaven";
 
 
-    document.getElementById("propertyName")
+    /* NAME */
+
+    document
+      .getElementById("propertyName")
       .textContent =
       property.name;
 
 
-    document.getElementById("propertyLocation")
+    /* LOCATION */
+
+    const locationParts = [];
+
+
+    if (property.city) {
+
+      locationParts.push(
+        property.city
+      );
+
+    }
+
+
+    if (property.country) {
+
+      locationParts.push(
+        property.country
+      );
+
+    }
+
+
+    document
+      .getElementById("propertyLocation")
       .textContent =
-      property.location || "United Kingdom";
+      locationParts.join(", ") ||
+      property.location ||
+      "Location unavailable";
 
 
-    document.getElementById("propertyDescription")
+    /* COUNTRY BADGE */
+
+    document
+      .getElementById("countryBadge")
       .textContent =
-      property.description || "No description provided.";
+      property.country ||
+      "International";
 
 
-    document.getElementById("propertyPrice")
+    /* DESCRIPTION */
+
+    document
+      .getElementById(
+        "propertyDescription"
+      )
+      .textContent =
+      property.description ||
+      "No description provided.";
+
+
+    /* CURRENCY */
+
+    const symbol =
+      currencySymbol(
+        property.currency
+      );
+
+
+    /* PRICE */
+
+    document
+      .getElementById(
+        "propertyPrice"
+      )
       .innerHTML =
-      `£${Number(property.price_per_night).toFixed(2)}
-      <span>/ night</span>`;
+
+      `${symbol}${Number(
+        property.price_per_night
+      ).toFixed(2)}
+
+      <span>
+        / night
+      </span>`;
 
 
-    document.getElementById("propertyDetails")
+    /* FEES */
+
+    const cleaningFee =
+      Number(
+        property.cleaning_fee || 0
+      );
+
+
+    const minimumStay =
+      Number(
+        property.minimum_stay || 1
+      );
+
+
+    let feeText =
+      `Minimum stay: ${minimumStay} ${
+        minimumStay === 1
+          ? "night"
+          : "nights"
+      }`;
+
+
+    if (cleaningFee > 0) {
+
+      feeText +=
+        ` · Cleaning fee: ${symbol}${cleaningFee.toFixed(2)}`;
+
+    }
+
+
+    document
+      .getElementById("feeInfo")
+      .textContent =
+      feeText;
+
+
+    /* DETAILS */
+
+    document
+      .getElementById(
+        "propertyDetails"
+      )
       .innerHTML = `
 
         <div class="detail">
@@ -422,12 +637,37 @@ async function loadProperty() {
       `;
 
 
-    document.getElementById("guests").max =
+    /* GUEST LIMIT */
+
+    document
+      .getElementById("guests")
+      .max =
       property.max_guests;
+
+
+    /* TODAY */
+
+    const today =
+      new Date()
+        .toISOString()
+        .split("T")[0];
+
+
+    document
+      .getElementById("checkIn")
+      .min =
+      today;
+
+
+    document
+      .getElementById("checkOut")
+      .min =
+      today;
 
 
     loading.style.display =
       "none";
+
 
     content.style.display =
       "block";
@@ -436,6 +676,7 @@ async function loadProperty() {
   } catch (error) {
 
     console.error(error);
+
 
     loading.textContent =
       "Unable to load property: " +
@@ -446,161 +687,339 @@ async function loadProperty() {
 }
 
 
+/* =====================================
+   BOOKING FORM
+===================================== */
+
 document
   .getElementById("bookingForm")
-  .addEventListener("submit", async function(event) {
+  .addEventListener(
+    "submit",
+    async function(event) {
 
-    event.preventDefault();
-
-
-    const message =
-      document.getElementById("message");
+      event.preventDefault();
 
 
-    const checkIn =
-      document.getElementById("checkIn").value;
+      const message =
+        document.getElementById(
+          "message"
+        );
 
 
-    const checkOut =
-      document.getElementById("checkOut").value;
+      const submitButton =
+        document.getElementById(
+          "submitButton"
+        );
 
 
-    const guests =
-      Number(
-        document.getElementById("guests").value
-      );
+      const checkIn =
+        document
+          .getElementById("checkIn")
+          .value;
 
 
-    const guestName =
-      document.getElementById("guestName").value.trim();
+      const checkOut =
+        document
+          .getElementById("checkOut")
+          .value;
 
 
-    const guestEmail =
-      document.getElementById("guestEmail").value.trim();
+      const guests =
+        Number(
+          document
+            .getElementById("guests")
+            .value
+        );
 
 
-    const guestPhone =
-      document.getElementById("guestPhone").value.trim();
+      const guestName =
+        document
+          .getElementById("guestName")
+          .value
+          .trim();
 
 
-    const guestMessage =
-      document.getElementById("guestMessage").value.trim();
+      const guestEmail =
+        document
+          .getElementById("guestEmail")
+          .value
+          .trim();
 
 
-    if (checkOut <= checkIn) {
-
-      message.textContent =
-        "Check-out must be after check-in.";
-
-      message.style.color =
-        "red";
-
-      return;
-
-    }
+      const guestPhone =
+        document
+          .getElementById("guestPhone")
+          .value
+          .trim();
 
 
-    if (
-      currentProperty &&
-      guests > currentProperty.max_guests
-    ) {
-
-      message.textContent =
-        `This property allows a maximum of ${currentProperty.max_guests} guests.`;
-
-      message.style.color =
-        "red";
-
-      return;
-
-    }
+      const guestMessage =
+        document
+          .getElementById("guestMessage")
+          .value
+          .trim();
 
 
-    message.textContent =
-      "Sending booking request...";
+      /* DATE CHECK */
 
-    message.style.color =
-      "#667085";
+      if (!checkIn || !checkOut) {
 
+        message.textContent =
+          "Please select both check-in and check-out dates.";
 
-    try {
+        message.style.color =
+          "red";
 
-      const {
-        error
-      } = await supabaseClient
+        return;
 
-        .from("bookings")
-
-        .insert({
-
-          property_id:
-            propertyId,
-
-          guest_name:
-            guestName,
-
-          guest_email:
-            guestEmail,
-
-          guest_phone:
-            guestPhone || null,
-
-          check_in:
-            checkIn,
-
-          check_out:
-            checkOut,
-
-          guests:
-            guests,
-
-          message:
-            guestMessage || null,
-
-          status:
-            "pending"
-
-        });
+      }
 
 
-      if (error) {
+      if (checkOut <= checkIn) {
 
-        throw error;
+        message.textContent =
+          "Check-out must be after check-in.";
+
+        message.style.color =
+          "red";
+
+        return;
+
+      }
+
+
+      /* MINIMUM STAY */
+
+      if (currentProperty) {
+
+        const start =
+          new Date(checkIn);
+
+        const end =
+          new Date(checkOut);
+
+        const nights =
+          Math.round(
+            (
+              end - start
+            ) /
+            (
+              1000 *
+              60 *
+              60 *
+              24
+            )
+          );
+
+
+        const minimum =
+          Number(
+            currentProperty.minimum_stay || 1
+          );
+
+
+        if (nights < minimum) {
+
+          message.textContent =
+            `This property requires a minimum stay of ${minimum} ${
+              minimum === 1
+                ? "night"
+                : "nights"
+            }.`;
+
+          message.style.color =
+            "red";
+
+          return;
+
+        }
+
+      }
+
+
+      /* GUEST LIMIT */
+
+      if (
+        currentProperty &&
+        guests >
+        currentProperty.max_guests
+      ) {
+
+        message.textContent =
+          `This property allows a maximum of ${currentProperty.max_guests} guests.`;
+
+        message.style.color =
+          "red";
+
+        return;
 
       }
 
 
       message.textContent =
-        "Booking request sent successfully! The property owner will review your request.";
+        "Checking availability...";
 
       message.style.color =
-        "green";
+        "#667085";
 
 
-      document
-        .getElementById("bookingForm")
-        .reset();
+      submitButton.disabled =
+        true;
 
 
-    } catch (error) {
+      try {
 
-      console.error(error);
+        /* CHECK AVAILABILITY */
 
-      message.textContent =
-        error.message ||
-        "Unable to send booking request.";
+        const {
+          data: available,
+          error:
+            availabilityError
+        } = await supabaseClient.rpc(
 
-      message.style.color =
-        "red";
+          "check_booking_availability",
+
+          {
+
+            p_property_id:
+              propertyId,
+
+            p_check_in:
+              checkIn,
+
+            p_check_out:
+              checkOut
+
+          }
+
+        );
+
+
+        if (availabilityError) {
+
+          throw availabilityError;
+
+        }
+
+
+        if (!available) {
+
+          message.textContent =
+            "Sorry, those dates are not available. Please choose different dates.";
+
+          message.style.color =
+            "red";
+
+          submitButton.disabled =
+            false;
+
+          return;
+
+        }
+
+
+        message.textContent =
+          "Dates available. Sending booking request...";
+
+
+        /* CREATE BOOKING */
+
+        const {
+          error
+        } = await supabaseClient
+
+          .from("bookings")
+
+          .insert({
+
+            property_id:
+              propertyId,
+
+            guest_name:
+              guestName,
+
+            guest_email:
+              guestEmail,
+
+            guest_phone:
+              guestPhone ||
+              null,
+
+            check_in:
+              checkIn,
+
+            check_out:
+              checkOut,
+
+            guests:
+              guests,
+
+            message:
+              guestMessage ||
+              null,
+
+            status:
+              "pending"
+
+          });
+
+
+        if (error) {
+
+          throw error;
+
+        }
+
+
+        /* SUCCESS */
+
+        message.textContent =
+          "Booking request sent successfully! The property owner will review your request.";
+
+        message.style.color =
+          "green";
+
+
+        document
+          .getElementById(
+            "bookingForm"
+          )
+          .reset();
+
+
+        submitButton.disabled =
+          false;
+
+
+      } catch (error) {
+
+        console.error(error);
+
+
+        message.textContent =
+          error.message ||
+          "Unable to send booking request.";
+
+        message.style.color =
+          "red";
+
+
+        submitButton.disabled =
+          false;
+
+      }
 
     }
+  );
 
-  });
 
+/* =====================================
+   START
+===================================== */
 
 loadProperty();
 
 </script>
 
 </body>
-          </html>
+  </html>
