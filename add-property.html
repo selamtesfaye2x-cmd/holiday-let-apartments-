@@ -12,19 +12,16 @@
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
-    body {
-      background: #f8f8f8;
-    }
 
     .form-page {
-      max-width: 900px;
-      margin: 40px auto;
+      max-width: 850px;
+      margin: 45px auto;
       padding: 20px;
     }
 
     .form-card {
       background: white;
-      border: 1px solid #eee;
+      border: 1px solid #eeeeee;
       border-radius: 14px;
       padding: 30px;
     }
@@ -39,12 +36,12 @@
     }
 
     .form-group {
-      margin-bottom: 18px;
+      margin-bottom: 20px;
     }
 
     .form-group label {
       display: block;
-      font-size: 13px;
+      font-size: 14px;
       font-weight: 700;
       margin-bottom: 7px;
     }
@@ -66,83 +63,16 @@
       resize: vertical;
     }
 
-    .form-row {
+    .two-column {
       display: grid;
-      grid-template-columns: repeat(2, 1fr);
+      grid-template-columns: 1fr 1fr;
       gap: 15px;
     }
 
-    .currency-help {
-      color: #667085;
-      font-size: 12px;
-      margin-top: 6px;
-    }
-
-    .photo-upload {
-      border: 2px dashed #d0d5dd;
-      border-radius: 10px;
-      padding: 25px;
-      text-align: center;
-      background: #fafafa;
-    }
-
-    .photo-upload input {
-      margin-top: 15px;
-      width: 100%;
-    }
-
-    .photo-help {
-      color: #667085;
-      font-size: 13px;
-      margin-top: 8px;
-    }
-
-    .preview-grid {
+    .three-column {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 12px;
-      margin-top: 20px;
-    }
-
-    .preview-card {
-      position: relative;
-      border-radius: 9px;
-      overflow: hidden;
-      background: #eee;
-      aspect-ratio: 1 / 1;
-    }
-
-    .preview-card img {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-    }
-
-    .cover-badge {
-      position: absolute;
-      left: 8px;
-      top: 8px;
-      background: rgba(0,0,0,.75);
-      color: white;
-      padding: 5px 8px;
-      border-radius: 5px;
-      font-size: 11px;
-      font-weight: 700;
-    }
-
-    .remove-photo {
-      position: absolute;
-      right: 8px;
-      top: 8px;
-      border: 0;
-      background: rgba(180, 35, 24, .9);
-      color: white;
-      width: 30px;
-      height: 30px;
-      border-radius: 50%;
-      cursor: pointer;
-      font-weight: 700;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
     }
 
     .submit-button {
@@ -153,9 +83,8 @@
       padding: 15px;
       border-radius: 7px;
       cursor: pointer;
-      font-weight: 700;
       font-size: 15px;
-      margin-top: 10px;
+      font-weight: 700;
     }
 
     .submit-button:disabled {
@@ -191,19 +120,19 @@
       font-weight: 700;
     }
 
-    @media (max-width: 650px) {
-      .form-row {
+    @media (max-width: 700px) {
+
+      .two-column,
+      .three-column {
         grid-template-columns: 1fr;
       }
 
-      .preview-grid {
-        grid-template-columns: repeat(2, 1fr);
+      .form-card {
+        padding: 22px;
       }
 
-      .form-card {
-        padding: 20px;
-      }
     }
+
   </style>
 
 </head>
@@ -222,7 +151,7 @@
 
     <a href="index.html">Home</a>
 
-    <a href="owner-dashboard.html">Dashboard</a>
+    <a href="properties.html">Holiday Lets</a>
 
   </nav>
 
@@ -231,31 +160,67 @@
 
 <main class="form-page">
 
+
   <a
     href="owner-dashboard.html"
     class="back-link"
   >
-    ← Back to Dashboard
+    ← Back to Owner Dashboard
   </a>
 
 
   <div class="form-card">
 
+
     <p class="eyebrow">
       PROPERTY LISTING
     </p>
 
+
     <h1>
-      Add Holiday Property
+      Add a Property
     </h1>
 
+
     <p class="intro">
-      Add your property details, pricing and photos so guests can discover your holiday let.
+      Create a listing and make it available to guests.
     </p>
 
 
     <form id="propertyForm">
 
+
+      <!-- PROPERTY TYPE -->
+
+      <div class="form-group">
+
+        <label for="propertyType">
+          Property Type
+        </label>
+
+        <select
+          id="propertyType"
+          required
+        >
+
+          <option value="holiday_let">
+            Holiday Let
+          </option>
+
+          <option value="short_term_rental">
+            Short-Term Rental
+          </option>
+
+          <option value="long_term_rental">
+            Long-Term Rental
+          </option>
+
+        </select>
+
+      </div>
+
+
+      <!-- PROPERTY NAME -->
 
       <div class="form-group">
 
@@ -266,12 +231,14 @@
         <input
           type="text"
           id="propertyName"
-          placeholder="e.g. Luxury Lakeside Cottage"
+          placeholder="e.g. Luxury Lakeside Villa"
           required
         >
 
       </div>
 
+
+      <!-- LOCATION -->
 
       <div class="form-group">
 
@@ -282,36 +249,22 @@
         <input
           type="text"
           id="location"
-          placeholder="e.g. Toronto, Canada"
+          placeholder="City, Country"
           required
         >
 
       </div>
 
 
-      <div class="form-group">
-
-        <label for="description">
-          Property Description
-        </label>
-
-        <textarea
-          id="description"
-          placeholder="Describe your property, amenities, surroundings and what makes it special..."
-          required
-        ></textarea>
-
-      </div>
-
-
       <!-- PRICE + CURRENCY -->
 
-      <div class="form-row">
+      <div class="two-column">
+
 
         <div class="form-group">
 
           <label for="price">
-            Price Per Night
+            Price per Night
           </label>
 
           <input
@@ -319,7 +272,7 @@
             id="price"
             min="0"
             step="0.01"
-            placeholder="250"
+            placeholder="150"
             required
           >
 
@@ -338,70 +291,52 @@
           >
 
             <option value="GBP">
-              GBP — British Pound (£)
+              GBP (£) — British Pound
             </option>
 
             <option value="CAD">
-              CAD — Canadian Dollar (CA$)
+              CAD (CA$) — Canadian Dollar
             </option>
 
             <option value="USD">
-              USD — US Dollar (US$)
+              USD ($) — US Dollar
             </option>
 
             <option value="EUR">
-              EUR — Euro (€)
+              EUR (€) — Euro
             </option>
 
             <option value="AUD">
-              AUD — Australian Dollar (A$)
+              AUD (A$) — Australian Dollar
             </option>
 
             <option value="NZD">
-              NZD — New Zealand Dollar (NZ$)
+              NZD (NZ$) — New Zealand Dollar
             </option>
 
             <option value="CHF">
-              CHF — Swiss Franc (CHF)
+              CHF (CHF) — Swiss Franc
             </option>
 
             <option value="ZAR">
-              ZAR — South African Rand (R)
+              ZAR (R) — South African Rand
             </option>
 
             <option value="KES">
-              KES — Kenyan Shilling (KSh)
+              KES (KSh) — Kenyan Shilling
             </option>
 
           </select>
 
-          <div class="currency-help">
-            Choose the currency in which guests will pay for this property.
-          </div>
-
         </div>
+
 
       </div>
 
 
-      <div class="form-row">
+      <!-- PROPERTY DETAILS -->
 
-
-        <div class="form-group">
-
-          <label for="maxGuests">
-            Maximum Guests
-          </label>
-
-          <input
-            type="number"
-            id="maxGuests"
-            min="1"
-            placeholder="6"
-            required
-          >
-
-        </div>
+      <div class="three-column">
 
 
         <div class="form-group">
@@ -414,7 +349,42 @@
             type="number"
             id="bedrooms"
             min="0"
-            placeholder="3"
+            value="1"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="bathrooms">
+            Bathrooms
+          </label>
+
+          <input
+            type="number"
+            id="bathrooms"
+            min="0"
+            step="0.5"
+            value="1"
+            required
+          >
+
+        </div>
+
+
+        <div class="form-group">
+
+          <label for="maxGuests">
+            Maximum Guests
+          </label>
+
+          <input
+            type="number"
+            id="maxGuests"
+            min="1"
+            value="2"
             required
           >
 
@@ -424,58 +394,19 @@
       </div>
 
 
+      <!-- DESCRIPTION -->
+
       <div class="form-group">
 
-        <label for="bathrooms">
-          Bathrooms
+        <label for="description">
+          Description
         </label>
 
-        <input
-          type="number"
-          id="bathrooms"
-          min="0"
-          step="0.5"
-          placeholder="2"
+        <textarea
+          id="description"
+          placeholder="Describe the property, amenities, location and anything guests should know..."
           required
-        >
-
-      </div>
-
-
-      <!-- PHOTOS -->
-
-      <div class="form-group">
-
-        <label>
-          Property Photos
-        </label>
-
-
-        <div class="photo-upload">
-
-          <strong>
-            Upload photos
-          </strong>
-
-          <div class="photo-help">
-            Select multiple photos. The first photo will be used as the cover photo.
-          </div>
-
-
-          <input
-            type="file"
-            id="photos"
-            accept="image/jpeg,image/png,image/webp"
-            multiple
-          >
-
-        </div>
-
-
-        <div
-          id="previewGrid"
-          class="preview-grid"
-        ></div>
+        ></textarea>
 
       </div>
 
@@ -500,6 +431,7 @@
 
   </div>
 
+
 </main>
 
 
@@ -511,6 +443,7 @@
 
 const SUPABASE_URL =
   "https://hbuoucmdgtwryahlnjzf.supabase.co";
+
 
 const SUPABASE_KEY =
   "sb_publishable_OqqklL691qHVkDvkZisQ5w_IhepZwCb";
@@ -524,7 +457,7 @@ const supabaseClient =
 
 
 /* ==================================================
-   ELEMENTS
+   FORM
 ================================================== */
 
 const propertyForm =
@@ -532,20 +465,12 @@ const propertyForm =
     "propertyForm"
   );
 
-const photoInput =
-  document.getElementById(
-    "photos"
-  );
-
-const previewGrid =
-  document.getElementById(
-    "previewGrid"
-  );
 
 const submitButton =
   document.getElementById(
     "submitButton"
   );
+
 
 const message =
   document.getElementById(
@@ -554,287 +479,7 @@ const message =
 
 
 /* ==================================================
-   SELECTED PHOTOS
-================================================== */
-
-let selectedFiles = [];
-
-
-/* ==================================================
-   CHECK LOGIN
-================================================== */
-
-async function checkLogin() {
-
-  const {
-    data: {
-      user
-    }
-  } =
-    await supabaseClient.auth.getUser();
-
-
-  if (!user) {
-
-    window.location.href =
-      "login.html";
-
-    return null;
-
-  }
-
-
-  return user;
-
-}
-
-
-/* ==================================================
-   PHOTO SELECTION
-================================================== */
-
-photoInput.addEventListener(
-  "change",
-  function() {
-
-    const files =
-      Array.from(
-        photoInput.files
-      );
-
-
-    selectedFiles =
-      selectedFiles.concat(
-        files
-      );
-
-
-    renderPreviews();
-
-    photoInput.value = "";
-
-  }
-);
-
-
-/* ==================================================
-   RENDER PREVIEWS
-================================================== */
-
-function renderPreviews() {
-
-  previewGrid.innerHTML = "";
-
-
-  selectedFiles.forEach(
-    (file, index) => {
-
-      const url =
-        URL.createObjectURL(
-          file
-        );
-
-
-      const card =
-        document.createElement(
-          "div"
-        );
-
-
-      card.className =
-        "preview-card";
-
-
-      card.innerHTML = `
-
-        <img
-          src="${url}"
-          alt="Property photo"
-        >
-
-        ${
-          index === 0
-
-            ? `
-
-              <span
-                class="cover-badge"
-              >
-                COVER PHOTO
-              </span>
-
-            `
-
-            : ""
-        }
-
-        <button
-          type="button"
-          class="remove-photo"
-          data-index="${index}"
-        >
-          ×
-        </button>
-
-      `;
-
-
-      previewGrid.appendChild(
-        card
-      );
-
-
-      card
-        .querySelector(
-          ".remove-photo"
-        )
-        .addEventListener(
-          "click",
-          function() {
-
-            selectedFiles.splice(
-              index,
-              1
-            );
-
-            renderPreviews();
-
-          }
-        );
-
-    }
-  );
-
-}
-
-
-/* ==================================================
-   SHOW MESSAGE
-================================================== */
-
-function showMessage(
-  text,
-  type
-) {
-
-  message.textContent =
-    text;
-
-  message.className =
-    "message " +
-    type;
-
-}
-
-
-/* ==================================================
-   UPLOAD PHOTOS
-================================================== */
-
-async function uploadPhotos(
-  propertyId,
-  userId
-) {
-
-  for (
-    let i = 0;
-    i < selectedFiles.length;
-    i++
-  ) {
-
-    const file =
-      selectedFiles[i];
-
-
-    const extension =
-      file.name
-        .split(".")
-        .pop()
-        .toLowerCase();
-
-
-    const fileName =
-      `${crypto.randomUUID()}.${extension}`;
-
-
-    const filePath =
-      `${userId}/${propertyId}/${fileName}`;
-
-
-    const {
-      error: uploadError
-    } =
-      await supabaseClient.storage
-        .from("property-photos")
-        .upload(
-          filePath,
-          file,
-          {
-            cacheControl: "3600",
-            upsert: false
-          }
-        );
-
-
-    if (uploadError) {
-
-      throw new Error(
-        "Photo upload failed: " +
-        uploadError.message
-      );
-
-    }
-
-
-    const {
-      data: publicUrlData
-    } =
-      supabaseClient.storage
-        .from("property-photos")
-        .getPublicUrl(
-          filePath
-        );
-
-
-    const imageUrl =
-      publicUrlData.publicUrl;
-
-
-    const {
-      error: imageInsertError
-    } =
-      await supabaseClient
-        .from("property_images")
-        .insert({
-
-          property_id:
-            propertyId,
-
-          image_url:
-            imageUrl,
-
-          is_cover:
-            i === 0
-
-        });
-
-
-    if (imageInsertError) {
-
-      throw new Error(
-        "Photo record failed: " +
-        imageInsertError.message
-      );
-
-    }
-
-  }
-
-}
-
-
-/* ==================================================
-   CREATE PROPERTY
+   SUBMIT
 ================================================== */
 
 propertyForm.addEventListener(
@@ -847,8 +492,9 @@ propertyForm.addEventListener(
     submitButton.disabled =
       true;
 
+
     submitButton.textContent =
-      "Creating property...";
+      "Adding property...";
 
 
     message.className =
@@ -858,15 +504,33 @@ propertyForm.addEventListener(
     try {
 
 
-      const user =
-        await checkLogin();
+      /* USER */
+
+      const {
+        data: {
+          user
+        }
+      } =
+        await supabaseClient.auth.getUser();
 
 
       if (!user) {
 
-        return;
+        throw new Error(
+          "You must be logged in to add a property."
+        );
 
       }
+
+
+      /* FORM VALUES */
+
+      const propertyType =
+        document
+          .getElementById(
+            "propertyType"
+          )
+          .value;
 
 
       const name =
@@ -882,15 +546,6 @@ propertyForm.addEventListener(
         document
           .getElementById(
             "location"
-          )
-          .value
-          .trim();
-
-
-      const description =
-        document
-          .getElementById(
-            "description"
           )
           .value
           .trim();
@@ -914,16 +569,6 @@ propertyForm.addEventListener(
           .value;
 
 
-      const maxGuests =
-        Number(
-          document
-            .getElementById(
-              "maxGuests"
-            )
-            .value
-        );
-
-
       const bedrooms =
         Number(
           document
@@ -944,28 +589,49 @@ propertyForm.addEventListener(
         );
 
 
-      if (!name) {
-
-        throw new Error(
-          "Please enter a property name."
+      const maxGuests =
+        Number(
+          document
+            .getElementById(
+              "maxGuests"
+            )
+            .value
         );
 
-      }
+
+      const description =
+        document
+          .getElementById(
+            "description"
+          )
+          .value
+          .trim();
 
 
-      if (!location) {
-
-        throw new Error(
-          "Please enter the property location."
-        );
-
-      }
-
+      /* VALIDATION */
 
       if (price < 0) {
 
         throw new Error(
           "Price cannot be negative."
+        );
+
+      }
+
+
+      if (bedrooms < 0) {
+
+        throw new Error(
+          "Bedrooms cannot be negative."
+        );
+
+      }
+
+
+      if (bathrooms < 0) {
+
+        throw new Error(
+          "Bathrooms cannot be negative."
         );
 
       }
@@ -980,18 +646,16 @@ propertyForm.addEventListener(
       }
 
 
-      /* SAVE PROPERTY */
-
-      submitButton.textContent =
-        "Saving property...";
-
+      /* INSERT */
 
       const {
         data: property,
-        error: propertyError
+        error
       } =
         await supabaseClient
+
           .from("properties")
+
           .insert({
 
             owner_id:
@@ -1003,73 +667,69 @@ propertyForm.addEventListener(
             location:
               location,
 
-            description:
-              description,
-
             price_per_night:
               price,
 
             currency:
               currency,
 
-            max_guests:
-              maxGuests,
-
             bedrooms:
               bedrooms,
 
             bathrooms:
-              bathrooms
+              bathrooms,
+
+            max_guests:
+              maxGuests,
+
+            description:
+              description,
+
+            property_type:
+              propertyType
 
           })
+
           .select()
           .single();
 
 
-      if (propertyError) {
+      if (error) {
 
-        throw new Error(
-          "Property creation failed: " +
-          propertyError.message
-        );
+        throw error;
 
       }
 
 
-      /* UPLOAD PHOTOS */
+      /* SUCCESS */
 
-      if (
-        selectedFiles.length > 0
-      ) {
+      message.textContent =
+        "Property added successfully!";
 
-        submitButton.textContent =
-          "Uploading photos...";
-
-
-        await uploadPhotos(
-          property.id,
-          user.id
-        );
-
-      }
-
-
-      showMessage(
-        "Property added successfully!",
-        "success"
-      );
+      message.className =
+        "message success";
 
 
       propertyForm.reset();
 
-      selectedFiles = [];
 
-      renderPreviews();
+      document
+        .getElementById(
+          "propertyType"
+        )
+        .value =
+        "holiday_let";
 
 
-      submitButton.textContent =
-        "Property Added ✓";
+      document
+        .getElementById(
+          "currency"
+        )
+        .value =
+        "GBP";
 
+
+      /* GO TO DASHBOARD */
 
       setTimeout(
         function() {
@@ -1084,18 +744,26 @@ propertyForm.addEventListener(
 
     }
 
+
     catch (error) {
 
       console.error(
+        "ADD PROPERTY ERROR:",
         error
       );
 
 
-      showMessage(
-        error.message,
-        "error"
-      );
+      message.textContent =
+        error.message ||
+        "Unable to add property.";
 
+      message.className =
+        "message error";
+
+    }
+
+
+    finally {
 
       submitButton.disabled =
         false;
@@ -1108,16 +776,9 @@ propertyForm.addEventListener(
   }
 );
 
-
-/* ==================================================
-   INITIAL LOGIN CHECK
-================================================== */
-
-checkLogin();
-
 </script>
 
 
 </body>
 
-        </html>
+  </html>
