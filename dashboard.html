@@ -1,20 +1,30 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <title>Owner Dashboard | StayHaven</title>
 
-  <link rel="stylesheet" href="style.css">
+  <link
+    rel="stylesheet"
+    href="style.css"
+  >
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
 
   <style>
 
     .dashboard {
       max-width: 1200px;
-      margin: 50px auto;
+      margin: 40px auto;
       padding: 20px;
     }
 
@@ -22,20 +32,21 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      gap: 20px;
       margin-bottom: 35px;
+      gap: 20px;
     }
 
     .dashboard-header h1 {
-      margin-bottom: 5px;
+      margin: 5px 0;
     }
 
-    .dashboard-header p {
+    .account-email {
       color: #667085;
+      word-break: break-word;
     }
 
     .logout-button {
-      border: 0;
+      border: none;
       background: #172033;
       color: white;
       padding: 12px 20px;
@@ -48,14 +59,14 @@
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 20px;
-      margin-bottom: 35px;
+      margin-bottom: 40px;
     }
 
     .stat-card {
-      padding: 25px;
+      background: white;
       border: 1px solid #eeeeee;
       border-radius: 12px;
-      background: white;
+      padding: 25px;
     }
 
     .stat-card span {
@@ -70,7 +81,7 @@
     }
 
     .dashboard-section {
-      margin-top: 35px;
+      margin-top: 40px;
     }
 
     .section-top {
@@ -78,10 +89,11 @@
       justify-content: space-between;
       align-items: center;
       margin-bottom: 20px;
+      gap: 15px;
     }
 
     .add-property-button {
-      border: 0;
+      border: none;
       background: #b88945;
       color: white;
       padding: 12px 18px;
@@ -91,97 +103,65 @@
     }
 
     .property-card {
+      background: white;
       border: 1px solid #eeeeee;
       border-radius: 12px;
       padding: 25px;
       margin-bottom: 15px;
-      background: white;
     }
 
     .property-card h3 {
-      margin-bottom: 7px;
+      margin-top: 0;
+      margin-bottom: 8px;
     }
 
     .property-card p {
       color: #667085;
-      margin-bottom: 8px;
-    }
-
-    .property-location {
-      font-weight: 600;
-      color: #333 !important;
     }
 
     .property-price {
-      font-size: 19px;
-      font-weight: 800;
       color: #172033 !important;
-    }
-
-    .property-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin: 15px 0;
-    }
-
-    .meta-item {
-      background: #f7f7f7;
-      padding: 7px 10px;
-      border-radius: 6px;
-      font-size: 13px;
-      color: #555;
-    }
-
-    .view-property {
-      display: inline-block;
-      margin-top: 10px;
-      padding: 10px 15px;
-      background: #172033;
-      color: white;
-      text-decoration: none;
-      border-radius: 7px;
-      font-size: 13px;
+      font-size: 18px;
       font-weight: 700;
     }
 
     .empty {
-      padding: 40px;
-      text-align: center;
+      background: white;
       border: 1px dashed #cccccc;
       border-radius: 12px;
+      padding: 35px;
+      text-align: center;
       color: #667085;
-      background: white;
     }
 
-    .booking-table-wrapper {
+    .table-wrapper {
       overflow-x: auto;
+      background: white;
       border-radius: 12px;
     }
 
     table {
       width: 100%;
       border-collapse: collapse;
-      background: white;
+      min-width: 950px;
     }
 
     th,
     td {
-      padding: 15px;
+      padding: 14px;
       text-align: left;
       border-bottom: 1px solid #eeeeee;
-      white-space: nowrap;
     }
 
     th {
-      font-size: 13px;
       color: #667085;
+      font-size: 13px;
     }
 
     td a {
       color: #172033;
-      text-decoration: none;
       font-weight: 600;
+      text-decoration: none;
     }
 
     td a:hover {
@@ -189,37 +169,38 @@
     }
 
     .status {
-      padding: 5px 9px;
+      display: inline-block;
+      padding: 5px 10px;
       border-radius: 20px;
       font-size: 12px;
       font-weight: 700;
-      background: #f2f2f2;
       text-transform: capitalize;
+      background: #f2f2f2;
     }
 
-    .status-pending {
+    .pending {
       background: #fff4d6;
       color: #8a6500;
     }
 
-    .status-confirmed {
+    .confirmed {
       background: #e7f6ec;
       color: #217a3a;
     }
 
-    .status-declined,
-    .status-cancelled {
+    .declined,
+    .cancelled {
       background: #fdecec;
       color: #b42318;
     }
 
-    .status-completed {
+    .completed {
       background: #e9e7ff;
       color: #5145a5;
     }
 
     .action-button {
-      border: 0;
+      border: none;
       padding: 8px 12px;
       border-radius: 6px;
       cursor: pointer;
@@ -237,15 +218,18 @@
       color: #b42318;
     }
 
-    .account-email {
-      color: #667085;
-      word-break: break-all;
+    .error-box {
+      background: #fdecec;
+      border: 1px solid #f3b7b2;
+      color: #8a1c13;
+      padding: 20px;
+      border-radius: 10px;
     }
 
     @media (max-width: 800px) {
 
       .dashboard {
-        margin: 25px auto;
+        margin: 20px auto;
       }
 
       .dashboard-header {
@@ -260,12 +244,6 @@
       .section-top {
         flex-direction: column;
         align-items: flex-start;
-        gap: 15px;
-      }
-
-      th,
-      td {
-        padding: 12px;
       }
 
     }
@@ -303,7 +281,7 @@
 <main class="dashboard">
 
 
-  <!-- DASHBOARD HEADER -->
+  <!-- HEADER -->
 
   <div class="dashboard-header">
 
@@ -321,7 +299,7 @@
         id="ownerEmail"
         class="account-email"
       >
-        Checking account...
+        Loading account...
       </p>
 
     </div>
@@ -338,10 +316,9 @@
 
 
 
-  <!-- STATISTICS -->
+  <!-- STATS -->
 
   <div class="stats">
-
 
     <div class="stat-card">
 
@@ -381,7 +358,6 @@
 
     </div>
 
-
   </div>
 
 
@@ -408,7 +384,7 @@
 
       <button
         class="add-property-button"
-        onclick="window.location.href='add-property.html'"
+        onclick="location.href='add-property.html'"
       >
         + Add Property
       </button>
@@ -449,34 +425,51 @@
     </div>
 
 
-    <div class="booking-table-wrapper">
+    <div class="table-wrapper">
 
 
       <table>
+
 
         <thead>
 
           <tr>
 
-            <th>Guest</th>
+            <th>
+              Guest
+            </th>
 
-            <th>Email</th>
+            <th>
+              Email
+            </th>
 
-            <th>Phone</th>
+            <th>
+              Phone
+            </th>
 
-            <th>Property</th>
+            <th>
+              Property
+            </th>
 
-            <th>Location</th>
+            <th>
+              Check-in
+            </th>
 
-            <th>Check-in</th>
+            <th>
+              Check-out
+            </th>
 
-            <th>Check-out</th>
+            <th>
+              Guests
+            </th>
 
-            <th>Guests</th>
+            <th>
+              Status
+            </th>
 
-            <th>Status</th>
-
-            <th>Action</th>
+            <th>
+              Action
+            </th>
 
           </tr>
 
@@ -487,13 +480,14 @@
 
           <tr>
 
-            <td colspan="10">
+            <td colspan="9">
               Loading bookings...
             </td>
 
           </tr>
 
         </tbody>
+
 
       </table>
 
@@ -513,12 +507,13 @@
 <script src="supabase.js"></script>
 
 
+
 <script>
 
 
-/* ==========================================
-   HTML ESCAPING
-========================================== */
+/* =========================================
+   ESCAPE HTML
+========================================= */
 
 function escapeHtml(value) {
 
@@ -538,58 +533,56 @@ function escapeHtml(value) {
 
 
 
-/* ==========================================
-   CURRENCY SYMBOL
-========================================== */
+/* =========================================
+   GET CURRENT USER
+========================================= */
 
-function currencySymbol(currency) {
+async function getCurrentUser() {
 
-  const symbols = {
+  const result =
+    await supabaseClient.auth.getUser();
 
-    GBP: "£",
+  if (result.error) {
 
-    CAD: "C$",
+    throw result.error;
 
-    USD: "$",
+  }
 
-    EUR: "€",
-
-    AUD: "A$",
-
-    NZD: "NZ$",
-
-    CHF: "CHF",
-
-    JPY: "¥"
-
-  };
-
-
-  return symbols[currency] || currency || "";
+  return result.data.user;
 
 }
 
 
 
-/* ==========================================
+/* =========================================
    LOAD DASHBOARD
-========================================== */
+========================================= */
 
 async function loadDashboard() {
 
 
-  const ownerEmail =
+  const emailElement =
     document.getElementById(
       "ownerEmail"
+    );
+
+
+  const propertiesElement =
+    document.getElementById(
+      "propertiesContainer"
+    );
+
+
+  const bookingsElement =
+    document.getElementById(
+      "bookingsContainer"
     );
 
 
   try {
 
 
-    /* --------------------------------------
-       CHECK SUPABASE CLIENT
-    -------------------------------------- */
+    /* CHECK SUPABASE */
 
     if (
       typeof supabaseClient ===
@@ -597,45 +590,19 @@ async function loadDashboard() {
     ) {
 
       throw new Error(
-        "Supabase client is not available. Check supabase.js."
+        "supabaseClient is not defined. Check supabase.js."
       );
 
     }
 
 
 
-    /* --------------------------------------
-       GET LOGGED-IN USER
-    -------------------------------------- */
-
-    const {
-
-      data,
-      error: userError
-
-    } =
-      await supabaseClient.auth.getUser();
-
-
-
-    if (userError) {
-
-      throw userError;
-
-    }
-
-
+    /* GET USER */
 
     const user =
-      data && data.user
-        ? data.user
-        : null;
+      await getCurrentUser();
 
 
-
-    /* --------------------------------------
-       IF NOT LOGGED IN
-    -------------------------------------- */
 
     if (!user) {
 
@@ -648,39 +615,32 @@ async function loadDashboard() {
 
 
 
-    /* --------------------------------------
-       DISPLAY EMAIL
-    -------------------------------------- */
+    /* SHOW EMAIL */
 
-    if (user.email) {
-
-      ownerEmail.textContent =
-        user.email;
-
-    } else {
-
-      ownerEmail.textContent =
-        "Owner account";
-
-    }
+    emailElement.textContent =
+      user.email ||
+      "Owner account";
 
 
 
-    /* ======================================
-       LOAD OWNER PROPERTIES
-    ====================================== */
+    /* =====================================
+       GET PROPERTIES
+    ===================================== */
 
     const {
 
       data: properties,
-      error: propertyError
+
+      error: propertiesError
 
     } =
       await supabaseClient
 
         .from("properties")
 
-        .select("*")
+        .select(
+          "id, owner_id, name, location, description, max_guests, bedrooms, bathrooms, price_per_night, created_at"
+        )
 
         .eq(
           "owner_id",
@@ -696,9 +656,9 @@ async function loadDashboard() {
 
 
 
-    if (propertyError) {
+    if (propertiesError) {
 
-      throw propertyError;
+      throw propertiesError;
 
     }
 
@@ -718,23 +678,16 @@ async function loadDashboard() {
 
 
 
-    const propertiesContainer =
-      document.getElementById(
-        "propertiesContainer"
-      );
-
-
-
-    /* ======================================
+    /* =====================================
        DISPLAY PROPERTIES
-    ====================================== */
+    ===================================== */
 
     if (
       propertyList.length === 0
     ) {
 
 
-      propertiesContainer.innerHTML = `
+      propertiesElement.innerHTML = `
 
         <div class="empty">
 
@@ -744,7 +697,7 @@ async function loadDashboard() {
 
           <p>
             Add your first holiday property
-            to start receiving enquiries.
+            to start receiving booking requests.
           </p>
 
         </div>
@@ -755,190 +708,62 @@ async function loadDashboard() {
     } else {
 
 
-      propertiesContainer.innerHTML =
+      propertiesElement.innerHTML =
 
         propertyList
-          .map(property => {
+          .map(property => `
 
+            <div class="property-card">
 
-            const symbol =
-              currencySymbol(
-                property.currency
-              );
+              <h3>
+                ${escapeHtml(
+                  property.name
+                )}
+              </h3>
 
+              <p>
 
+                📍
 
-            const location =
-              [
+                ${escapeHtml(
+                  property.location ||
+                  "Location not provided"
+                )}
 
-                property.city,
+              </p>
 
-                property.country
+              <p class="property-price">
 
-              ]
+                £${Number(
+                  property.price_per_night ||
+                  0
+                ).toFixed(2)}
 
-              .filter(Boolean)
+                per night
 
-              .join(", ")
+              </p>
 
-              ||
+              <p>
 
-              property.location
+                ${property.bedrooms}
 
-              ||
+                bedrooms ·
 
-              "Location not provided";
+                ${property.bathrooms}
 
+                bathrooms ·
 
+                Up to
 
-            const cleaningFee =
-              Number(
-                property.cleaning_fee || 0
-              );
+                ${property.max_guests}
 
+                guests
 
+              </p>
 
-            const minimumStay =
-              Number(
-                property.minimum_stay || 1
-              );
+            </div>
 
-
-
-            return `
-
-              <div class="property-card">
-
-
-                <h3>
-
-                  ${escapeHtml(
-                    property.name
-                  )}
-
-                </h3>
-
-
-                <p class="property-location">
-
-                  📍
-
-                  ${escapeHtml(
-                    location
-                  )}
-
-                </p>
-
-
-                <p class="property-price">
-
-                  ${escapeHtml(
-                    symbol
-                  )}
-
-                  ${Number(
-                    property.price_per_night || 0
-                  ).toFixed(2)}
-
-                  per night
-
-                </p>
-
-
-                <div class="property-meta">
-
-
-                  <span class="meta-item">
-
-                    ${property.bedrooms || 0}
-
-                    bedrooms
-
-                  </span>
-
-
-                  <span class="meta-item">
-
-                    ${property.bathrooms || 0}
-
-                    bathrooms
-
-                  </span>
-
-
-                  <span class="meta-item">
-
-                    Up to
-
-                    ${property.max_guests || 0}
-
-                    guests
-
-                  </span>
-
-
-                  <span class="meta-item">
-
-                    Min
-
-                    ${minimumStay}
-
-                    ${
-                      minimumStay === 1
-                        ? "night"
-                        : "nights"
-                    }
-
-                  </span>
-
-
-                  ${
-                    cleaningFee > 0
-
-                      ? `
-
-                        <span class="meta-item">
-
-                          Cleaning:
-
-                          ${escapeHtml(
-                            symbol
-                          )}
-
-                          ${cleaningFee.toFixed(2)}
-
-                        </span>
-
-                      `
-
-                      : ""
-
-                  }
-
-
-                </div>
-
-
-                <a
-
-                  class="view-property"
-
-                  href="property.html?id=${encodeURIComponent(
-                    property.id
-                  )}"
-
-                >
-
-                  View Property
-
-                </a>
-
-
-              </div>
-
-            `;
-
-          })
+          `)
 
           .join("");
 
@@ -946,9 +771,9 @@ async function loadDashboard() {
 
 
 
-    /* ======================================
-       PROPERTY IDS
-    ====================================== */
+    /* =====================================
+       GET PROPERTY IDS
+    ===================================== */
 
     const propertyIds =
       propertyList.map(
@@ -957,6 +782,8 @@ async function loadDashboard() {
       );
 
 
+
+    /* NO PROPERTIES = NO BOOKINGS */
 
     if (
       propertyIds.length === 0
@@ -979,23 +806,19 @@ async function loadDashboard() {
         "0";
 
 
-      document
-        .getElementById(
-          "bookingsContainer"
-        )
-        .innerHTML = `
+      bookingsElement.innerHTML = `
 
-          <tr>
+        <tr>
 
-            <td colspan="10">
+          <td colspan="9">
 
-              No booking requests yet.
+            No booking requests yet.
 
-            </td>
+          </td>
 
-          </tr>
+        </tr>
 
-        `;
+      `;
 
 
       return;
@@ -1004,21 +827,24 @@ async function loadDashboard() {
 
 
 
-    /* ======================================
-       LOAD BOOKINGS
-    ====================================== */
+    /* =====================================
+       GET BOOKINGS
+    ===================================== */
 
     const {
 
       data: bookings,
-      error: bookingError
+
+      error: bookingsError
 
     } =
       await supabaseClient
 
         .from("bookings")
 
-        .select("*")
+        .select(
+          "id, property_id, guest_name, guest_email, guest_phone, check_in, check_out, guests, message, status, created_at"
+        )
 
         .in(
           "property_id",
@@ -1034,9 +860,9 @@ async function loadDashboard() {
 
 
 
-    if (bookingError) {
+    if (bookingsError) {
 
-      throw bookingError;
+      throw bookingsError;
 
     }
 
@@ -1047,6 +873,8 @@ async function loadDashboard() {
 
 
 
+    /* BOOKING COUNT */
+
     document
       .getElementById(
         "bookingCount"
@@ -1055,6 +883,8 @@ async function loadDashboard() {
       bookingList.length;
 
 
+
+    /* PENDING COUNT */
 
     const pendingCount =
       bookingList.filter(
@@ -1074,12 +904,11 @@ async function loadDashboard() {
 
 
 
-    /* ======================================
-       PROPERTY MAP
-    ====================================== */
+    /* =====================================
+       PROPERTY NAME MAP
+    ===================================== */
 
     const propertyMap = {};
-
 
 
     propertyList.forEach(
@@ -1088,34 +917,27 @@ async function loadDashboard() {
         propertyMap[
           property.id
         ] =
-          property;
+          property.name;
 
       }
     );
 
 
 
-    /* ======================================
+    /* =====================================
        DISPLAY BOOKINGS
-    ====================================== */
-
-    const bookingsContainer =
-      document.getElementById(
-        "bookingsContainer"
-      );
-
-
+    ===================================== */
 
     if (
       bookingList.length === 0
     ) {
 
 
-      bookingsContainer.innerHTML = `
+      bookingsElement.innerHTML = `
 
         <tr>
 
-          <td colspan="10">
+          <td colspan="9">
 
             No booking requests yet.
 
@@ -1132,119 +954,102 @@ async function loadDashboard() {
 
 
 
-    bookingsContainer.innerHTML =
+    bookingsElement.innerHTML =
 
       bookingList
         .map(booking => {
 
 
-          const property =
-            propertyMap[
-              booking.property_id
-            ];
-
-
-
-          const propertyName =
-            property
-              ? property.name
-              : "Property";
-
-
-
-          const propertyLocation =
-            property
-
-              ? [
-
-                  property.city,
-
-                  property.country
-
-                ]
-
-                .filter(Boolean)
-
-                .join(", ")
-
-              : "—";
-
-
-
-          const isPending =
-            booking.status ===
-            "pending";
-
-
-
-          const statusClass =
-            "status-" +
+          const status =
             String(
-              booking.status || ""
+              booking.status ||
+              "pending"
             )
             .toLowerCase();
 
 
 
-          /* EMAIL */
-
-          let emailHtml =
-            "Not provided";
-
-
-
-          if (
+          const email =
             booking.guest_email
-          ) {
+              ? `
 
-            emailHtml = `
+                <a
+                  href="mailto:${encodeURIComponent(
+                    booking.guest_email
+                  )}"
+                >
 
-              <a
-                href="mailto:${encodeURIComponent(
-                  booking.guest_email
-                )}"
-              >
+                  ${escapeHtml(
+                    booking.guest_email
+                  )}
 
-                ${escapeHtml(
-                  booking.guest_email
-                )}
+                </a>
 
-              </a>
-
-            `;
-
-          }
+              `
+              : "Not provided";
 
 
 
-          /* PHONE */
-
-          let phoneHtml =
-            "Not provided";
-
-
-
-          if (
+          const phone =
             booking.guest_phone
-          ) {
+              ? `
 
-            phoneHtml = `
+                <a
+                  href="tel:${encodeURIComponent(
+                    booking.guest_phone
+                  )}"
+                >
 
-              <a
-                href="tel:${encodeURIComponent(
-                  booking.guest_phone
-                )}"
-              >
+                  ${escapeHtml(
+                    booking.guest_phone
+                  )}
 
-                ${escapeHtml(
-                  booking.guest_phone
-                )}
+                </a>
 
-              </a>
+              `
+              : "Not provided";
 
-            `;
 
-          }
+
+          const actions =
+            status === "pending"
+
+              ? `
+
+                <button
+
+                  class="action-button confirm-button"
+
+                  onclick="updateBookingStatus(
+                    '${booking.id}',
+                    'confirmed'
+                  )"
+
+                >
+
+                  Confirm
+
+                </button>
+
+
+                <button
+
+                  class="action-button decline-button"
+
+                  onclick="updateBookingStatus(
+                    '${booking.id}',
+                    'declined'
+                  )"
+
+                >
+
+                  Decline
+
+                </button>
+
+              `
+
+              : "—";
 
 
 
@@ -1252,8 +1057,6 @@ async function loadDashboard() {
 
             <tr>
 
-
-              <!-- GUEST -->
 
               <td>
 
@@ -1264,52 +1067,31 @@ async function loadDashboard() {
               </td>
 
 
-
-              <!-- EMAIL -->
-
               <td>
 
-                ${emailHtml}
+                ${email}
 
               </td>
 
 
-
-              <!-- PHONE -->
-
               <td>
 
-                ${phoneHtml}
+                ${phone}
 
               </td>
 
-
-
-              <!-- PROPERTY -->
 
               <td>
 
                 ${escapeHtml(
-                  propertyName
+                  propertyMap[
+                    booking.property_id
+                  ] ||
+                  "Property"
                 )}
 
               </td>
 
-
-
-              <!-- LOCATION -->
-
-              <td>
-
-                ${escapeHtml(
-                  propertyLocation
-                )}
-
-              </td>
-
-
-
-              <!-- CHECK IN -->
 
               <td>
 
@@ -1320,9 +1102,6 @@ async function loadDashboard() {
               </td>
 
 
-
-              <!-- CHECK OUT -->
-
               <td>
 
                 ${escapeHtml(
@@ -1331,9 +1110,6 @@ async function loadDashboard() {
 
               </td>
 
-
-
-              <!-- GUESTS -->
 
               <td>
 
@@ -1344,17 +1120,16 @@ async function loadDashboard() {
               </td>
 
 
-
-              <!-- STATUS -->
-
               <td>
 
                 <span
-                  class="status ${statusClass}"
+                  class="status ${escapeHtml(
+                    status
+                  )}"
                 >
 
                   ${escapeHtml(
-                    booking.status
+                    status
                   )}
 
                 </span>
@@ -1362,38 +1137,212 @@ async function loadDashboard() {
               </td>
 
 
-
-              <!-- ACTION -->
-
               <td>
 
+                ${actions}
 
-                ${
-                  isPending
-
-                    ? `
-
-                      <button
-
-                        class="action-button confirm-button"
-
-                        onclick="updateBookingStatus(
-                          '${booking.id}',
-                          'confirmed'
-                        )"
-
-                      >
-
-                        Confirm
-
-                      </button>
+              </td>
 
 
+            </tr>
 
-                      <button
+          `;
 
-                        class="action-button decline-button"
+        })
 
-                        onclick="updateBookingStatus(
-                          '${booking.id}',
-    
+        .join("");
+
+
+  }
+
+
+  catch (error) {
+
+
+    console.error(
+      "DASHBOARD ERROR:",
+      error
+    );
+
+
+    emailElement.textContent =
+      "Unable to load account";
+
+
+    propertiesElement.innerHTML = `
+
+      <div class="error-box">
+
+        <strong>
+          Dashboard error
+        </strong>
+
+        <br><br>
+
+        ${escapeHtml(
+          error.message
+        )}
+
+      </div>
+
+    `;
+
+
+    bookingsElement.innerHTML = `
+
+      <tr>
+
+        <td colspan="9">
+
+          Unable to load bookings.
+
+        </td>
+
+      </tr>
+
+    `;
+
+  }
+
+}
+
+
+
+/* =========================================
+   UPDATE BOOKING STATUS
+========================================= */
+
+async function updateBookingStatus(
+  bookingId,
+  newStatus
+) {
+
+
+  const action =
+    newStatus ===
+    "confirmed"
+
+      ? "confirm"
+
+      : "decline";
+
+
+
+  const answer =
+    window.confirm(
+
+      `Are you sure you want to ${action} this booking?`
+
+    );
+
+
+
+  if (!answer) {
+
+    return;
+
+  }
+
+
+
+  try {
+
+
+    const {
+
+      error
+
+    } =
+      await supabaseClient
+
+        .from("bookings")
+
+        .update({
+
+          status:
+            newStatus
+
+        })
+
+        .eq(
+          "id",
+          bookingId
+        );
+
+
+
+    if (error) {
+
+      throw error;
+
+    }
+
+
+
+    alert(
+      `Booking ${newStatus} successfully.`
+    );
+
+
+    await loadDashboard();
+
+
+  }
+
+
+  catch (error) {
+
+
+    console.error(error);
+
+
+    alert(
+      "Unable to update booking: " +
+      error.message
+    );
+
+  }
+
+}
+
+
+
+/* =========================================
+   LOGOUT
+========================================= */
+
+document
+  .getElementById(
+    "logoutButton"
+  )
+  .addEventListener(
+    "click",
+    async function() {
+
+
+      await supabaseClient
+        .auth
+        .signOut();
+
+
+      window.location.href =
+        "login.html";
+
+    }
+  );
+
+
+
+/* =========================================
+   START
+========================================= */
+
+loadDashboard();
+
+
+</script>
+
+
+</body>
+
+              </html>
