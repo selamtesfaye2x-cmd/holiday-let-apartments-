@@ -67,6 +67,7 @@
       align-items: center;
       justify-content: center;
       color: #667085;
+      background: #eeeeee;
     }
 
     .gallery-count {
@@ -135,6 +136,11 @@
       font-size: 12px;
     }
 
+    .booking-card {
+      position: sticky;
+      top: 20px;
+    }
+
     .price {
       font-size: 27px;
       font-weight: 800;
@@ -146,11 +152,6 @@
       font-size: 14px;
       font-weight: 400;
       color: #667085;
-    }
-
-    .booking-card {
-      position: sticky;
-      top: 20px;
     }
 
     .booking-card h2 {
@@ -169,8 +170,7 @@
     }
 
     .form-group input,
-    .form-group textarea,
-    .form-group select {
+    .form-group textarea {
       width: 100%;
       box-sizing: border-box;
       padding: 12px;
@@ -242,6 +242,11 @@
       color: #b42318;
       padding: 25px;
       border-radius: 10px;
+    }
+
+    .error-box a {
+      color: inherit;
+      font-weight: 700;
     }
 
     @media (max-width: 800px) {
@@ -336,7 +341,7 @@
 <script>
 
 /* ==================================================
-   SUPABASE
+   SUPABASE CONNECTION
 ================================================== */
 
 const SUPABASE_URL =
@@ -344,7 +349,6 @@ const SUPABASE_URL =
 
 const SUPABASE_KEY =
   "sb_publishable_OqqklL691qHVkDvkZisQ5w_IhepZwCb";
-
 
 const supabaseClient =
   window.supabase.createClient(
@@ -354,7 +358,7 @@ const supabaseClient =
 
 
 /* ==================================================
-   ELEMENTS
+   PAGE ELEMENT
 ================================================== */
 
 const pageContent =
@@ -372,7 +376,6 @@ const params =
     window.location.search
   );
 
-
 const propertyId =
   params.get("id");
 
@@ -384,15 +387,10 @@ const propertyId =
 function escapeHtml(value) {
 
   return String(value ?? "")
-
     .replaceAll("&", "&amp;")
-
     .replaceAll("<", "&lt;")
-
     .replaceAll(">", "&gt;")
-
     .replaceAll('"', "&quot;")
-
     .replaceAll("'", "&#039;");
 
 }
@@ -406,7 +404,6 @@ async function loadProperty() {
 
   try {
 
-
     if (!propertyId) {
 
       throw new Error(
@@ -416,31 +413,16 @@ async function loadProperty() {
     }
 
 
-    console.log(
-      "Loading property:",
-      propertyId
-    );
-
-
-    /* ==============================================
-       GET PROPERTY
-    ============================================== */
+    /* GET PROPERTY */
 
     const {
       data: property,
       error: propertyError
     } =
       await supabaseClient
-
         .from("properties")
-
         .select("*")
-
-        .eq(
-          "id",
-          propertyId
-        )
-
+        .eq("id", propertyId)
         .single();
 
 
@@ -463,76 +445,41 @@ async function loadProperty() {
     }
 
 
-    console.log(
-      "Property loaded:",
-      property
-    );
-
-
-    /* ==============================================
-       GET PHOTOS
-    ============================================== */
+    /* GET PHOTOS */
 
     const {
       data: images,
       error: imageError
     } =
       await supabaseClient
-
         .from("property_images")
-
         .select("*")
-
-        .eq(
-          "property_id",
-          propertyId
-        )
-
-        .order(
-          "is_cover",
-          {
-            ascending: false
-          }
-        )
-
-        .order(
-          "created_at",
-          {
-            ascending: true
-          }
-        );
+        .eq("property_id", propertyId)
+        .order("is_cover", {
+          ascending: false
+        })
+        .order("created_at", {
+          ascending: true
+        });
 
 
-    if (imageError) {
-
-      throw new Error(
-        "Photo database error: " +
-        imageError.message
-      );
-
-    }
-
+    /*
+      If the photo table does not exist yet,
+      we still allow the property to load.
+    */
 
     const photos =
-      images || [];
+      imageError
+        ? []
+        : (images || []);
 
 
-    console.log(
-      "Photos loaded:",
-      photos
-    );
-
-
-    /* ==============================================
-       GALLERY
-    ============================================== */
+    /* GALLERY */
 
     let galleryHtml = "";
 
 
-    if (
-      photos.length === 0
-    ) {
+    if (photos.length === 0) {
 
       galleryHtml = `
 
@@ -554,66 +501,54 @@ async function loadProperty() {
 
     } else {
 
-
       const visiblePhotos =
-        photos.slice(
-          0,
-          5
-        );
+        photos.slice(0, 5);
 
 
       galleryHtml = `
 
         <div class="gallery">
 
-          ${
+          ${visiblePhotos.map(
+            (photo, index) => `
 
-            visiblePhotos
+              <div
+                class="gallery-item"
+              >
 
-              .map(
-                (photo, index) => `
+                <img
+                  src="${escapeHtml(
+                    photo.image_url
+                  )}"
+                  alt="${escapeHtml(
+                    property.name
+                  )}"
+                >
 
-                  <div
-                    class="gallery-item"
-                  >
+                ${
+                  index === 0 &&
+                  photos.length > 1
 
-                    <img
-                      src="${escapeHtml(
-                        photo.image_url
-                      )}"
-                      alt="${escapeHtml(
-                        property.name
-                      )}"
-                    >
+                    ? `
 
-                    ${
-                      index === 0 &&
-                      photos.length > 1
+                      <span
+                        class="gallery-count"
+                      >
 
-                        ? `
+                        ${photos.length}
+                        photos
 
-                          <span
-                            class="gallery-count"
-                          >
+                      </span>
 
-                            ${photos.length}
-                            photos
+                    `
 
-                          </span>
+                    : ""
+                }
 
-                        `
+              </div>
 
-                        : ""
-                    }
-
-                  </div>
-
-                `
-              )
-
-              .join("")
-
-          }
+            `
+          ).join("")}
 
         </div>
 
@@ -622,9 +557,7 @@ async function loadProperty() {
     }
 
 
-    /* ==============================================
-       DISPLAY PROPERTY
-    ============================================== */
+    /* DISPLAY PROPERTY */
 
     pageContent.innerHTML = `
 
@@ -679,7 +612,12 @@ async function loadProperty() {
             <div class="feature">
 
               <strong>
-                ${property.bedrooms}
+
+                ${escapeHtml(
+                  property.bedrooms ??
+                  "—"
+                )}
+
               </strong>
 
               <span>
@@ -692,7 +630,12 @@ async function loadProperty() {
             <div class="feature">
 
               <strong>
-                ${property.bathrooms}
+
+                ${escapeHtml(
+                  property.bathrooms ??
+                  "—"
+                )}
+
               </strong>
 
               <span>
@@ -705,7 +648,12 @@ async function loadProperty() {
             <div class="feature">
 
               <strong>
-                ${property.max_guests}
+
+                ${escapeHtml(
+                  property.max_guests ??
+                  "—"
+                )}
+
               </strong>
 
               <span>
@@ -770,6 +718,7 @@ async function loadProperty() {
               <input
                 type="text"
                 id="guestName"
+                autocomplete="name"
                 required
               >
 
@@ -785,6 +734,7 @@ async function loadProperty() {
               <input
                 type="email"
                 id="guestEmail"
+                autocomplete="email"
                 required
               >
 
@@ -800,6 +750,7 @@ async function loadProperty() {
               <input
                 type="tel"
                 id="guestPhone"
+                autocomplete="tel"
                 placeholder="+1 555 123 4567"
               >
 
@@ -853,7 +804,7 @@ async function loadProperty() {
                 id="guests"
                 min="1"
                 max="${Number(
-                  property.max_guests
+                  property.max_guests || 1
                 )}"
                 value="1"
                 required
@@ -904,9 +855,7 @@ async function loadProperty() {
     `;
 
 
-    /* ==============================================
-       BOOKING FORM
-    ============================================== */
+    /* FORM */
 
     document
       .getElementById(
@@ -920,9 +869,7 @@ async function loadProperty() {
 
   }
 
-
   catch (error) {
-
 
     console.error(
       "PROPERTY PAGE ERROR:",
@@ -946,9 +893,7 @@ async function loadProperty() {
 
         </p>
 
-
         <br>
-
 
         <a href="properties.html">
 
@@ -1063,7 +1008,34 @@ async function submitBooking(event) {
         .trim();
 
 
-    /* VALIDATE DATES */
+    /* VALIDATE */
+
+    if (!guestName) {
+
+      throw new Error(
+        "Please enter your full name."
+      );
+
+    }
+
+
+    if (!guestEmail) {
+
+      throw new Error(
+        "Please enter your email address."
+      );
+
+    }
+
+
+    if (!checkIn || !checkOut) {
+
+      throw new Error(
+        "Please select your check-in and check-out dates."
+      );
+
+    }
+
 
     if (
       new Date(checkOut)
@@ -1078,208 +1050,124 @@ async function submitBooking(event) {
     }
 
 
-    /* VALIDATE GUEST COUNT */
-
-    const maxGuests =
-      Number(
-        document
-          .getElementById(
-            "guests"
-          )
-          .max
-      );
-
-
-    if (
-      guests < 1 ||
-      guests > maxGuests
-    ) {
+    if (guests < 1) {
 
       throw new Error(
-        "The number of guests exceeds the property's maximum."
+        "Please enter at least one guest."
       );
 
     }
 
 
-    /* ==============================================
-       CHECK BLOCKED DATES
-    ============================================== */
+    /* CREATE BOOKING */
 
     const {
-      data: blockedDates,
-      error: blockedError
+      error
     } =
       await supabaseClient
+        .from("bookings")
+        .insert({
 
-        .from(
-          "blocked_dates"
-        )
+          property_id:
+            propertyId,
 
-        .select(
-          "start_date, end_date"
-        )
+          guest_name:
+            guestName,
 
-        .eq(
-          "property_id",
-          propertyId
-        );
+          guest_email:
+            guestEmail,
+
+          guest_phone:
+            guestPhone ||
+            null,
+
+          check_in:
+            checkIn,
+
+          check_out:
+            checkOut,
+
+          guests:
+            guests,
+
+          message:
+            guestMessage ||
+            null,
+
+          status:
+            "pending"
+
+        });
 
 
-    if (blockedError) {
+    if (error) {
 
       throw new Error(
-        "Availability error: " +
-        blockedError.message
+        "Booking error: " +
+        error.message
       );
 
     }
 
 
-    const requestedStart =
-      new Date(
-        checkIn
-      );
+    /* SUCCESS */
+
+    message.textContent =
+      "Booking request sent successfully! The property owner will review your request.";
+
+    message.className =
+      "message success";
 
 
-    const requestedEnd =
-      new Date(
-        checkOut
-      );
+    document
+      .getElementById(
+        "bookingForm"
+      )
+      .reset();
 
 
-    const blockedOverlap =
-      (blockedDates || [])
-        .some(
-          blocked => {
-
-            const blockedStart =
-              new Date(
-                blocked.start_date
-              );
+    button.textContent =
+      "Request Sent ✓";
 
 
-            const blockedEnd =
-              new Date(
-                blocked.end_date
-              );
+  }
+
+  catch (error) {
+
+    console.error(
+      "BOOKING ERROR:",
+      error
+    );
 
 
-            return (
-
-              requestedStart <
-              blockedEnd
-
-              &&
-
-              requestedEnd >
-              blockedStart
-
-            );
-
-          }
-        );
+    message.textContent =
+      error.message;
 
 
-    if (
-      blockedOverlap
-    ) {
-
-      throw new Error(
-        "Some of those dates are unavailable."
-      );
-
-    }
+    message.className =
+      "message error";
 
 
-    /* ==============================================
-       CHECK EXISTING BOOKINGS
-    ============================================== */
-
-    const {
-      data: existingBookings,
-      error: bookingCheckError
-    } =
-      await supabaseClient
-
-        .from(
-          "bookings"
-        )
-
-        .select(
-          "check_in, check_out, status"
-        )
-
-        .eq(
-          "property_id",
-          propertyId
-        )
-
-        .in(
-          "status",
-          [
-            "pending",
-            "confirmed"
-          ]
-        );
+    button.disabled =
+      false;
 
 
-    if (
-      bookingCheckError
-    ) {
+    button.textContent =
+      "Send Booking Request";
 
-      throw new Error(
-        "Booking availability error: " +
-        bookingCheckError.message
-      );
+  }
 
-    }
+}
 
 
-    const bookingOverlap =
-      (existingBookings || [])
-        .some(
-          booking => {
+/* ==================================================
+   START PAGE
+================================================== */
 
-            const existingStart =
-              new Date(
-                booking.check_in
-              );
+loadProperty();
 
+</script>
 
-            const existingEnd =
-              new Date(
-                booking.check_out
-              );
+</body>
 
-
-            return (
-
-              requestedStart <
-              existingEnd
-
-              &&
-
-              requestedEnd >
-              existingStart
-
-            );
-
-          }
-        );
-
-
-    if (
-      bookingOverlap
-    ) {
-
-      throw new Error(
-        "Those dates already have a booking request or confirmed booking."
-      );
-
-    }
-
-
-    /* ==============================================
-       CREATE BOOKING
-    ======
+      </html>
