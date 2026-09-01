@@ -2,20 +2,12 @@
 <html lang="en">
 
 <head>
-
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Property | StayHaven</title>
 
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
+  <link rel="stylesheet" href="style.css">
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
@@ -32,11 +24,10 @@
       margin-bottom: 25px;
       font-weight: 700;
       color: #172033;
+      text-decoration: none;
     }
 
-    /* =====================================
-       PHOTO GALLERY
-    ===================================== */
+    /* GALLERY */
 
     .property-gallery {
       margin-bottom: 35px;
@@ -66,12 +57,12 @@
 
     .thumbnail {
       height: 90px;
+      border: 2px solid transparent;
       border-radius: 8px;
       overflow: hidden;
-      cursor: pointer;
-      border: 2px solid transparent;
       padding: 0;
       background: #eeeeee;
+      cursor: pointer;
     }
 
     .thumbnail.active {
@@ -89,16 +80,13 @@
       width: 100%;
       height: 100%;
       display: flex;
-      align-items: center;
       justify-content: center;
+      align-items: center;
       color: #667085;
-      background: #f5f5f5;
       font-weight: 600;
     }
 
-    /* =====================================
-       PROPERTY LAYOUT
-    ===================================== */
+    /* PROPERTY */
 
     .property-layout {
       display: grid;
@@ -155,9 +143,7 @@
       white-space: pre-line;
     }
 
-    /* =====================================
-       BOOKING CARD
-    ===================================== */
+    /* BOOKING */
 
     .booking-card {
       background: white;
@@ -252,9 +238,7 @@
       color: #b42318;
     }
 
-    /* =====================================
-       MOBILE
-    ===================================== */
+    /* MOBILE */
 
     @media (max-width: 800px) {
 
@@ -300,9 +284,7 @@
 
 </head>
 
-
 <body>
-
 
 <header class="navbar">
 
@@ -373,7 +355,6 @@ let currentProperty = null;
 function escapeHtml(value) {
 
   return String(value ?? "")
-
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -387,13 +368,9 @@ function escapeHtml(value) {
    CURRENCY
 ========================================= */
 
-function formatCurrency(
-  amount,
-  currency
-) {
+function formatCurrency(amount, currency) {
 
-  const safeCurrency =
-    currency || "GBP";
+  const safeCurrency = currency || "GBP";
 
   try {
 
@@ -404,13 +381,9 @@ function formatCurrency(
         currency: safeCurrency,
         maximumFractionDigits: 2
       }
-    ).format(
-      Number(amount) || 0
-    );
+    ).format(Number(amount) || 0);
 
-  }
-
-  catch (error) {
+  } catch (error) {
 
     return (
       safeCurrency +
@@ -431,125 +404,133 @@ function getRentalInfo(property) {
 
   const type =
     String(
-      property.property_type ||
-      "holiday_let"
+      property.property_type || "holiday_let"
     )
     .toLowerCase()
     .trim();
 
 
-  if (
-    type === "long_term_rental"
-  ) {
+  if (type === "long_term_rental") {
 
     return {
-
-      name:
-        "Long-Term Rental",
-
-      unit:
-        "month",
-
+      name: "Long-Term Rental",
+      unit: "month",
       price:
         property.price_per_month ||
         property.price_per_night ||
         0
-
     };
 
   }
 
 
-  if (
-    type === "short_term_rental"
-  ) {
+  if (type === "short_term_rental") {
 
     return {
-
-      name:
-        "Short-Term Rental",
-
-      unit:
-        "night",
-
+      name: "Short-Term Rental",
+      unit: "night",
       price:
         property.price_per_night ||
         property.price_per_day ||
         0
-
     };
 
   }
 
 
   return {
-
-    name:
-      "Holiday Let",
-
-    unit:
-      "night",
-
+    name: "Holiday Let",
+    unit: "night",
     price:
-      property.price_per_night ||
-      0
-
+      property.price_per_night || 0
   };
 
 }
 
 
 /* =========================================
-   GET PROPERTY PHOTOS
+   GET PROPERTY IMAGES
 ========================================= */
 
 function getPropertyImages(property) {
 
-  let images =
-    property.image_urls;
+  let images = property.image_urls;
 
 
-  if (
-    typeof images === "string"
-  ) {
+  /* JSON string */
+
+  if (typeof images === "string") {
 
     try {
 
-      images =
-        JSON.parse(images);
+      images = JSON.parse(images);
 
-    }
+    } catch (error) {
 
-    catch (error) {
+      /* Sometimes a single URL is stored */
 
-      images =
-        [images];
+      if (
+        images.trim().startsWith("[") &&
+        images.trim().endsWith("]")
+      ) {
+
+        images =
+          images
+            .replace("[", "")
+            .replace("]", "")
+            .split(",");
+
+      } else {
+
+        images = [images];
+
+      }
 
     }
 
   }
 
 
+  /* Object containing URLs */
+
   if (
-    !Array.isArray(images)
+    images &&
+    !Array.isArray(images) &&
+    typeof images === "object"
   ) {
+
+    images =
+      Object.values(images);
+
+  }
+
+
+  if (!Array.isArray(images)) {
 
     images = [];
 
   }
 
 
+  /* Clean URLs */
+
   images =
-    images.filter(
-      function(url) {
+    images
+      .map(function(url) {
+
+        return String(url || "")
+          .trim()
+          .replace(/^["']|["']$/g, "");
+
+      })
+      .filter(function(url) {
 
         return (
-          typeof url === "string" &&
-          url.trim() !== ""
+          url.startsWith("http://") ||
+          url.startsWith("https://")
         );
 
-      }
-    );
+      });
 
 
   return images;
@@ -558,7 +539,48 @@ function getPropertyImages(property) {
 
 
 /* =========================================
-   SHOW GALLERY
+   IMAGE ERROR HANDLING
+========================================= */
+
+function handleImageError(image) {
+
+  image.style.display = "none";
+
+  const parent =
+    image.parentElement;
+
+  if (!parent) {
+    return;
+  }
+
+  if (
+    parent.querySelector(
+      ".image-error"
+    )
+  ) {
+
+    return;
+
+  }
+
+  const errorText =
+    document.createElement("div");
+
+  errorText.className =
+    "no-photo image-error";
+
+  errorText.textContent =
+    "Photo unavailable";
+
+  parent.appendChild(
+    errorText
+  );
+
+}
+
+
+/* =========================================
+   GALLERY
 ========================================= */
 
 function renderGallery(images) {
@@ -587,46 +609,38 @@ function renderGallery(images) {
   }
 
 
-  const safeFirstImage =
-    escapeHtml(
-      images[0]
-    );
-
-
   const thumbnails =
     images
-      .map(
-        function(image, index) {
+      .map(function(image, index) {
 
-          return `
+        return `
 
-            <button
-              type="button"
-              class="thumbnail ${
+          <button
+            type="button"
+            class="thumbnail ${
+              index === 0
+                ? "active"
+                : ""
+            }"
+            data-image-index="${index}"
+          >
+
+            <img
+              src="${escapeHtml(image)}"
+              alt="Property photo ${index + 1}"
+              loading="${
                 index === 0
-                  ? "active"
-                  : ""
+                  ? "eager"
+                  : "lazy"
               }"
-              onclick="changeMainPhoto(
-                ${index}
-              )"
+              onerror="handleImageError(this)"
             >
 
-              <img
-                src="${escapeHtml(
-                  image
-                )}"
-                alt="Property photo ${
-                  index + 1
-                }"
-              >
+          </button>
 
-            </button>
+        `;
 
-          `;
-
-        }
-      )
+      })
       .join("");
 
 
@@ -638,12 +652,12 @@ function renderGallery(images) {
 
         <img
           id="mainPropertyPhoto"
-          src="${safeFirstImage}"
+          src="${escapeHtml(images[0])}"
           alt="Property photo"
+          onerror="handleImageError(this)"
         >
 
       </div>
-
 
       <div class="thumbnail-row">
 
@@ -659,17 +673,48 @@ function renderGallery(images) {
 
 
 /* =========================================
+   THUMBNAIL EVENTS
+========================================= */
+
+function setupGallery() {
+
+  const thumbnails =
+    document.querySelectorAll(
+      ".thumbnail"
+    );
+
+
+  thumbnails.forEach(
+    function(button) {
+
+      button.addEventListener(
+        "click",
+        function() {
+
+          const index =
+            Number(
+              button.dataset.imageIndex
+            );
+
+          changeMainPhoto(index);
+
+        }
+      );
+
+    }
+  );
+
+}
+
+
+/* =========================================
    CHANGE MAIN PHOTO
 ========================================= */
 
 function changeMainPhoto(index) {
 
-  if (
-    !currentProperty
-  ) {
-
+  if (!currentProperty) {
     return;
-
   }
 
 
@@ -679,12 +724,8 @@ function changeMainPhoto(index) {
     );
 
 
-  if (
-    !images[index]
-  ) {
-
+  if (!images[index]) {
     return;
-
   }
 
 
@@ -695,10 +736,12 @@ function changeMainPhoto(index) {
 
 
   if (!mainPhoto) {
-
     return;
-
   }
+
+
+  mainPhoto.style.display =
+    "block";
 
 
   mainPhoto.src =
@@ -771,30 +814,18 @@ async function loadProperty() {
 
 
     const {
-
       data: property,
-
       error
-
     } =
       await supabaseClient
-
         .from("properties")
-
         .select("*")
-
-        .eq(
-          "id",
-          propertyId
-        )
-
+        .eq("id", propertyId)
         .single();
 
 
     if (error) {
-
       throw error;
-
     }
 
 
@@ -839,115 +870,69 @@ async function loadProperty() {
         ← Back to Properties
       </a>
 
-
-      ${renderGallery(
-        images
-      )}
-
+      ${renderGallery(images)}
 
       <div class="property-layout">
 
-
         <section class="property-info">
 
-
           <span class="property-type">
-
-            ${escapeHtml(
-              rental.name
-            )}
-
+            ${escapeHtml(rental.name)}
           </span>
 
-
           <h1>
-
-            ${escapeHtml(
-              property.name
-            )}
-
+            ${escapeHtml(property.name)}
           </h1>
 
-
           <p class="location">
-
             📍
-
             ${escapeHtml(
               property.location ||
               "Location not provided"
             )}
-
           </p>
-
 
           <p class="price">
 
-            ${escapeHtml(
-              formattedPrice
-            )}
+            ${escapeHtml(formattedPrice)}
 
             per
 
-            ${escapeHtml(
-              rental.unit
-            )}
+            ${escapeHtml(rental.unit)}
 
           </p>
 
-
           <div class="details-box">
 
-
             <div class="detail">
-
               🛏️
-
               ${escapeHtml(
-                property.bedrooms ??
-                "—"
+                property.bedrooms ?? "—"
               )}
-
               Bedrooms
-
             </div>
 
-
             <div class="detail">
-
               🚿
-
               ${escapeHtml(
-                property.bathrooms ??
-                "—"
+                property.bathrooms ?? "—"
               )}
-
               Bathrooms
-
             </div>
-
 
             <div class="detail">
-
               👥 Up to
-
               ${escapeHtml(
-                property.max_guests ??
-                "—"
+                property.max_guests ?? "—"
               )}
-
               Guests
-
             </div>
-
 
           </div>
-
 
           <h2>
             About this property
           </h2>
-
 
           <p class="description">
 
@@ -958,17 +943,14 @@ async function loadProperty() {
 
           </p>
 
-
         </section>
 
 
         <aside class="booking-card">
 
-
           <h2>
             Request a Booking
           </h2>
-
 
           <p>
             Send your request directly to the property owner.
@@ -976,7 +958,6 @@ async function loadProperty() {
 
 
           <form id="bookingForm">
-
 
             <div class="form-group">
 
@@ -1091,7 +1072,6 @@ async function loadProperty() {
               Send Booking Request
             </button>
 
-
           </form>
 
 
@@ -1100,14 +1080,14 @@ async function loadProperty() {
             class="message"
           ></div>
 
-
         </aside>
-
 
       </div>
 
     `;
 
+
+    setupGallery();
 
     setupBookingForm();
 
@@ -1167,9 +1147,7 @@ function setupBookingForm() {
 
 
   if (!bookingForm) {
-
     return;
-
   }
 
 
@@ -1215,9 +1193,7 @@ function setupBookingForm() {
     "change",
     function() {
 
-      if (
-        checkIn.value
-      ) {
+      if (checkIn.value) {
 
         checkOut.min =
           checkIn.value;
@@ -1318,745 +1294,6 @@ function setupBookingForm() {
 
 
         if (
-          new Date(
-            checkOutDate
-          ) <=
-          new Date(
-            checkInDate
-          )
-        ) {
-
-          throw new Error(
-            "Check-out must be after check-in."
-          );
-
-        }
-
-
-        if (
-          !Number.isFinite(
-            guests
-          ) ||
-          guests < 1
-        ) {
-
-          throw new Error(
-            "Please enter a valid number of guests."
-          );
-
-        }
-
-
-        if (
-          currentProperty.max_guests &&
-          guests >
-          Number(
-            currentProperty.max_guests
-          )
-        ) {
-
-          throw new Error(
-            "The number of guests exceeds the property's maximum capacity."
-          );
-
-        }
-
-
-        const {
-          error
-        } =
-          await supabaseClient
-
-            .from("bookings")
-
-            .insert({
-
-              property_id:
-                currentProperty.id,
-
-              guest_name:
-                guestName,
-
-              guest_email:
-                guestEmail,
-
-              guest_phone:
-                guestPhone ||
-                null,
-
-              check_in:
-                <div class="form-group">
-
-  <label for="checkIn">
-    Check-in
-  </label>
-
-  <input
-    type="date"
-    id="checkIn"
-    required
-  >
-
-</div>
-
-
-<div class="form-group">
-
-  <label for="checkOut">
-    Check-out
-  </label>
-
-  <input
-    type="date"
-    id="checkOut"
-    required
-  >
-
-</div>
-
-
-<div class="form-group">
-
-  <label for="guests">
-    Number of Guests
-  </label>
-
-  <input
-    type="number"
-    id="guests"
-    min="1"
-    value="1"
-    required
-  >
-
-</div>
-
-
-<div class="form-group">
-
-  <label for="bookingMessage">
-    Message
-  </label>
-
-  <textarea
-    id="bookingMessage"
-    placeholder="Tell the owner about your stay..."
-  ></textarea>
-
-</div>
-
-
-<button
-  type="submit"
-  id="bookingButton"
-  class="submit-button"
->
-  Send Booking Request
-</button>
-
-
-</form>
-
-
-<div
-  id="bookingMessageBox"
-  class="message"
-></div>
-
-
-</aside>
-
-
-</div>
-
-</main>
-
-
-<footer>
-
-  <div class="footer-logo">
-    StayHaven
-  </div>
-
-  <p>
-    Discover places worth staying for.
-  </p>
-
-  <p class="copyright">
-    © 2026 StayHaven. All rights reserved.
-  </p>
-
-</footer>
-
-
-<script src="supabase.js"></script>
-
-
-<script>
-
-let currentProperty = null;
-
-
-function escapeHtml(value) {
-
-  return String(value ?? "")
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
-
-}
-
-
-function formatCurrency(amount, currency) {
-
-  const safeCurrency =
-    currency || "GBP";
-
-  try {
-
-    return new Intl.NumberFormat(
-      undefined,
-      {
-        style: "currency",
-        currency: safeCurrency,
-        maximumFractionDigits: 2
-      }
-    ).format(Number(amount) || 0);
-
-  } catch (error) {
-
-    return (
-      safeCurrency +
-      " " +
-      Number(amount || 0).toFixed(2)
-    );
-
-  }
-
-}
-
-
-function getRentalInfo(property) {
-
-  const type =
-    String(
-      property.property_type ||
-      "holiday_let"
-    )
-    .toLowerCase()
-    .trim();
-
-  if (type === "long_term_rental") {
-
-    return {
-      name: "Long-Term Rental",
-      unit: "month",
-      price:
-        property.price_per_month ||
-        property.price_per_night ||
-        0
-    };
-
-  }
-
-  if (type === "short_term_rental") {
-
-    return {
-      name: "Short-Term Rental",
-      unit: "night",
-      price:
-        property.price_per_night ||
-        property.price_per_day ||
-        0
-    };
-
-  }
-
-  return {
-    name: "Holiday Let",
-    unit: "night",
-    price:
-      property.price_per_night ||
-      0
-  };
-
-}
-
-
-async function loadProperty() {
-
-  const page =
-    document.getElementById(
-      "propertyPage"
-    );
-
-  try {
-
-    if (
-      typeof supabaseClient ===
-      "undefined"
-    ) {
-
-      throw new Error(
-        "Supabase connection is unavailable."
-      );
-
-    }
-
-    const params =
-      new URLSearchParams(
-        window.location.search
-      );
-
-    const propertyId =
-      params.get("id");
-
-    if (!propertyId) {
-
-      throw new Error(
-        "No property was selected."
-      );
-
-    }
-
-    const {
-      data: property,
-      error
-    } =
-      await supabaseClient
-        .from("properties")
-        .select("*")
-        .eq("id", propertyId)
-        .single();
-
-    if (error) {
-
-      throw error;
-
-    }
-
-    if (!property) {
-
-      throw new Error(
-        "Property not found."
-      );
-
-    }
-
-    currentProperty =
-      property;
-
-    const rental =
-      getRentalInfo(property);
-
-    const formattedPrice =
-      formatCurrency(
-        rental.price,
-        property.currency
-      );
-
-    page.innerHTML = `
-
-      <a
-        href="properties.html"
-        class="back-link"
-      >
-        ← Back to Properties
-      </a>
-
-
-      <div class="property-hero"></div>
-
-
-      <div class="property-layout">
-
-
-        <section class="property-info">
-
-          <span class="property-type">
-            ${escapeHtml(rental.name)}
-          </span>
-
-
-          <h1>
-            ${escapeHtml(property.name)}
-          </h1>
-
-
-          <p class="location">
-            📍 ${escapeHtml(property.location)}
-          </p>
-
-
-          <p class="price">
-
-            ${escapeHtml(formattedPrice)}
-
-            per ${escapeHtml(rental.unit)}
-
-          </p>
-
-
-          <div class="details-box">
-
-            <div class="detail">
-              🛏️
-              ${escapeHtml(property.bedrooms)}
-              Bedrooms
-            </div>
-
-            <div class="detail">
-              🚿
-              ${escapeHtml(property.bathrooms)}
-              Bathrooms
-            </div>
-
-            <div class="detail">
-              👥 Up to
-              ${escapeHtml(property.max_guests)}
-              Guests
-            </div>
-
-          </div>
-
-
-          <h2>
-            About this property
-          </h2>
-
-
-          <p class="description">
-            ${escapeHtml(
-              property.description ||
-              "No description provided."
-            )}
-          </p>
-
-
-        </section>
-
-
-        <aside class="booking-card">
-
-          <h2>
-            Request a Booking
-          </h2>
-
-          <p>
-            Send your request directly to the property owner.
-          </p>
-
-
-          <form id="bookingForm">
-
-
-            <div class="form-group">
-
-              <label for="guestName">
-                Full Name
-              </label>
-
-              <input
-                type="text"
-                id="guestName"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="guestEmail">
-                Email Address
-              </label>
-
-              <input
-                type="email"
-                id="guestEmail"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="guestPhone">
-                Phone Number
-              </label>
-
-              <input
-                type="tel"
-                id="guestPhone"
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="checkIn">
-                Check-in
-              </label>
-
-              <input
-                type="date"
-                id="checkIn"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="checkOut">
-                Check-out
-              </label>
-
-              <input
-                type="date"
-                id="checkOut"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="guests">
-                Number of Guests
-              </label>
-
-              <input
-                type="number"
-                id="guests"
-                min="1"
-                value="1"
-                required
-              >
-
-            </div>
-
-
-            <div class="form-group">
-
-              <label for="bookingMessage">
-                Message
-              </label>
-
-              <textarea
-                id="bookingMessage"
-                placeholder="Tell the owner about your stay..."
-              ></textarea>
-
-            </div>
-
-
-            <button
-              type="submit"
-              id="bookingButton"
-              class="submit-button"
-            >
-              Send Booking Request
-            </button>
-
-
-          </form>
-
-
-          <div
-            id="bookingMessageBox"
-            class="message"
-          ></div>
-
-
-        </aside>
-
-
-      </div>
-
-    `;
-
-    setupBookingForm();
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "PROPERTY ERROR:",
-      error
-    );
-
-    page.innerHTML = `
-
-      <div class="error-state">
-
-        <h2>
-          Unable to load property
-        </h2>
-
-        <p>
-          ${escapeHtml(error.message)}
-        </p>
-
-        <br>
-
-        <a
-          href="properties.html"
-          class="primary-button"
-        >
-          Back to Properties
-        </a>
-
-      </div>
-
-    `;
-
-  }
-
-}
-
-
-function setupBookingForm() {
-
-  const bookingForm =
-    document.getElementById(
-      "bookingForm"
-    );
-
-  if (!bookingForm) {
-    return;
-  }
-
-
-  const bookingButton =
-    document.getElementById(
-      "bookingButton"
-    );
-
-  const messageBox =
-    document.getElementById(
-      "bookingMessageBox"
-    );
-
-  const checkIn =
-    document.getElementById(
-      "checkIn"
-    );
-
-  const checkOut =
-    document.getElementById(
-      "checkOut"
-    );
-
-
-  const today =
-    new Date()
-      .toISOString()
-      .split("T")[0];
-
-
-  checkIn.min = today;
-  checkOut.min = today;
-
-
-  checkIn.addEventListener(
-    "change",
-    function() {
-
-      checkOut.min =
-        checkIn.value ||
-        today;
-
-    }
-  );
-
-
-  bookingForm.addEventListener(
-    "submit",
-    async function(event) {
-
-      event.preventDefault();
-
-
-      bookingButton.disabled =
-        true;
-
-      bookingButton.textContent =
-        "Sending...";
-
-
-      messageBox.className =
-        "message";
-
-
-      try {
-
-        const guestName =
-          document
-            .getElementById("guestName")
-            .value
-            .trim();
-
-
-        const guestEmail =
-          document
-            .getElementById("guestEmail")
-            .value
-            .trim();
-
-
-        const guestPhone =
-          document
-            .getElementById("guestPhone")
-            .value
-            .trim();
-
-
-        const checkInDate =
-          checkIn.value;
-
-
-        const checkOutDate =
-          checkOut.value;
-
-
-        const guests =
-          Number(
-            document
-              .getElementById("guests")
-              .value
-          );
-
-
-        const guestMessage =
-          document
-            .getElementById("bookingMessage")
-            .value
-            .trim();
-
-
-        if (
-          !guestName ||
-          !guestEmail ||
-          !checkInDate ||
-          !checkOutDate
-        ) {
-
-          throw new Error(
-            "Please complete all required fields."
-          );
-
-        }
-
-
-        if (
           new Date(checkOutDate) <=
           new Date(checkInDate)
         ) {
@@ -2068,7 +1305,7 @@ function setupBookingForm() {
         }
 
 
-        if (
+                if (
           !Number.isFinite(guests) ||
           guests < 1
         ) {
@@ -2094,6 +1331,10 @@ function setupBookingForm() {
 
         }
 
+
+        /* =====================================
+           SAVE BOOKING
+        ===================================== */
 
         const {
           error
@@ -2141,8 +1382,12 @@ function setupBookingForm() {
         }
 
 
+        /* =====================================
+           SUCCESS
+        ===================================== */
+
         messageBox.textContent =
-          "Booking request sent successfully! The owner will review your request.";
+          "Booking request sent successfully. The property owner will review your request.";
 
         messageBox.className =
           "message success";
@@ -2158,6 +1403,7 @@ function setupBookingForm() {
           today;
 
       }
+
 
       catch (error) {
 
@@ -2176,6 +1422,7 @@ function setupBookingForm() {
 
       }
 
+
       finally {
 
         bookingButton.disabled =
@@ -2192,10 +1439,15 @@ function setupBookingForm() {
 }
 
 
+/* =========================================
+   START PROPERTY PAGE
+========================================= */
+
 loadProperty();
 
 </script>
 
 </body>
+
 </html>
-  
+    
