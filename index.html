@@ -1,336 +1,185 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8"><meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-  <title>StayHaven | Holiday Lets & Short Stays</title>
+«»
 
-  <link rel="stylesheet" href="style.css">
+  <title>StayHaven | Find Your Perfect Stay</title>  <link
+    rel="stylesheet"
+    href="style.css"
+  ></head><body>  <!-- NAVIGATION -->  <header class="navbar"><a
+  href="index.html"
+  class="logo"
+>
+  StayHaven
+</a>
 
-  <style>
 
-    .hero {
-      min-height: 620px;
-      display: flex;
-      align-items: center;
-      padding: 70px 20px;
-      background:
-        linear-gradient(
-          rgba(15, 23, 42, 0.55),
-          rgba(15, 23, 42, 0.55)
-        ),
-        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1800&q=85")
-        center / cover no-repeat;
-      color: white;
-    }
+<nav>
 
-    .hero-content {
-      max-width: 1100px;
-      width: 100%;
-      margin: auto;
-    }
+  <a href="index.html">
+    Home
+  </a>
 
-    .hero h1 {
-      max-width: 760px;
-      font-size: clamp(42px, 6vw, 72px);
-      line-height: 1.05;
-      margin-bottom: 20px;
-    }
+  <a href="properties.html">
+    Properties
+  </a>
 
-    .hero p {
-      max-width: 650px;
-      font-size: 19px;
-      line-height: 1.6;
-      margin-bottom: 30px;
-    }
+  <a href="login.html">
+    Login
+  </a>
 
-    .hero-buttons {
-      display: flex;
-      gap: 12px;
-      flex-wrap: wrap;
-    }
+  <a
+    href="register.html"
+    class="nav-button"
+  >
+    List Your Property
+  </a>
 
-    .hero-button {
-      display: inline-block;
-      padding: 14px 22px;
-      border-radius: 8px;
-      text-decoration: none;
-      font-weight: 700;
-    }
+</nav>
 
-    .hero-primary {
-      background: #b88945;
-      color: white;
-    }
+  </header>  <!-- HERO -->  <section class="hero"><div class="hero-content">
 
-    .hero-secondary {
-      background: white;
-      color: #172033;
-    }
+  <p class="eyebrow">
+    FIND YOUR PERFECT STAY
+  </p>
 
-    .intro {
-      max-width: 1100px;
-      margin: 70px auto;
-      padding: 0 20px;
-      text-align: center;
-    }
 
-    .intro h2 {
-      font-size: 38px;
-      margin-bottom: 15px;
-    }
+  <h1>
+    Discover places you'll
+    <span>love to stay.</span>
+  </h1>
 
-    .intro p {
-      max-width: 700px;
-      margin: auto;
-      color: #667085;
-      line-height: 1.7;
-    }
 
-    .features {
-      max-width: 1100px;
-      margin: 50px auto 90px;
-      padding: 0 20px;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
+  <p class="hero-text">
+    Explore beautiful holiday homes and rental properties.
+    Find the perfect place for your next trip or list your
+    property and start receiving booking requests.
+  </p>
 
-    .feature {
-      padding: 30px;
-      border: 1px solid #eeeeee;
-      border-radius: 12px;
-      background: white;
-    }
 
-    .feature-icon {
-      font-size: 30px;
-      margin-bottom: 15px;
-    }
+  <div class="hero-buttons">
 
-    .feature h3 {
-      margin-bottom: 10px;
-    }
-
-    .feature p {
-      color: #667085;
-      line-height: 1.6;
-    }
-
-    .owner-cta {
-      background: #172033;
-      color: white;
-      padding: 70px 20px;
-      text-align: center;
-    }
-
-    .owner-cta h2 {
-      font-size: 38px;
-      margin-bottom: 15px;
-    }
-
-    .owner-cta p {
-      max-width: 650px;
-      margin: 0 auto 25px;
-      line-height: 1.7;
-      color: #d5d9e2;
-    }
-
-    .owner-button {
-      display: inline-block;
-      padding: 14px 22px;
-      background: #b88945;
-      color: white;
-      text-decoration: none;
-      border-radius: 8px;
-      font-weight: 700;
-    }
-
-    @media (max-width: 800px) {
-
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .hero {
-        min-height: 540px;
-      }
-
-    }
-
-  </style>
-</head>
-
-<body>
-
-<header class="navbar">
-
-  <div class="logo">
-    StayHaven
-  </div>
-
-  <nav>
-
-    <a href="index.html">
-      Home
+    <a
+      href="properties.html"
+      class="primary-button"
+    >
+      Explore Properties
     </a>
 
-    <a href="properties.html">
-      Holiday Lets
+
+    <a
+      href="register.html"
+      class="secondary-button"
+    >
+      List Your Property
     </a>
-
-    <a href="login.html">
-      Owner Login
-    </a>
-
-  </nav>
-
-</header>
-
-
-<!-- HERO -->
-
-<section class="hero">
-
-  <div class="hero-content">
-
-    <p class="eyebrow">
-      HOLIDAY LETS & SHORT STAYS
-    </p>
-
-    <h1>
-      Find your next place to stay.
-    </h1>
-
-    <p>
-      Discover beautiful holiday homes, apartments and short-stay properties from destinations around the world.
-    </p>
-
-    <div class="hero-buttons">
-
-      <a
-        href="properties.html"
-        class="hero-button hero-primary"
-      >
-        Explore Holiday Lets
-      </a>
-
-      <a
-        href="login.html"
-        class="hero-button hero-secondary"
-      >
-        List Your Property
-      </a>
-
-    </div>
 
   </div>
 
-</section>
+</div>
 
-
-<!-- INTRO -->
-
-<section class="intro">
+  </section>  <!-- FEATURES -->  <section class="features"><div class="section-heading">
 
   <p class="eyebrow">
     WHY STAYHAVEN
   </p>
 
   <h2>
-    Stay somewhere you'll love.
+    Everything you need to find a great stay.
   </h2>
 
-  <p>
-    StayHaven connects guests with independent property owners offering comfortable holiday accommodation for short stays, vacations and getaways.
-  </p>
-
-</section>
+</div>
 
 
-<!-- FEATURES -->
+<div class="feature-grid">
 
-<section class="features">
-
-  <div class="feature">
+  <div class="feature-card">
 
     <div class="feature-icon">
       🏡
     </div>
 
     <h3>
-      Unique Properties
+      Quality Properties
     </h3>
 
     <p>
-      Browse apartments, holiday homes, villas and other properties in destinations around the world.
+      Discover holiday homes and rental properties
+      in great locations.
     </p>
 
   </div>
 
 
-  <div class="feature">
+  <div class="feature-card">
 
     <div class="feature-icon">
       📅
     </div>
 
     <h3>
-      Simple Enquiries
+      Easy Booking Requests
     </h3>
 
     <p>
-      Choose your dates and send a booking request directly to the property owner.
+      Send booking requests directly to property
+      owners and manage your travel plans easily.
     </p>
 
   </div>
 
 
-  <div class="feature">
+  <div class="feature-card">
 
     <div class="feature-icon">
-      🌎
+      🏠
     </div>
 
     <h3>
-      Worldwide Stays
+      List Your Property
     </h3>
 
     <p>
-      StayHaven is designed for holiday properties across different countries and currencies.
+      Create your listing, showcase your property,
+      and receive booking requests from guests.
     </p>
 
   </div>
 
-</section>
+</div>
 
-
-<!-- OWNER CTA -->
-
-<section class="owner-cta">
-
-  <p class="eyebrow">
-    FOR PROPERTY OWNERS
-  </p>
+  </section>  <!-- OWNER SECTION -->  <section class="owner-section"><div class="owner-content">
 
   <h2>
-    Turn your property into a holiday destination.
+    Have a property to rent out?
   </h2>
 
   <p>
-    Create your property listing, showcase your accommodation and manage booking enquiries from one simple dashboard.
+    Join StayHaven and create your property listing
+    in just a few minutes.
   </p>
 
+
   <a
-    href="login.html"
-    class="owner-button"
+    href="register.html"
+    class="primary-button"
   >
-    List Your Property
+    Get Started
   </a>
 
-</section>
+</div>
 
+  </section>  <!-- FOOTER -->  <footer><div class="footer-logo">
+  StayHaven
+</div>
 
-</body>
-  </html>
+<p>
+  Find your next perfect stay.
+</p>
+
+<p class="copyright">
+  © 2026 StayHaven. All rights reserved.
+</p>
+
+  </footer></body></html>
