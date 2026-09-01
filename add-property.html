@@ -1,6 +1,6 @@
-<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8">
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Add Property | StayHaven</title>  <link rel="stylesheet" href="style.css">  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
-
     .form-page {
       max-width: 850px;
       margin: 45px auto;
@@ -108,8 +108,13 @@
       font-weight: 700;
     }
 
-    @media (max-width: 700px) {
+    .price-help {
+      color: #667085;
+      font-size: 12px;
+      margin-top: 6px;
+    }
 
+    @media (max-width: 700px) {
       .two-column,
       .three-column {
         grid-template-columns: 1fr;
@@ -118,31 +123,28 @@
       .form-card {
         padding: 22px;
       }
-
     }
-
   </style></head><body><header class="navbar">  <div class="logo">
     StayHaven
-  </div>  <nav><a href="index.html">Home</a>
-<a href="properties.html">Holiday Lets</a>
-
+  </div>  <nav>
+    <a href="index.html">Home</a>
+    <a href="properties.html">Properties</a>
+    <a href="dashboard.html">Dashboard</a>
   </nav></header><main class="form-page"><a
-href="owner-dashboard.html"
+href="dashboard.html"
 class="back-link"
 
 «»
 
-← Back to Owner Dashboard
+← Back to Dashboard
 
   </a>  <div class="form-card"><p class="eyebrow">
   PROPERTY LISTING
 </p>
 
-
 <h1>
   Add a Property
 </h1>
-
 
 <p class="intro">
   Create a listing and make it available to guests.
@@ -218,18 +220,14 @@ class="back-link"
   </div>
 
 
-  <!-- PRICE + CURRENCY -->
+  <!-- PRICE -->
 
   <div class="two-column">
 
-
     <div class="form-group">
 
-      <label
-        for="price"
-        id="priceLabel"
-      >
-        Price per Night
+      <label for="price">
+        Rental Price
       </label>
 
       <input
@@ -240,6 +238,13 @@ class="back-link"
         placeholder="150"
         required
       >
+
+      <div
+        id="priceHelp"
+        class="price-help"
+      >
+        Holiday lets are charged per night.
+      </div>
 
     </div>
 
@@ -295,14 +300,12 @@ class="back-link"
 
     </div>
 
-
   </div>
 
 
   <!-- PROPERTY DETAILS -->
 
   <div class="three-column">
-
 
     <div class="form-group">
 
@@ -355,7 +358,6 @@ class="back-link"
 
     </div>
 
-
   </div>
 
 
@@ -395,7 +397,6 @@ class="back-link"
 
   </div></main><script>
 
-
 /* ==================================================
    SUPABASE
 ================================================== */
@@ -403,10 +404,8 @@ class="back-link"
 const SUPABASE_URL =
   "https://hbuoucmdgtwryahlnjzf.supabase.co";
 
-
 const SUPABASE_KEY =
   "sb_publishable_OqqklL691qHVkDvkZisQ5w_IhepZwCb";
-
 
 const supabaseClient =
   window.supabase.createClient(
@@ -420,90 +419,67 @@ const supabaseClient =
 ================================================== */
 
 const propertyForm =
-  document.getElementById(
-    "propertyForm"
-  );
-
-
-const propertyTypeSelect =
-  document.getElementById(
-    "propertyType"
-  );
-
-
-const priceLabel =
-  document.getElementById(
-    "priceLabel"
-  );
-
-
-const priceInput =
-  document.getElementById(
-    "price"
-  );
-
+  document.getElementById("propertyForm");
 
 const submitButton =
-  document.getElementById(
-    "submitButton"
-  );
-
+  document.getElementById("submitButton");
 
 const message =
-  document.getElementById(
-    "message"
-  );
+  document.getElementById("message");
+
+const propertyType =
+  document.getElementById("propertyType");
+
+const priceInput =
+  document.getElementById("price");
+
+const priceHelp =
+  document.getElementById("priceHelp");
 
 
 /* ==================================================
-   UPDATE PRICE LABEL
+   PRICE LABEL
 ================================================== */
 
 function updatePriceLabel() {
 
-  const propertyType =
-    propertyTypeSelect.value;
+  const type =
+    propertyType.value;
 
+  if (type === "long_term_rental") {
 
-  if (
-    propertyType ===
-    "long_term_rental"
-  ) {
+    priceInput.placeholder = "1200";
 
-    priceLabel.textContent =
-      "Price per Month";
+    priceHelp.textContent =
+      "Long-term rentals are charged per month.";
 
+  }
 
-    priceInput.placeholder =
-      "1500";
+  else if (type === "short_term_rental") {
+
+    priceInput.placeholder = "150";
+
+    priceHelp.textContent =
+      "Short-term rentals are charged per night.";
 
   }
 
   else {
 
-    priceLabel.textContent =
-      "Price per Night";
+    priceInput.placeholder = "150";
 
-
-    priceInput.placeholder =
-      "150";
+    priceHelp.textContent =
+      "Holiday lets are charged per night.";
 
   }
 
 }
 
 
-/* RUN WHEN TYPE CHANGES */
-
-propertyTypeSelect.addEventListener(
+propertyType.addEventListener(
   "change",
   updatePriceLabel
 );
-
-
-/* INITIAL LABEL */
-
-updatePriceLabel();
 
 
 /* ==================================================
@@ -516,21 +492,15 @@ propertyForm.addEventListener(
 
     event.preventDefault();
 
-
-    submitButton.disabled =
-      true;
-
+    submitButton.disabled = true;
 
     submitButton.textContent =
       "Adding property...";
 
-
     message.className =
       "message";
 
-
     try {
-
 
       /* USER */
 
@@ -559,109 +529,86 @@ propertyForm.addEventListener(
       }
 
 
-      /* FORM VALUES */
+      /* VALUES */
 
-      const propertyType =
-        propertyTypeSelect.value;
-
+      const type =
+        propertyType.value;
 
       const name =
         document
-          .getElementById(
-            "propertyName"
-          )
+          .getElementById("propertyName")
           .value
           .trim();
-
 
       const location =
         document
-          .getElementById(
-            "location"
-          )
+          .getElementById("location")
           .value
           .trim();
-
 
       const price =
         Number(
           priceInput.value
         );
 
-
       const currency =
         document
-          .getElementById(
-            "currency"
-          )
+          .getElementById("currency")
           .value;
-
 
       const bedrooms =
         Number(
           document
-            .getElementById(
-              "bedrooms"
-            )
+            .getElementById("bedrooms")
             .value
         );
-
 
       const bathrooms =
         Number(
           document
-            .getElementById(
-              "bathrooms"
-            )
+            .getElementById("bathrooms")
             .value
         );
-
 
       const maxGuests =
         Number(
           document
-            .getElementById(
-              "maxGuests"
-            )
+            .getElementById("maxGuests")
             .value
         );
 
-
       const description =
         document
-          .getElementById(
-            "description"
-          )
+          .getElementById("description")
           .value
           .trim();
 
 
       /* VALIDATION */
 
-      if (
-        !name ||
-        !location ||
-        !description
-      ) {
+      if (!name) {
 
         throw new Error(
-          "Please complete all required fields."
+          "Please enter the property name."
         );
 
       }
 
-
-      if (
-        Number.isNaN(price) ||
-        price < 0
-      ) {
+      if (!location) {
 
         throw new Error(
-          "Please enter a valid price."
+          "Please enter the property location."
         );
 
       }
 
+      if (!Number.isFinite(price) || price < 0) {
+
+        throw new Error(
+          "Please enter a valid rental price."
+        );
+
+      }
 
       if (bedrooms < 0) {
 
@@ -671,7 +618,6 @@ propertyForm.addEventListener(
 
       }
 
-
       if (bathrooms < 0) {
 
         throw new Error(
@@ -679,7 +625,6 @@ propertyForm.addEventListener(
         );
 
       }
-
 
       if (maxGuests < 1) {
 
@@ -690,9 +635,9 @@ propertyForm.addEventListener(
       }
 
 
-      /* ==============================================
-         PROPERTY DATA
-      ============================================== */
+      /* ==================================================
+         BUILD DATABASE RECORD
+      ================================================== */
 
       const propertyData = {
 
@@ -721,30 +666,27 @@ propertyForm.addEventListener(
           description,
 
         property_type:
-          propertyType
+          type
 
       };
 
 
-      /* ==============================================
-         SAVE CORRECT PRICE
-      ============================================== */
+      /*
+        IMPORTANT:
+
+        Holiday + short-term =
+        price_per_night
+
+        Long-term =
+        price_per_month
+      */
 
       if (
-        propertyType ===
-        "long_term_rental"
+        type === "long_term_rental"
       ) {
 
         propertyData.price_per_month =
           price;
-
-
-        /*
-          Clear nightly price
-        */
-
-        propertyData.price_per_night =
-          null;
 
       }
 
@@ -753,35 +695,21 @@ propertyForm.addEventListener(
         propertyData.price_per_night =
           price;
 
-
-        /*
-          Clear monthly price
-        */
-
-        propertyData.price_per_month =
-          null;
-
       }
 
 
-      /* ==============================================
+      /* ==================================================
          INSERT
-      ============================================== */
+      ================================================== */
 
       const {
         data: property,
         error
       } =
         await supabaseClient
-
           .from("properties")
-
-          .insert(
-            propertyData
-          )
-
+          .insert(propertyData)
           .select()
-
           .single();
 
 
@@ -797,41 +725,37 @@ propertyForm.addEventListener(
       message.textContent =
         "Property added successfully!";
 
-
       message.className =
         "message success";
 
 
       propertyForm.reset();
 
-
-      propertyTypeSelect.value =
+      propertyType.value =
         "holiday_let";
 
-
       document
-        .getElementById(
-          "currency"
-        )
+        .getElementById("currency")
         .value =
         "GBP";
-
 
       updatePriceLabel();
 
 
-      /* REDIRECT */
+      /*
+        Give Supabase a moment,
+        then return to dashboard.
+      */
 
       setTimeout(
         function() {
 
           window.location.href =
-            "owner-dashboard.html";
+            "dashboard.html";
 
         },
         1200
       );
-
 
     }
 
@@ -843,11 +767,9 @@ propertyForm.addEventListener(
         error
       );
 
-
       message.textContent =
         error.message ||
         "Unable to add property.";
-
 
       message.className =
         "message error";
@@ -860,14 +782,16 @@ propertyForm.addEventListener(
       submitButton.disabled =
         false;
 
-
       submitButton.textContent =
         "Add Property";
 
     }
 
-  }
-);
+  });
 
+
+/* INITIAL */
+
+updatePriceLabel();
 
 </script></body></html>
