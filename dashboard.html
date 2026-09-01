@@ -1,26 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1.0"
-  >
-
-  <title>Owner Dashboard | StayHaven</title>
-
-  <link
-    rel="stylesheet"
-    href="style.css"
-  >
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-
-  <style>
+<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8">  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Owner Dashboard | StayHaven</title>  <link rel="stylesheet" href="style.css">  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
 
     .dashboard {
       max-width: 1200px;
@@ -123,6 +101,17 @@
       color: #172033 !important;
       font-size: 18px;
       font-weight: 700;
+    }
+
+    .rental-badge {
+      display: inline-block;
+      background: #f5efe7;
+      color: #8b6333;
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 10px;
     }
 
     .empty {
@@ -248,267 +237,168 @@
 
     }
 
-  </style>
-
-</head>
-
-
-<body>
-
-
-<header class="navbar">
-
-  <div class="logo">
+  </style></head><body><header class="navbar">  <div class="logo">
     StayHaven
-  </div>
+  </div>  <nav><a href="index.html">
+  Home
+</a>
 
-  <nav>
+<a href="properties.html">
+  Holiday Lets
+</a>
 
-    <a href="index.html">
-      Home
-    </a>
+  </nav></header><main class="dashboard">  <div class="dashboard-header"><div>
 
-    <a href="properties.html">
-      Holiday Lets
-    </a>
+  <p class="eyebrow">
+    OWNER DASHBOARD
+  </p>
 
-  </nav>
+  <h1>
+    Welcome back
+  </h1>
 
-</header>
+  <p
+    id="ownerEmail"
+    class="account-email"
+  >
+    Loading account...
+  </p>
 
-
-
-<main class="dashboard">
-
-
-  <!-- HEADER -->
-
-  <div class="dashboard-header">
-
-    <div>
-
-      <p class="eyebrow">
-        OWNER DASHBOARD
-      </p>
-
-      <h1>
-        Welcome back
-      </h1>
-
-      <p
-        id="ownerEmail"
-        class="account-email"
-      >
-        Loading account...
-      </p>
-
-    </div>
+</div>
 
 
-    <button
-      id="logoutButton"
-      class="logout-button"
-    >
-      Logout
-    </button>
+<button
+  id="logoutButton"
+  class="logout-button"
+>
+  Logout
+</button>
 
-  </div>
+  </div>  <div class="stats"><div class="stat-card">
 
+  <span>
+    Your Properties
+  </span>
 
+  <strong id="propertyCount">
+    0
+  </strong>
 
-  <!-- STATS -->
-
-  <div class="stats">
-
-    <div class="stat-card">
-
-      <span>
-        Your Properties
-      </span>
-
-      <strong id="propertyCount">
-        0
-      </strong>
-
-    </div>
+</div>
 
 
-    <div class="stat-card">
+<div class="stat-card">
 
-      <span>
-        Total Bookings
-      </span>
+  <span>
+    Total Bookings
+  </span>
 
-      <strong id="bookingCount">
-        0
-      </strong>
+  <strong id="bookingCount">
+    0
+  </strong>
 
-    </div>
+</div>
 
 
-    <div class="stat-card">
+<div class="stat-card">
 
-      <span>
-        Pending Requests
-      </span>
+  <span>
+    Pending Requests
+  </span>
 
-      <strong id="pendingCount">
-        0
-      </strong>
+  <strong id="pendingCount">
+    0
+  </strong>
 
-    </div>
+</div>
+
+  </div>  <section class="dashboard-section"><div class="section-top">
+
+  <div>
+
+    <p class="eyebrow">
+      YOUR LISTINGS
+    </p>
+
+    <h2>
+      Your Properties
+    </h2>
 
   </div>
 
 
+  <button
+    type="button"
+    class="add-property-button"
+    onclick="window.location.href='add-property.html'"
+  >
+    + Add Property
+  </button>
 
-  <!-- PROPERTIES -->
+</div>
 
-  <section class="dashboard-section">
 
+<div id="propertiesContainer">
+  Loading properties...
+</div>
 
-    <div class="section-top">
+  </section>  <section class="dashboard-section"><div class="section-top">
 
-      <div>
+  <div>
 
-        <p class="eyebrow">
-          YOUR LISTINGS
-        </p>
+    <p class="eyebrow">
+      BOOKING MANAGEMENT
+    </p>
 
-        <h2>
-          Holiday Properties
-        </h2>
+    <h2>
+      Booking Requests
+    </h2>
 
-      </div>
+  </div>
 
+</div>
 
-      <button
-        class="add-property-button"
-        onclick="location.href='add-property.html'"
-      >
-        + Add Property
-      </button>
 
-    </div>
+<div class="table-wrapper">
 
+  <table>
 
-    <div id="propertiesContainer">
+    <thead>
 
-      Loading properties...
+      <tr>
 
-    </div>
+        <th>Guest</th>
+        <th>Email</th>
+        <th>Phone</th>
+        <th>Property</th>
+        <th>Start</th>
+        <th>End</th>
+        <th>Guests</th>
+        <th>Status</th>
+        <th>Action</th>
 
+      </tr>
 
-  </section>
+    </thead>
 
 
+    <tbody id="bookingsContainer">
 
-  <!-- BOOKINGS -->
+      <tr>
 
-  <section class="dashboard-section">
+        <td colspan="9">
+          Loading bookings...
+        </td>
 
+      </tr>
 
-    <div class="section-top">
+    </tbody>
 
-      <div>
+  </table>
 
-        <p class="eyebrow">
-          BOOKING MANAGEMENT
-        </p>
+</div>
 
-        <h2>
-          Booking Requests
-        </h2>
-
-      </div>
-
-    </div>
-
-
-    <div class="table-wrapper">
-
-
-      <table>
-
-
-        <thead>
-
-          <tr>
-
-            <th>
-              Guest
-            </th>
-
-            <th>
-              Email
-            </th>
-
-            <th>
-              Phone
-            </th>
-
-            <th>
-              Property
-            </th>
-
-            <th>
-              Check-in
-            </th>
-
-            <th>
-              Check-out
-            </th>
-
-            <th>
-              Guests
-            </th>
-
-            <th>
-              Status
-            </th>
-
-            <th>
-              Action
-            </th>
-
-          </tr>
-
-        </thead>
-
-
-        <tbody id="bookingsContainer">
-
-          <tr>
-
-            <td colspan="9">
-              Loading bookings...
-            </td>
-
-          </tr>
-
-        </tbody>
-
-
-      </table>
-
-
-    </div>
-
-
-  </section>
-
-
-</main>
-
-
-
-<!-- SUPABASE -->
-
-<script src="supabase.js"></script>
-
-
-
-<script>
+  </section></main><script src="supabase.js"></script><script>
 
 
 /* =========================================
@@ -520,21 +410,159 @@ function escapeHtml(value) {
   return String(value ?? "")
 
     .replaceAll("&", "&amp;")
-
     .replaceAll("<", "&lt;")
-
     .replaceAll(">", "&gt;")
-
     .replaceAll('"', "&quot;")
-
     .replaceAll("'", "&#039;");
 
 }
 
 
+/* =========================================
+   RENTAL TYPE
+========================================= */
+
+function getRentalType(property) {
+
+  const type = String(
+    property.property_type ||
+    property.rental_type ||
+    property.type ||
+    property.category ||
+    "holiday_let"
+  )
+  .toLowerCase()
+  .trim();
+
+
+  if (
+    type.includes("long") ||
+    type.includes("monthly") ||
+    type.includes("residential")
+  ) {
+
+    return {
+      name: "Long-Term Rental",
+      unit: "month",
+      priceField: "price_per_month"
+    };
+
+  }
+
+
+  if (
+    type.includes("short") ||
+    type.includes("vehicle") ||
+    type.includes("car") ||
+    type.includes("auto")
+  ) {
+
+    return {
+      name: type.includes("vehicle") ||
+        type.includes("car") ||
+        type.includes("auto")
+          ? "Vehicle Rental"
+          : "Short-Term Rental",
+      unit: "day",
+      priceField: "price_per_day"
+    };
+
+  }
+
+
+  return {
+    name: "Holiday Let",
+    unit: "night",
+    priceField: "price_per_night"
+  };
+
+}
+
 
 /* =========================================
-   GET CURRENT USER
+   PRICE
+========================================= */
+
+function getPropertyPrice(property) {
+
+  const rentalType =
+    getRentalType(property);
+
+  let price =
+    property[rentalType.priceField];
+
+
+  /*
+    Fallbacks for older properties.
+    This prevents old listings from becoming
+    completely blank if only price_per_night
+    exists.
+  */
+
+  if (
+    price === undefined ||
+    price === null ||
+    price === ""
+  ) {
+
+    if (
+      rentalType.priceField !==
+      "price_per_night"
+    ) {
+
+      price =
+        property.price_per_night;
+
+    }
+
+  }
+
+
+  return Number(price) || 0;
+
+}
+
+
+/* =========================================
+   CURRENCY
+========================================= */
+
+function formatCurrency(amount, currency) {
+
+  const safeCurrency =
+    currency || "GBP";
+
+
+  try {
+
+    return new Intl.NumberFormat(
+      undefined,
+      {
+        style: "currency",
+        currency: safeCurrency,
+        maximumFractionDigits: 2
+      }
+    ).format(
+      Number(amount) || 0
+    );
+
+  }
+
+  catch (error) {
+
+    return (
+      safeCurrency +
+      " " +
+      Number(amount || 0).toFixed(2)
+    );
+
+  }
+
+}
+
+
+/* =========================================
+   CURRENT USER
 ========================================= */
 
 async function getCurrentUser() {
@@ -542,16 +570,17 @@ async function getCurrentUser() {
   const result =
     await supabaseClient.auth.getUser();
 
+
   if (result.error) {
 
     throw result.error;
 
   }
 
+
   return result.data.user;
 
 }
-
 
 
 /* =========================================
@@ -582,8 +611,6 @@ async function loadDashboard() {
   try {
 
 
-    /* CHECK SUPABASE */
-
     if (
       typeof supabaseClient ===
       "undefined"
@@ -596,12 +623,8 @@ async function loadDashboard() {
     }
 
 
-
-    /* GET USER */
-
     const user =
       await getCurrentUser();
-
 
 
     if (!user) {
@@ -614,17 +637,13 @@ async function loadDashboard() {
     }
 
 
-
-    /* SHOW EMAIL */
-
     emailElement.textContent =
       user.email ||
       "Owner account";
 
 
-
     /* =====================================
-       GET PROPERTIES
+       PROPERTIES
     ===================================== */
 
     const {
@@ -638,9 +657,7 @@ async function loadDashboard() {
 
         .from("properties")
 
-        .select(
-          "id, owner_id, name, location, description, max_guests, bedrooms, bathrooms, price_per_night, created_at"
-        )
+        .select("*")
 
         .eq(
           "owner_id",
@@ -655,7 +672,6 @@ async function loadDashboard() {
         );
 
 
-
     if (propertiesError) {
 
       throw propertiesError;
@@ -663,10 +679,8 @@ async function loadDashboard() {
     }
 
 
-
     const propertyList =
       properties || [];
-
 
 
     document
@@ -677,7 +691,6 @@ async function loadDashboard() {
       propertyList.length;
 
 
-
     /* =====================================
        DISPLAY PROPERTIES
     ===================================== */
@@ -685,7 +698,6 @@ async function loadDashboard() {
     if (
       propertyList.length === 0
     ) {
-
 
       propertiesElement.innerHTML = `
 
@@ -696,83 +708,124 @@ async function loadDashboard() {
           </h3>
 
           <p>
-            Add your first holiday property
-            to start receiving booking requests.
+            Add your first property to start
+            receiving booking requests.
           </p>
 
         </div>
 
       `;
 
+    }
 
-    } else {
-
+    else {
 
       propertiesElement.innerHTML =
 
         propertyList
-          .map(property => `
+          .map(
+            property => {
 
-            <div class="property-card">
+              const rentalType =
+                getRentalType(property);
 
-              <h3>
-                ${escapeHtml(
-                  property.name
-                )}
-              </h3>
 
-              <p>
+              const price =
+                getPropertyPrice(property);
 
-                📍
 
-                ${escapeHtml(
-                  property.location ||
-                  "Location not provided"
-                )}
+              const currency =
+                property.currency ||
+                "GBP";
 
-              </p>
 
-              <p class="property-price">
+              const formattedPrice =
+                formatCurrency(
+                  price,
+                  currency
+                );
 
-                £${Number(
-                  property.price_per_night ||
-                  0
-                ).toFixed(2)}
 
-                per night
+              return `
 
-              </p>
+                <div class="property-card">
 
-              <p>
+                  <span class="rental-badge">
 
-                ${property.bedrooms}
+                    ${escapeHtml(
+                      rentalType.name
+                    )}
 
-                bedrooms ·
+                  </span>
 
-                ${property.bathrooms}
+                  <h3>
 
-                bathrooms ·
+                    ${escapeHtml(
+                      property.name
+                    )}
 
-                Up to
+                  </h3>
 
-                ${property.max_guests}
+                  <p>
 
-                guests
+                    📍
 
-              </p>
+                    ${escapeHtml(
+                      property.location ||
+                      "Location not provided"
+                    )}
 
-            </div>
+                  </p>
 
-          `)
+                  <p class="property-price">
 
+                    ${escapeHtml(
+                      formattedPrice
+                    )}
+
+                    per ${escapeHtml(
+                      rentalType.unit
+                    )}
+
+                  </p>
+
+                  <p>
+
+                    ${escapeHtml(
+                      property.bedrooms ?? "—"
+                    )}
+
+                    bedrooms ·
+
+                    ${escapeHtml(
+                      property.bathrooms ?? "—"
+                    )}
+
+                    bathrooms ·
+
+                    Up to
+
+                    ${escapeHtml(
+                      property.max_guests ?? "—"
+                    )}
+
+                    guests
+
+                  </p>
+
+                </div>
+
+              `;
+
+            }
+          )
           .join("");
 
     }
 
 
-
     /* =====================================
-       GET PROPERTY IDS
+       PROPERTY IDS
     ===================================== */
 
     const propertyIds =
@@ -782,13 +835,9 @@ async function loadDashboard() {
       );
 
 
-
-    /* NO PROPERTIES = NO BOOKINGS */
-
     if (
       propertyIds.length === 0
     ) {
-
 
       document
         .getElementById(
@@ -826,9 +875,8 @@ async function loadDashboard() {
     }
 
 
-
     /* =====================================
-       GET BOOKINGS
+       BOOKINGS
     ===================================== */
 
     const {
@@ -859,7 +907,6 @@ async function loadDashboard() {
         );
 
 
-
     if (bookingsError) {
 
       throw bookingsError;
@@ -867,13 +914,9 @@ async function loadDashboard() {
     }
 
 
-
     const bookingList =
       bookings || [];
 
-
-
-    /* BOOKING COUNT */
 
     document
       .getElementById(
@@ -883,16 +926,14 @@ async function loadDashboard() {
       bookingList.length;
 
 
-
-    /* PENDING COUNT */
-
     const pendingCount =
       bookingList.filter(
         booking =>
-          booking.status ===
+          String(
+            booking.status
+          ).toLowerCase() ===
           "pending"
       ).length;
-
 
 
     document
@@ -902,11 +943,6 @@ async function loadDashboard() {
       .textContent =
       pendingCount;
 
-
-
-    /* =====================================
-       PROPERTY NAME MAP
-    ===================================== */
 
     const propertyMap = {};
 
@@ -923,15 +959,9 @@ async function loadDashboard() {
     );
 
 
-
-    /* =====================================
-       DISPLAY BOOKINGS
-    ===================================== */
-
     if (
       bookingList.length === 0
     ) {
-
 
       bookingsElement.innerHTML = `
 
@@ -953,203 +983,196 @@ async function loadDashboard() {
     }
 
 
-
     bookingsElement.innerHTML =
 
       bookingList
-        .map(booking => {
+        .map(
+          booking => {
+
+            const status =
+              String(
+                booking.status ||
+                "pending"
+              )
+              .toLowerCase();
 
 
-          const status =
-            String(
-              booking.status ||
-              "pending"
-            )
-            .toLowerCase();
+            const email =
+              booking.guest_email
+                ? `
+
+                  <a
+                    href="mailto:${encodeURIComponent(
+                      booking.guest_email
+                    )}"
+                  >
+
+                    ${escapeHtml(
+                      booking.guest_email
+                    )}
+
+                  </a>
+
+                `
+                : "Not provided";
 
 
+            const phone =
+              booking.guest_phone
+                ? `
 
-          const email =
-            booking.guest_email
-              ? `
+                  <a
+                    href="tel:${encodeURIComponent(
+                      booking.guest_phone
+                    )}"
+                  >
 
-                <a
-                  href="mailto:${encodeURIComponent(
-                    booking.guest_email
-                  )}"
-                >
+                    ${escapeHtml(
+                      booking.guest_phone
+                    )}
+
+                  </a>
+
+                `
+                : "Not provided";
+
+
+            const actions =
+              status === "pending"
+
+                ? `
+
+                  <button
+
+                    class="action-button confirm-button"
+
+                    onclick="updateBookingStatus(
+                      '${booking.id}',
+                      'confirmed'
+                    )"
+
+                  >
+
+                    Confirm
+
+                  </button>
+
+
+                  <button
+
+                    class="action-button decline-button"
+
+                    onclick="updateBookingStatus(
+                      '${booking.id}',
+                      'declined'
+                    )"
+
+                  >
+
+                    Decline
+
+                  </button>
+
+                `
+
+                : "—";
+
+
+            return `
+
+              <tr>
+
+                <td>
 
                   ${escapeHtml(
-                    booking.guest_email
+                    booking.guest_name
                   )}
 
-                </a>
-
-              `
-              : "Not provided";
+                </td>
 
 
+                <td>
 
-          const phone =
-            booking.guest_phone
-              ? `
+                  ${email}
 
-                <a
-                  href="tel:${encodeURIComponent(
-                    booking.guest_phone
-                  )}"
-                >
+                </td>
+
+
+                <td>
+
+                  ${phone}
+
+                </td>
+
+
+                <td>
 
                   ${escapeHtml(
-                    booking.guest_phone
+                    propertyMap[
+                      booking.property_id
+                    ] ||
+                    "Property"
                   )}
 
-                </a>
-
-              `
-              : "Not provided";
+                </td>
 
 
-
-          const actions =
-            status === "pending"
-
-              ? `
-
-                <button
-
-                  class="action-button confirm-button"
-
-                  onclick="updateBookingStatus(
-                    '${booking.id}',
-                    'confirmed'
-                  )"
-
-                >
-
-                  Confirm
-
-                </button>
-
-
-                <button
-
-                  class="action-button decline-button"
-
-                  onclick="updateBookingStatus(
-                    '${booking.id}',
-                    'declined'
-                  )"
-
-                >
-
-                  Decline
-
-                </button>
-
-              `
-
-              : "—";
-
-
-
-          return `
-
-            <tr>
-
-
-              <td>
-
-                ${escapeHtml(
-                  booking.guest_name
-                )}
-
-              </td>
-
-
-              <td>
-
-                ${email}
-
-              </td>
-
-
-              <td>
-
-                ${phone}
-
-              </td>
-
-
-              <td>
-
-                ${escapeHtml(
-                  propertyMap[
-                    booking.property_id
-                  ] ||
-                  "Property"
-                )}
-
-              </td>
-
-
-              <td>
-
-                ${escapeHtml(
-                  booking.check_in
-                )}
-
-              </td>
-
-
-              <td>
-
-                ${escapeHtml(
-                  booking.check_out
-                )}
-
-              </td>
-
-
-              <td>
-
-                ${escapeHtml(
-                  booking.guests
-                )}
-
-              </td>
-
-
-              <td>
-
-                <span
-                  class="status ${escapeHtml(
-                    status
-                  )}"
-                >
+                <td>
 
                   ${escapeHtml(
-                    status
+                    booking.check_in
                   )}
 
-                </span>
-
-              </td>
+                </td>
 
 
-              <td>
+                <td>
 
-                ${actions}
+                  ${escapeHtml(
+                    booking.check_out
+                  )}
 
-              </td>
+                </td>
 
 
-            </tr>
+                <td>
 
-          `;
+                  ${escapeHtml(
+                    booking.guests
+                  )}
 
-        })
+                </td>
 
+
+                <td>
+
+                  <span
+                    class="status ${escapeHtml(
+                      status
+                    )}"
+                  >
+
+                    ${escapeHtml(
+                      status
+                    )}
+
+                  </span>
+
+                </td>
+
+
+                <td>
+
+                  ${actions}
+
+                </td>
+
+              </tr>
+
+            `;
+
+          }
+        )
         .join("");
 
 
@@ -1207,9 +1230,8 @@ async function loadDashboard() {
 }
 
 
-
 /* =========================================
-   UPDATE BOOKING STATUS
+   UPDATE BOOKING
 ========================================= */
 
 async function updateBookingStatus(
@@ -1219,56 +1241,39 @@ async function updateBookingStatus(
 
 
   const action =
-    newStatus ===
-    "confirmed"
-
+    newStatus === "confirmed"
       ? "confirm"
-
       : "decline";
 
 
-
-  const answer =
-    window.confirm(
-
+  if (
+    !window.confirm(
       `Are you sure you want to ${action} this booking?`
-
-    );
-
-
-
-  if (!answer) {
+    )
+  ) {
 
     return;
 
   }
 
 
-
   try {
 
-
     const {
-
       error
-
     } =
       await supabaseClient
 
         .from("bookings")
 
         .update({
-
-          status:
-            newStatus
-
+          status: newStatus
         })
 
         .eq(
           "id",
           bookingId
         );
-
 
 
     if (error) {
@@ -1278,7 +1283,6 @@ async function updateBookingStatus(
     }
 
 
-
     alert(
       `Booking ${newStatus} successfully.`
     );
@@ -1286,15 +1290,11 @@ async function updateBookingStatus(
 
     await loadDashboard();
 
-
   }
-
 
   catch (error) {
 
-
     console.error(error);
-
 
     alert(
       "Unable to update booking: " +
@@ -1306,43 +1306,64 @@ async function updateBookingStatus(
 }
 
 
-
-/* =========================================
+/* ======================/* ======================
    LOGOUT
-========================================= */
+====================== */
 
 document
-  .getElementById(
-    "logoutButton"
-  )
+  .getElementById("logoutButton")
   .addEventListener(
     "click",
-    async function() {
+    async function () {
 
+      const button =
+        document.getElementById("logoutButton");
 
-      await supabaseClient
-        .auth
-        .signOut();
+      button.disabled = true;
+      button.textContent = "Logging out...";
 
+      try {
 
-      window.location.href =
-        "login.html";
+        const { error } =
+          await supabaseClient.auth.signOut();
+
+        if (error) {
+          throw error;
+        }
+
+        window.location.href =
+          "login.html";
+
+      }
+
+      catch (error) {
+
+        console.error(
+          "LOGOUT ERROR:",
+          error
+        );
+
+        alert(
+          "Unable to log out: " +
+          error.message
+        );
+
+        button.disabled = false;
+        button.textContent = "Logout";
+
+      }
 
     }
   );
 
 
-
-/* =========================================
-   START
-========================================= */
+/* ======================
+   START DASHBOARD
+====================== */
 
 loadDashboard();
 
-
 </script>
 
-
 </body>
-
-              </html>
+</html>
