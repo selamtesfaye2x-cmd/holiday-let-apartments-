@@ -1,5 +1,13 @@
-<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Properties | StayHaven</title>  <link rel="stylesheet" href="style.css">  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
+<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8"><meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+
+«»
+
+  <title>Properties | StayHaven</title>  <link
+    rel="stylesheet"
+    href="style.css"
+  >  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
 
     .properties-page {
       max-width: 1200px;
@@ -7,130 +15,124 @@
       padding: 20px;
     }
 
-    .page-heading {
-      margin-bottom: 30px;
+
+    .properties-header {
+      margin-bottom: 40px;
     }
 
-    .page-heading h1 {
+
+    .properties-header h1 {
       font-size: 42px;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
 
-    .page-heading p {
+
+    .properties-header p {
       color: #667085;
     }
 
-    .filters {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 15px;
-      margin-bottom: 30px;
-    }
-
-    .filters input,
-    .filters select {
-      padding: 13px;
-      border: 1px solid #d0d5dd;
-      border-radius: 8px;
-      font: inherit;
-      width: 100%;
-      box-sizing: border-box;
-    }
 
     .property-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 25px;
+      gap: 22px;
     }
+
 
     .property-card {
       background: white;
-      border: 1px solid #e9e9e9;
-      border-radius: 14px;
+      border: 1px solid #eeeeee;
+      border-radius: 12px;
       overflow: hidden;
     }
 
+
     .property-image {
+      width: 100%;
       height: 220px;
       background:
         linear-gradient(
-          rgba(20,28,43,0.08),
-          rgba(20,28,43,0.08)
+          rgba(23, 32, 51, 0.15),
+          rgba(23, 32, 51, 0.15)
         ),
         url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80")
         center / cover no-repeat;
     }
 
-    .property-body {
-      padding: 20px;
+
+    .property-content {
+      padding: 22px;
     }
+
 
     .property-type {
       display: inline-block;
       margin-bottom: 10px;
       padding: 5px 10px;
+      border-radius: 20px;
       background: #f5efe7;
       color: #8b6333;
-      border-radius: 20px;
       font-size: 12px;
       font-weight: 700;
     }
 
-    .property-body h2 {
+
+    .property-content h2 {
       font-size: 21px;
-      margin-bottom: 7px;
+      margin-bottom: 8px;
     }
+
 
     .location {
       color: #667085;
-      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+
+    .price {
+      font-size: 19px;
+      font-weight: 800;
       margin-bottom: 15px;
     }
 
-    .details {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
+
+    .property-details {
+      color: #667085;
+      font-size: 14px;
       margin-bottom: 18px;
     }
 
-    .detail {
-      background: #f7f7f7;
-      padding: 7px 10px;
-      border-radius: 6px;
-      font-size: 13px;
-    }
-
-    .price {
-      font-size: 20px;
-      font-weight: 800;
-    }
-
-    .price span {
-      color: #667085;
-      font-size: 13px;
-      font-weight: 400;
-    }
 
     .view-button {
-      display: block;
+      display: inline-block;
       width: 100%;
-      margin-top: 18px;
-      padding: 12px;
       text-align: center;
-      text-decoration: none;
-      border-radius: 8px;
+      padding: 12px;
+      border-radius: 7px;
       background: #172033;
       color: white;
       font-weight: 700;
-      box-sizing: border-box;
     }
 
-    #status {
+
+    .empty-state {
+      grid-column: 1 / -1;
       text-align: center;
+      padding: 60px 20px;
+      border: 1px dashed #cccccc;
+      border-radius: 12px;
       color: #667085;
-      padding: 30px;
     }
+
+
+    .error-state {
+      grid-column: 1 / -1;
+      background: #fdecec;
+      color: #b42318;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
 
     @media (max-width: 900px) {
 
@@ -140,109 +142,76 @@
 
     }
 
+
     @media (max-width: 600px) {
+
+      .properties-page {
+        margin: 30px auto;
+      }
+
+
+      .properties-header h1 {
+        font-size: 34px;
+      }
+
 
       .property-grid {
         grid-template-columns: 1fr;
-      }
-
-      .filters {
-        grid-template-columns: 1fr;
-      }
-
-      .page-heading h1 {
-        font-size: 34px;
       }
 
     }
 
   </style></head><body><header class="navbar">  <div class="logo">
     StayHaven
-  </div>  <nav><a href="index.html">Home</a>
-<a href="properties.html">Properties</a>
-<a href="login.html">Owner Login</a>
+  </div>  <nav><a href="index.html">
+  Home
+</a>
 
-  </nav></header><main class="properties-page">  <section class="page-heading"><p class="eyebrow">
-  DESTINATIONS
+<a href="properties.html">
+  Holiday Lets
+</a>
+
+<a href="login.html">
+  Login
+</a>
+
+<a
+  href="register.html"
+  class="nav-button"
+>
+  List Your Property
+</a>
+
+  </nav></header><main class="properties-page">  <div class="properties-header"><p class="eyebrow">
+  DISCOVER STAYHAVEN
 </p>
+
 
 <h1>
-  Find your next stay
+  Available Properties
 </h1>
 
+
 <p>
-  Discover holiday lets, short-term rentals and long-term properties.
+  Explore holiday lets and rental properties
+  listed by StayHaven owners.
 </p>
 
-  </section>  <!-- SEARCH -->  <section class="filters"><input
-  type="search"
-  id="search"
-  placeholder="Search by property, city or location..."
->
-
-
-<select id="countryFilter">
-
-  <option value="">
-    All countries
-  </option>
-
-  <option value="United Kingdom">
-    🇬🇧 United Kingdom
-  </option>
-
-  <option value="Canada">
-    🇨🇦 Canada
-  </option>
-
-  <option value="United States">
-    🇺🇸 United States
-  </option>
-
-  <option value="Australia">
-    🇦🇺 Australia
-  </option>
-
-  <option value="France">
-    🇫🇷 France
-  </option>
-
-  <option value="Spain">
-    🇪🇸 Spain
-  </option>
-
-  <option value="Germany">
-    🇩🇪 Germany
-  </option>
-
-  <option value="Italy">
-    🇮🇹 Italy
-  </option>
-
-  <option value="Portugal">
-    🇵🇹 Portugal
-  </option>
-
-  <option value="Other">
-    🌎 Other
-  </option>
-
-</select>
-
-  </section>  <div id="status">
-    Loading properties...
-  </div>  <section
+  </div>  <div
     id="propertyGrid"
     class="property-grid"
-  ></section></main><script src="supabase.js"></script><script>
+  ><div class="empty-state">
+  Loading properties...
+</div>
 
+  </div></main><footer>  <div class="footer-logo">
+    StayHaven
+  </div>  <p>
+    Discover places worth staying for.
+  </p>  <p class="copyright">
+    © 2026 StayHaven. All rights reserved.
+  </p></footer><script src="supabase.js"></script><script>
 
-let allProperties = [];
-
-
-/* ==================================================
-   ESCAPE HTML
-================================================== */
 
 function escapeHtml(value) {
 
@@ -256,10 +225,6 @@ function escapeHtml(value) {
 
 }
 
-
-/* ==================================================
-   FORMAT CURRENCY
-================================================== */
 
 function formatCurrency(
   amount,
@@ -277,7 +242,7 @@ function formatCurrency(
       {
         style: "currency",
         currency: safeCurrency,
-        maximumFractionDigits: 2
+        maximumFractionDigits: 0
       }
     ).format(
       Number(amount) || 0
@@ -290,17 +255,13 @@ function formatCurrency(
     return (
       safeCurrency +
       " " +
-      Number(amount || 0).toFixed(2)
+      Number(amount || 0)
     );
 
   }
 
 }
 
-
-/* ==================================================
-   GET RENTAL INFORMATION
-================================================== */
 
 function getRentalInfo(property) {
 
@@ -309,102 +270,83 @@ function getRentalInfo(property) {
       property.property_type ||
       "holiday_let"
     )
-    .toLowerCase()
-    .trim();
+    .toLowerCase();
 
-
-  /* LONG TERM */
 
   if (
-    type === "long_term_rental" ||
-    type.includes("long")
+    type === "long_term_rental"
   ) {
 
     return {
-
-      name:
-        "Long-Term Rental",
-
-      unit:
-        "month",
-
+      name: "Long-Term Rental",
       price:
-        property.price_per_month ??
-        property.price_per_night ??
-        0
-
+        property.price_per_month ||
+        property.price_per_night ||
+        0,
+      unit: "month"
     };
 
   }
 
 
-  /* SHORT TERM */
-
   if (
-    type === "short_term_rental" ||
-    type.includes("short")
+    type === "short_term_rental"
   ) {
 
     return {
-
-      name:
-        "Short-Term Rental",
-
-      unit:
-        "night",
-
+      name: "Short-Term Rental",
       price:
-        property.price_per_night ??
-        0
-
+        property.price_per_night ||
+        property.price_per_day ||
+        0,
+      unit: "night"
     };
 
   }
 
-
-  /* HOLIDAY LET */
 
   return {
-
-    name:
-      "Holiday Let",
-
-    unit:
-      "night",
-
+    name: "Holiday Let",
     price:
-      property.price_per_night ??
-      0
-
+      property.price_per_night ||
+      0,
+    unit: "night"
   };
 
 }
 
 
-/* ==================================================
-   LOAD PROPERTIES
-================================================== */
-
 async function loadProperties() {
 
-  const status =
+
+  const propertyGrid =
     document.getElementById(
-      "status"
+      "propertyGrid"
     );
 
 
   try {
 
+
+    if (
+      typeof supabaseClient ===
+      "undefined"
+    ) {
+
+      throw new Error(
+        "Supabase connection is unavailable."
+      );
+
+    }
+
+
     const {
-      data,
+      data: properties,
       error
     } =
       await supabaseClient
-
         .from("properties")
-
         .select("*")
-
         .order(
           "created_at",
           {
@@ -420,355 +362,194 @@ async function loadProperties() {
     }
 
 
-    allProperties =
-      data || [];
+    if (
+      !properties ||
+      properties.length === 0
+    ) {
 
+      propertyGrid.innerHTML = `
 
-    renderProperties(
-      allProperties
-    );
-
-  }
-
-  catch (error) {
-
-    console.error(
-      "LOAD PROPERTIES ERROR:",
-      error
-    );
-
-
-    status.textContent =
-      "Unable to load properties: " +
-      error.message;
-
-  }
-
-}
-
-
-/* ==================================================
-   RENDER PROPERTIES
-================================================== */
-
-function renderProperties(properties) {
-
-  const grid =
-    document.getElementById(
-      "propertyGrid"
-    );
-
-
-  const status =
-    document.getElementById(
-      "status"
-    );
-
-
-  grid.innerHTML = "";
-
-
-  if (!properties.length) {
-
-    status.textContent =
-      "No properties found.";
-
-    return;
-
-  }
-
-
-  status.textContent =
-    `${properties.length} ${
-      properties.length === 1
-        ? "property"
-        : "properties"
-    } available`;
-
-
-  properties.forEach(
-    function(property) {
-
-
-      /* RENTAL INFO */
-
-      const rental =
-        getRentalInfo(property);
-
-
-      /* PRICE */
-
-      const formattedPrice =
-        formatCurrency(
-          rental.price,
-          property.currency
-        );
-
-
-      /* LOCATION */
-
-      const locationParts =
-        [];
-
-
-      if (property.city) {
-
-        locationParts.push(
-          property.city
-        );
-
-      }
-
-
-      if (property.country) {
-
-        locationParts.push(
-          property.country
-        );
-
-      }
-
-
-      const location =
-        locationParts.join(", ") ||
-        property.location ||
-        "Location unavailable";
-
-
-      /* CARD */
-
-      const card =
-        document.createElement(
-          "article"
-        );
-
-
-      card.className =
-        "property-card";
-
-
-      card.innerHTML = `
-
-        <div class="property-image"></div>
-
-
-        <div class="property-body">
-
-
-          <span class="property-type">
-
-            ${escapeHtml(
-              rental.name
-            )}
-
-          </span>
-
+        <div class="empty-state">
 
           <h2>
-
-            ${escapeHtml(
-              property.name
-            )}
-
+            No properties available yet
           </h2>
 
-
-          <p class="location">
-
-            📍 ${escapeHtml(
-              location
-            )}
-
+          <p>
+            Check back soon for new listings.
           </p>
-
-
-          <div class="details">
-
-
-            <div class="detail">
-
-              🛏️ ${escapeHtml(
-                property.bedrooms ??
-                "—"
-              )} bedrooms
-
-            </div>
-
-
-            <div class="detail">
-
-              🛁 ${escapeHtml(
-                property.bathrooms ??
-                "—"
-              )} bathrooms
-
-            </div>
-
-
-            <div class="detail">
-
-              👥 Up to ${escapeHtml(
-                property.max_guests ??
-                "—"
-              )} guests
-
-            </div>
-
-
-          </div>
-
-
-          <div class="price">
-
-            ${escapeHtml(
-              formattedPrice
-            )}
-
-            <span>
-
-              / ${escapeHtml(
-                rental.unit
-              )}
-
-            </span>
-
-          </div>
-
-
-          <a
-            class="view-button"
-            href="property.html?id=${encodeURIComponent(
-              property.id
-            )}"
-          >
-
-            View Property
-
-          </a>
-
 
         </div>
 
       `;
 
-
-      grid.appendChild(
-        card
-      );
+      return;
 
     }
-  );
-
-}
 
 
-/* ==================================================
-   FILTER PROPERTIES
-================================================== */
-
-function filterProperties() {
-
-
-  const search =
-    document
-      .getElementById(
-        "search"
-      )
-      .value
-      .toLowerCase()
-      .trim();
+    propertyGrid.innerHTML =
+      properties
+        .map(
+          function(property) {
 
 
-  const country =
-    document
-      .getElementById(
-        "countryFilter"
-      )
-      .value;
+            const rental =
+              getRentalInfo(
+                property
+              );
 
 
-  const filtered =
-    allProperties.filter(
-      function(property) {
+            const formattedPrice =
+              formatCurrency(
+                rental.price,
+                property.currency
+              );
 
 
-        const searchable = (
+            return `
 
-          (property.name || "") +
-          " " +
+              <article class="property-card">
 
-          (property.city || "") +
-          " " +
 
-          (property.country || "") +
-          " " +
+                <div
+                  class="property-image"
+                ></div>
 
-          (property.location || "")
 
+                <div
+                  class="property-content"
+                >
+
+
+                  <span
+                    class="property-type"
+                  >
+
+                    ${escapeHtml(
+                      rental.name
+                    )}
+
+                  </span>
+
+
+                  <h2>
+
+                    ${escapeHtml(
+                      property.name
+                    )}
+
+                  </h2>
+
+
+                  <p
+                    class="location"
+                  >
+
+                    📍 ${escapeHtml(
+                      property.location
+                    )}
+
+                  </p>
+
+
+                  <p
+                    class="price"
+                  >
+
+                    ${escapeHtml(
+                      formattedPrice
+                    )}
+
+                    / ${escapeHtml(
+                      rental.unit
+                    )}
+
+                  </p>
+
+
+                  <p
+                    class="property-details"
+                  >
+
+                    ${escapeHtml(
+                      property.bedrooms
+                    )} bedrooms ·
+
+                    ${escapeHtml(
+                      property.bathrooms
+                    )} bathrooms ·
+
+                    Up to
+
+                    ${escapeHtml(
+                      property.max_guests
+                    )} guests
+
+                  </p>
+
+
+                  <a
+                    href="property.html?id=${encodeURIComponent(
+                      property.id
+                    )}"
+                    class="view-button"
+                  >
+
+                    View Property
+
+                  </a>
+
+
+                </div>
+
+
+              </article>
+
+            `;
+
+          }
         )
-        .toLowerCase();
+        .join("");
 
 
-        const matchesSearch =
-          !search ||
-          searchable.includes(
-            search
-          );
+  }
 
 
-        const matchesCountry =
-          !country ||
-          property.country ===
-          country;
+  catch (error) {
 
 
-        return (
-
-          matchesSearch &&
-          matchesCountry
-
-        );
-
-      }
+    console.error(
+      "PROPERTIES ERROR:",
+      error
     );
 
 
-  renderProperties(
-    filtered
-  );
+    propertyGrid.innerHTML = `
+
+      <div class="error-state">
+
+        <strong>
+          Unable to load properties.
+        </strong>
+
+        <br><br>
+
+        ${escapeHtml(
+          error.message
+        )}
+
+      </div>
+
+    `;
+
+  }
 
 }
 
-
-/* ==================================================
-   EVENTS
-================================================== */
-
-document
-  .getElementById(
-    "search"
-  )
-  .addEventListener(
-    "input",
-    filterProperties
-  );
-
-
-document
-  .getElementById(
-    "countryFilter"
-  )
-  .addEventListener(
-    "change",
-    filterProperties
-  );
-
-
-/* ==================================================
-   START
-================================================== */
 
 loadProperties();
 
 
-</script></body></html>
+</script></body>
+    </html>
