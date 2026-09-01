@@ -1,13 +1,25 @@
-<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8"><meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
+<!DOCTYPE html>
+<html lang="en">
 
-«»
+<head>
 
-  <title>Properties | StayHaven</title>  <link
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
+
+  <title>Properties | StayHaven</title>
+
+  <link
     rel="stylesheet"
     href="style.css"
-  >  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
+  >
+
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <style>
 
     .properties-page {
       max-width: 1200px;
@@ -15,29 +27,24 @@ content="width=device-width, initial-scale=1.0"
       padding: 20px;
     }
 
-
     .properties-header {
       margin-bottom: 40px;
     }
-
 
     .properties-header h1 {
       font-size: 42px;
       margin-bottom: 10px;
     }
 
-
     .properties-header p {
       color: #667085;
     }
-
 
     .property-grid {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       gap: 22px;
     }
-
 
     .property-card {
       background: white;
@@ -46,24 +53,18 @@ content="width=device-width, initial-scale=1.0"
       overflow: hidden;
     }
 
-
     .property-image {
       width: 100%;
       height: 220px;
-      background:
-        linear-gradient(
-          rgba(23, 32, 51, 0.15),
-          rgba(23, 32, 51, 0.15)
-        ),
-        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80")
-        center / cover no-repeat;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-color: #eeeeee;
     }
-
 
     .property-content {
       padding: 22px;
     }
-
 
     .property-type {
       display: inline-block;
@@ -76,18 +77,15 @@ content="width=device-width, initial-scale=1.0"
       font-weight: 700;
     }
 
-
     .property-content h2 {
       font-size: 21px;
       margin-bottom: 8px;
     }
 
-
     .location {
       color: #667085;
       margin-bottom: 12px;
     }
-
 
     .price {
       font-size: 19px;
@@ -95,13 +93,11 @@ content="width=device-width, initial-scale=1.0"
       margin-bottom: 15px;
     }
 
-
     .property-details {
       color: #667085;
       font-size: 14px;
       margin-bottom: 18px;
     }
-
 
     .view-button {
       display: inline-block;
@@ -114,7 +110,6 @@ content="width=device-width, initial-scale=1.0"
       font-weight: 700;
     }
 
-
     .empty-state {
       grid-column: 1 / -1;
       text-align: center;
@@ -124,7 +119,6 @@ content="width=device-width, initial-scale=1.0"
       color: #667085;
     }
 
-
     .error-state {
       grid-column: 1 / -1;
       background: #fdecec;
@@ -132,7 +126,6 @@ content="width=device-width, initial-scale=1.0"
       padding: 20px;
       border-radius: 10px;
     }
-
 
     @media (max-width: 900px) {
 
@@ -142,18 +135,15 @@ content="width=device-width, initial-scale=1.0"
 
     }
 
-
     @media (max-width: 600px) {
 
       .properties-page {
         margin: 30px auto;
       }
 
-
       .properties-header h1 {
         font-size: 34px;
       }
-
 
       .property-grid {
         grid-template-columns: 1fr;
@@ -161,57 +151,108 @@ content="width=device-width, initial-scale=1.0"
 
     }
 
-  </style></head><body><header class="navbar">  <div class="logo">
+  </style>
+
+</head>
+
+
+<body>
+
+
+<header class="navbar">
+
+  <div class="logo">
     StayHaven
-  </div>  <nav><a href="index.html">
-  Home
-</a>
+  </div>
 
-<a href="properties.html">
-  Holiday Lets
-</a>
+  <nav>
 
-<a href="login.html">
-  Login
-</a>
+    <a href="index.html">
+      Home
+    </a>
 
-<a
-  href="register.html"
-  class="nav-button"
->
-  List Your Property
-</a>
+    <a href="properties.html">
+      Holiday Lets
+    </a>
 
-  </nav></header><main class="properties-page">  <div class="properties-header"><p class="eyebrow">
-  DISCOVER STAYHAVEN
-</p>
+    <a href="login.html">
+      Login
+    </a>
+
+    <a
+      href="register.html"
+      class="nav-button"
+    >
+      List Your Property
+    </a>
+
+  </nav>
+
+</header>
 
 
-<h1>
-  Available Properties
-</h1>
+<main class="properties-page">
 
 
-<p>
-  Explore holiday lets and rental properties
-  listed by StayHaven owners.
-</p>
+  <div class="properties-header">
 
-  </div>  <div
+    <p class="eyebrow">
+      DISCOVER STAYHAVEN
+    </p>
+
+    <h1>
+      Available Properties
+    </h1>
+
+    <p>
+      Explore holiday lets and rental properties
+      listed by StayHaven owners.
+    </p>
+
+  </div>
+
+
+  <div
     id="propertyGrid"
     class="property-grid"
-  ><div class="empty-state">
-  Loading properties...
-</div>
+  >
 
-  </div></main><footer>  <div class="footer-logo">
+    <div class="empty-state">
+      Loading properties...
+    </div>
+
+  </div>
+
+
+</main>
+
+
+<footer>
+
+  <div class="footer-logo">
     StayHaven
-  </div>  <p>
-    Discover places worth staying for.
-  </p>  <p class="copyright">
-    © 2026 StayHaven. All rights reserved.
-  </p></footer><script src="supabase.js"></script><script>
+  </div>
 
+  <p>
+    Discover places worth staying for.
+  </p>
+
+  <p class="copyright">
+    © 2026 StayHaven. All rights reserved.
+  </p>
+
+</footer>
+
+
+<script src="supabase.js"></script>
+
+
+<script>
+
+
+/* =========================================
+   ESCAPE HTML
+========================================= */
 
 function escapeHtml(value) {
 
@@ -225,6 +266,10 @@ function escapeHtml(value) {
 
 }
 
+
+/* =========================================
+   CURRENCY
+========================================= */
 
 function formatCurrency(
   amount,
@@ -263,6 +308,10 @@ function formatCurrency(
 }
 
 
+/* =========================================
+   RENTAL INFORMATION
+========================================= */
+
 function getRentalInfo(property) {
 
   const type =
@@ -274,47 +323,97 @@ function getRentalInfo(property) {
 
 
   if (
-    type === "long_term_rental"
+    type ===
+    "long_term_rental"
   ) {
 
     return {
-      name: "Long-Term Rental",
+
+      name:
+        "Long-Term Rental",
+
       price:
         property.price_per_month ||
         property.price_per_night ||
         0,
-      unit: "month"
+
+      unit:
+        "month"
+
     };
 
   }
 
 
   if (
-    type === "short_term_rental"
+    type ===
+    "short_term_rental"
   ) {
 
     return {
-      name: "Short-Term Rental",
+
+      name:
+        "Short-Term Rental",
+
       price:
         property.price_per_night ||
         property.price_per_day ||
         0,
-      unit: "night"
+
+      unit:
+        "night"
+
     };
 
   }
 
 
   return {
-    name: "Holiday Let",
+
+    name:
+      "Holiday Let",
+
     price:
       property.price_per_night ||
       0,
-    unit: "night"
+
+    unit:
+      "night"
+
   };
 
 }
 
+
+/* =========================================
+   GET PROPERTY IMAGE
+========================================= */
+
+function getPropertyImage(property) {
+
+  const images =
+    property.image_urls;
+
+
+  if (
+    Array.isArray(images) &&
+    images.length > 0 &&
+    images[0]
+  ) {
+
+    return images[0];
+
+  }
+
+
+  return "https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=900&q=80";
+
+}
+
+
+/* =========================================
+   LOAD PROPERTIES
+========================================= */
 
 async function loadProperties() {
 
@@ -341,12 +440,18 @@ async function loadProperties() {
 
 
     const {
+
       data: properties,
+
       error
+
     } =
       await supabaseClient
+
         .from("properties")
+
         .select("*")
+
         .order(
           "created_at",
           {
@@ -389,7 +494,9 @@ async function loadProperties() {
 
 
     propertyGrid.innerHTML =
+
       properties
+
         .map(
           function(property) {
 
@@ -407,13 +514,24 @@ async function loadProperties() {
               );
 
 
+            const image =
+              getPropertyImage(
+                property
+              );
+
+
             return `
 
-              <article class="property-card">
+              <article
+                class="property-card"
+              >
 
 
                 <div
                   class="property-image"
+                  style="background-image: url('${escapeHtml(
+                    image
+                  )}');"
                 ></div>
 
 
@@ -446,8 +564,11 @@ async function loadProperties() {
                     class="location"
                   >
 
-                    📍 ${escapeHtml(
-                      property.location
+                    📍
+
+                    ${escapeHtml(
+                      property.location ||
+                      "Location not provided"
                     )}
 
                   </p>
@@ -461,7 +582,9 @@ async function loadProperties() {
                       formattedPrice
                     )}
 
-                    / ${escapeHtml(
+                    /
+
+                    ${escapeHtml(
                       rental.unit
                     )}
 
@@ -473,18 +596,27 @@ async function loadProperties() {
                   >
 
                     ${escapeHtml(
-                      property.bedrooms
-                    )} bedrooms ·
+                      property.bedrooms ??
+                      "—"
+                    )}
+
+                    bedrooms ·
 
                     ${escapeHtml(
-                      property.bathrooms
-                    )} bathrooms ·
+                      property.bathrooms ??
+                      "—"
+                    )}
+
+                    bathrooms ·
 
                     Up to
 
                     ${escapeHtml(
-                      property.max_guests
-                    )} guests
+                      property.max_guests ??
+                      "—"
+                    )}
+
+                    guests
 
                   </p>
 
@@ -510,6 +642,7 @@ async function loadProperties() {
 
           }
         )
+
         .join("");
 
 
@@ -548,8 +681,16 @@ async function loadProperties() {
 }
 
 
+/* =========================================
+   START
+========================================= */
+
 loadProperties();
 
 
-</script></body>
-    </html>
+</script>
+
+
+</body>
+
+  </html>
