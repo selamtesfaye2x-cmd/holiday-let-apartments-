@@ -1,10 +1,4 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-
-«»
-
-<title>Add Property | StayHaven</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Add Property | StayHaven</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
 
 .form-page {
   max-width: 850px;
@@ -13,8 +7,8 @@ content="width=device-width, initial-scale=1.0"
 }
 
 .form-card {
-  background: white;
-  border: 1px solid #eeeeee;
+  background: #fff;
+  border: 1px solid #eee;
   border-radius: 14px;
   padding: 30px;
 }
@@ -29,14 +23,14 @@ content="width=device-width, initial-scale=1.0"
 }
 
 .form-group {
-  margin-bottom: 20px;
+  margin-bottom: 22px;
 }
 
-.form-group label {
+.form-group > label {
   display: block;
   font-size: 14px;
   font-weight: 700;
-  margin-bottom: 7px;
+  margin-bottom: 8px;
 }
 
 .form-group input,
@@ -47,7 +41,7 @@ content="width=device-width, initial-scale=1.0"
   border: 1px solid #d0d5dd;
   border-radius: 7px;
   font-size: 14px;
-  background: white;
+  background: #fff;
 }
 
 .form-group textarea {
@@ -67,58 +61,58 @@ content="width=device-width, initial-scale=1.0"
   gap: 15px;
 }
 
-/* PROPERTY TYPE */
+
+/* =========================================
+   PROPERTY TYPE BUTTONS
+========================================= */
 
 .type-options {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
+  gap: 14px;
 }
 
-.type-option {
-  position: relative;
-}
-
-.type-option input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
-
-.type-card {
-  display: block;
+.type-button {
+  width: 100%;
+  min-height: 125px;
+  padding: 20px;
   border: 2px solid #e5e7eb;
   border-radius: 10px;
-  padding: 18px;
+  background: #fff;
+  color: #172033;
+  text-align: left;
   cursor: pointer;
-  background: white;
+  font-family: inherit;
   transition: 0.2s;
-  min-height: 105px;
 }
 
-.type-card:hover {
+.type-button:hover {
   border-color: #b88945;
 }
 
-.type-card strong {
-  display: block;
-  margin-bottom: 6px;
-  color: #172033;
-}
-
-.type-card span {
-  display: block;
-  color: #667085;
-  font-size: 12px;
-}
-
-.type-option input:checked + .type-card {
+.type-button.active {
   border-color: #b88945;
   background: #faf6ef;
   box-shadow: 0 0 0 1px #b88945;
 }
 
-/* BUTTON */
+.type-button strong {
+  display: block;
+  font-size: 16px;
+  margin-bottom: 8px;
+}
+
+.type-button span {
+  display: block;
+  color: #667085;
+  font-size: 12px;
+  line-height: 1.5;
+}
+
+
+/* =========================================
+   SUBMIT
+========================================= */
 
 .submit-button {
   width: 100%;
@@ -133,15 +127,18 @@ content="width=device-width, initial-scale=1.0"
 }
 
 .submit-button:hover {
-  opacity: 0.92;
+  opacity: .92;
 }
 
 .submit-button:disabled {
-  opacity: 0.6;
+  opacity: .6;
   cursor: not-allowed;
 }
 
-/* MESSAGE */
+
+/* =========================================
+   MESSAGE
+========================================= */
 
 .message {
   display: none;
@@ -177,6 +174,7 @@ content="width=device-width, initial-scale=1.0"
   margin-top: 6px;
 }
 
+
 @media (max-width: 700px) {
 
   .two-column,
@@ -194,21 +192,15 @@ content="width=device-width, initial-scale=1.0"
 
 }
 
-</style></head><body><header class="navbar">  <div class="logo">
-    StayHaven
-  </div>  <nav><a href="index.html">
+</style></head><body><header class="navbar"><div class="logo">
+  StayHaven
+</div><nav><a href="index.html">
   Home
-</a>
-
-<a href="properties.html">
+</a><a href="properties.html">
   Properties
-</a>
-
-<a href="dashboard.html">
+</a><a href="dashboard.html">
   Dashboard
-</a>
-
-  </nav></header><main class="form-page"><a
+</a></nav></header><main class="form-page"><a
 href="dashboard.html"
 class="back-link"
 
@@ -223,38 +215,27 @@ class="back-link"
   Add a Property
 </h1><p class="intro">
   Create a listing and make it available to guests.
-</p><form id="propertyForm"><!-- PROPERTY TYPE --><div class="form-group"><label>
+</p><form id="propertyForm"><!-- ======================================
+     PROPERTY TYPE
+======================================= --><div class="form-group"><label>
   Property Type
-</label><div class="type-options"><div class="type-option"><input
-type="radio"
-id="holidayLet"
-name="propertyType"
-value="holiday_let"
-checked
-
-«»
-
-<label
-for="holidayLet"
-class="type-card"
+</label><div class="type-options"><button
+type="button"
+class="type-button active"
+data-type="holiday_let"
+id="holidayButton"
 
 «»
 
 <strong>
   Holiday Let
 </strong><span>
-  Ideal for holiday homes, cottages and vacation properties.
-</span></label></div><div class="type-option"><input
-type="radio"
-id="shortTerm"
-name="propertyType"
-value="short_term_rental"
-
-«»
-
-<label
-for="shortTerm"
-class="type-card"
+  Holiday homes, cottages, villas and vacation properties.
+</span></button><button
+type="button"
+class="type-button"
+data-type="short_term_rental"
+id="shortTermButton"
 
 «»
 
@@ -262,25 +243,21 @@ class="type-card"
   Short-Term Rental
 </strong><span>
   Flexible stays and temporary accommodation.
-</span></label></div><div class="type-option"><input
-type="radio"
-id="longTerm"
-name="propertyType"
-value="long_term_rental"
-
-«»
-
-<label
-for="longTerm"
-class="type-card"
+</span></button><button
+type="button"
+class="type-button"
+data-type="long_term_rental"
+id="longTermButton"
 
 «»
 
 <strong>
   Long-Term Rental
 </strong><span>
-  Residential rentals charged on a monthly basis.
-</span></label></div></div></div><!-- PROPERTY NAME --><div class="form-group"><label for="propertyName">
+  Residential rentals and monthly accommodation.
+</span></button></div></div><!-- ======================================
+     PROPERTY NAME
+======================================= --><div class="form-group"><label for="propertyName">
   Property Name
 </label><input
 type="text"
@@ -290,7 +267,9 @@ required
 
 «»
 
-</div><!-- LOCATION --><div class="form-group"><label for="location">
+</div><!-- ======================================
+     LOCATION
+======================================= --><div class="form-group"><label for="location">
   Location
 </label><input
 type="text"
@@ -300,7 +279,9 @@ required
 
 «»
 
-</div><!-- PRICE --><div class="two-column"><div class="form-group"><label for="price">
+</div><!-- ======================================
+     PRICE
+======================================= --><div class="two-column"><div class="form-group"><label for="price">
   Rental Price
 </label><input
 type="number"
@@ -327,7 +308,9 @@ readonly
 
 «»
 
-</div></div><!-- DETAILS --><div class="three-column"><div class="form-group"><label for="bedrooms">
+</div></div><!-- ======================================
+     DETAILS
+======================================= --><div class="three-column"><div class="form-group"><label for="bedrooms">
   Bedrooms
 </label><input
 type="number"
@@ -361,13 +344,17 @@ required
 
 «»
 
-</div></div><!-- DESCRIPTION --><div class="form-group"><label for="description">
+</div></div><!-- ======================================
+     DESCRIPTION
+======================================= --><div class="form-group"><label for="description">
   Description
 </label><textarea
   id="description"
   placeholder="Describe the property, amenities, location and anything guests should know..."
   required
-></textarea></div><button
+></textarea></div><!-- ======================================
+     SUBMIT
+======================================= --><button
 type="submit"
 id="submitButton"
 class="submit-button"
@@ -382,83 +369,90 @@ Add Property
   class="message"
 ></div></div></main><script src="supabase.js"></script><script>
 
-/* ==========================================
+/* =========================================
+   SELECTED PROPERTY TYPE
+========================================= */
+
+let selectedPropertyType =
+  "holiday_let";
+
+
+/* =========================================
    ELEMENTS
-========================================== */
+========================================= */
 
 const propertyForm =
-  document.getElementById("propertyForm");
+  document.getElementById(
+    "propertyForm"
+  );
 
 const submitButton =
-  document.getElementById("submitButton");
+  document.getElementById(
+    "submitButton"
+  );
 
 const message =
-  document.getElementById("message");
+  document.getElementById(
+    "message"
+  );
 
 const priceInput =
-  document.getElementById("price");
+  document.getElementById(
+    "price"
+  );
 
 const priceHelp =
-  document.getElementById("priceHelp");
+  document.getElementById(
+    "priceHelp"
+  );
 
 
-/* ==========================================
-   GET SELECTED TYPE
-========================================== */
+const holidayButton =
+  document.getElementById(
+    "holidayButton"
+  );
 
-function getSelectedPropertyType() {
+const shortTermButton =
+  document.getElementById(
+    "shortTermButton"
+  );
 
-  const selected =
-    document.querySelector(
-      'input[name="propertyType"]:checked'
-    );
-
-  if (!selected) {
-
-    return "holiday_let";
-
-  }
-
-  return selected.value;
-
-}
+const longTermButton =
+  document.getElementById(
+    "longTermButton"
+  );
 
 
-/* ==========================================
-   UPDATE PRICE INFORMATION
-========================================== */
+/* =========================================
+   UPDATE TYPE
+========================================= */
 
-function updatePriceLabel() {
+function selectPropertyType(type) {
 
-  const type =
-    getSelectedPropertyType();
+  selectedPropertyType =
+    type;
+
+
+  holidayButton.classList.remove(
+    "active"
+  );
+
+  shortTermButton.classList.remove(
+    "active"
+  );
+
+  longTermButton.classList.remove(
+    "active"
+  );
 
 
   if (
-    type === "long_term_rental"
+    type === "holiday_let"
   ) {
 
-    priceInput.placeholder =
-      "1200";
-
-    priceHelp.textContent =
-      "Long-term rentals are charged per month.";
-
-  }
-
-  else if (
-    type === "short_term_rental"
-  ) {
-
-    priceInput.placeholder =
-      "150";
-
-    priceHelp.textContent =
-      "Short-term rentals are charged per night.";
-
-  }
-
-  else {
+    holidayButton.classList.add(
+      "active"
+    );
 
     priceInput.placeholder =
       "150";
@@ -468,36 +462,95 @@ function updatePriceLabel() {
 
   }
 
+
+  else if (
+    type === "short_term_rental"
+  ) {
+
+    shortTermButton.classList.add(
+      "active"
+    );
+
+    priceInput.placeholder =
+      "150";
+
+    priceHelp.textContent =
+      "Short-term rentals are charged per night.";
+
+  }
+
+
+  else if (
+    type === "long_term_rental"
+  ) {
+
+    longTermButton.classList.add(
+      "active"
+    );
+
+    priceInput.placeholder =
+      "1200";
+
+    priceHelp.textContent =
+      "Long-term rentals are charged per month.";
+
+  }
+
 }
 
 
-/* ==========================================
-   PROPERTY TYPE CLICK
-========================================== */
+/* =========================================
+   TYPE BUTTON EVENTS
+========================================= */
 
-document
-  .querySelectorAll(
-    'input[name="propertyType"]'
-  )
-  .forEach(
-    function(input) {
+holidayButton.addEventListener(
+  "click",
+  function(event) {
 
-      input.addEventListener(
-        "change",
-        function() {
+    event.preventDefault();
+    event.stopPropagation();
 
-          updatePriceLabel();
+    selectPropertyType(
+      "holiday_let"
+    );
 
-        }
-      );
-
-    }
-  );
+  }
+);
 
 
-/* ==========================================
-   FORM SUBMISSION
-========================================== */
+shortTermButton.addEventListener(
+  "click",
+  function(event) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    selectPropertyType(
+      "short_term_rental"
+    );
+
+  }
+);
+
+
+longTermButton.addEventListener(
+  "click",
+  function(event) {
+
+    event.preventDefault();
+    event.stopPropagation();
+
+    selectPropertyType(
+      "long_term_rental"
+    );
+
+  }
+);
+
+
+/* =========================================
+   FORM SUBMIT
+========================================= */
 
 propertyForm.addEventListener(
   "submit",
@@ -505,13 +558,14 @@ propertyForm.addEventListener(
 
     event.preventDefault();
 
+    event.stopPropagation();
+
 
     submitButton.disabled =
       true;
 
     submitButton.textContent =
       "Adding property...";
-
 
     message.className =
       "message";
@@ -565,20 +619,20 @@ propertyForm.addEventListener(
 
       /* VALUES */
 
-      const type =
-        getSelectedPropertyType();
-
-
       const name =
         document
-          .getElementById("propertyName")
+          .getElementById(
+            "propertyName"
+          )
           .value
           .trim();
 
 
       const location =
         document
-          .getElementById("location")
+          .getElementById(
+            "location"
+          )
           .value
           .trim();
 
@@ -592,7 +646,9 @@ propertyForm.addEventListener(
       const bedrooms =
         Number(
           document
-            .getElementById("bedrooms")
+            .getElementById(
+              "bedrooms"
+            )
             .value
         );
 
@@ -600,7 +656,9 @@ propertyForm.addEventListener(
       const bathrooms =
         Number(
           document
-            .getElementById("bathrooms")
+            .getElementById(
+              "bathrooms"
+            )
             .value
         );
 
@@ -608,14 +666,18 @@ propertyForm.addEventListener(
       const maxGuests =
         Number(
           document
-            .getElementById("maxGuests")
+            .getElementById(
+              "maxGuests"
+            )
             .value
         );
 
 
       const description =
         document
-          .getElementById("description")
+          .getElementById(
+            "description"
+          )
           .value
           .trim();
 
@@ -652,9 +714,7 @@ propertyForm.addEventListener(
       }
 
 
-      if (
-        bedrooms < 0
-      ) {
+      if (bedrooms < 0) {
 
         throw new Error(
           "Bedrooms cannot be negative."
@@ -663,9 +723,7 @@ propertyForm.addEventListener(
       }
 
 
-      if (
-        bathrooms < 0
-      ) {
+      if (bathrooms < 0) {
 
         throw new Error(
           "Bathrooms cannot be negative."
@@ -674,9 +732,7 @@ propertyForm.addEventListener(
       }
 
 
-      if (
-        maxGuests < 1
-      ) {
+      if (maxGuests < 1) {
 
         throw new Error(
           "Maximum guests must be at least 1."
@@ -694,7 +750,9 @@ propertyForm.addEventListener(
       }
 
 
-      /* DATABASE RECORD */
+      /* =====================================
+         DATABASE RECORD
+      ===================================== */
 
       const propertyData = {
 
@@ -723,13 +781,14 @@ propertyForm.addEventListener(
           description,
 
         property_type:
-          type
+          selectedPropertyType
 
       };
 
 
       if (
-        type === "long_term_rental"
+        selectedPropertyType ===
+        "long_term_rental"
       ) {
 
         propertyData.price_per_month =
@@ -745,16 +804,18 @@ propertyForm.addEventListener(
       }
 
 
-      /* INSERT */
+      /* =====================================
+         INSERT
+      ===================================== */
 
       const {
         error
       } =
         await supabaseClient
-
           .from("properties")
-
-          .insert(propertyData);
+          .insert(
+            propertyData
+          );
 
 
       if (error) {
@@ -764,7 +825,9 @@ propertyForm.addEventListener(
       }
 
 
-      /* SUCCESS */
+      /* =====================================
+         SUCCESS
+      ===================================== */
 
       message.textContent =
         "Property added successfully!";
@@ -778,8 +841,8 @@ propertyForm.addEventListener(
 
 
       /*
-        Only redirect AFTER successful
-        database insertion.
+        Redirect ONLY after
+        successful insertion.
       */
 
       setTimeout(
@@ -792,8 +855,8 @@ propertyForm.addEventListener(
         1200
       );
 
-
     }
+
 
     catch (error) {
 
@@ -822,8 +885,12 @@ propertyForm.addEventListener(
   });
 
 
-/* INITIAL */
+/* =========================================
+   INITIAL STATE
+========================================= */
 
-updatePriceLabel();
+selectPropertyType(
+  "holiday_let"
+);
 
 </script></body></html>
