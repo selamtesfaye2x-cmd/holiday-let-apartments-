@@ -1,16 +1,6 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">  <title>Properties | StayHaven</title>  <link rel="stylesheet" href="style.css">  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
 
-  <title>Holiday Properties | StayHaven</title>
-
-  <link rel="stylesheet" href="style.css">
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
     .properties-page {
       max-width: 1200px;
       margin: 50px auto;
@@ -75,6 +65,17 @@
       padding: 20px;
     }
 
+    .property-type {
+      display: inline-block;
+      margin-bottom: 10px;
+      padding: 5px 10px;
+      background: #f5efe7;
+      color: #8b6333;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
     .property-body h2 {
       font-size: 21px;
       margin-bottom: 7px;
@@ -132,12 +133,15 @@
     }
 
     @media (max-width: 900px) {
+
       .property-grid {
         grid-template-columns: repeat(2, 1fr);
       }
+
     }
 
     @media (max-width: 600px) {
+
       .property-grid {
         grid-template-columns: 1fr;
       }
@@ -149,165 +153,244 @@
       .page-heading h1 {
         font-size: 34px;
       }
+
     }
-  </style>
-</head>
 
-<body>
-
-<header class="navbar">
-
-  <div class="logo">
+  </style></head><body><header class="navbar">  <div class="logo">
     StayHaven
-  </div>
+  </div>  <nav><a href="index.html">Home</a>
+<a href="properties.html">Properties</a>
+<a href="login.html">Owner Login</a>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="properties.html">Holiday Lets</a>
-    <a href="login.html">Owner Login</a>
-  </nav>
+  </nav></header><main class="properties-page">  <section class="page-heading"><p class="eyebrow">
+  DESTINATIONS
+</p>
 
-</header>
+<h1>
+  Find your next stay
+</h1>
 
+<p>
+  Discover holiday lets, short-term rentals and long-term properties.
+</p>
 
-<main class="properties-page">
-
-  <section class="page-heading">
-
-    <p class="eyebrow">
-      DESTINATIONS
-    </p>
-
-    <h1>
-      Find your next stay
-    </h1>
-
-    <p>
-      Discover holiday properties from destinations around the world.
-    </p>
-
-  </section>
+  </section>  <!-- SEARCH -->  <section class="filters"><input
+  type="search"
+  id="search"
+  placeholder="Search by property, city or location..."
+>
 
 
-  <!-- SEARCH -->
+<select id="countryFilter">
 
-  <section class="filters">
+  <option value="">
+    All countries
+  </option>
 
-    <input
-      type="search"
-      id="search"
-      placeholder="Search by property, city or location..."
-    >
+  <option value="United Kingdom">
+    🇬🇧 United Kingdom
+  </option>
 
+  <option value="Canada">
+    🇨🇦 Canada
+  </option>
 
-    <select id="countryFilter">
+  <option value="United States">
+    🇺🇸 United States
+  </option>
 
-      <option value="">
-        All countries
-      </option>
+  <option value="Australia">
+    🇦🇺 Australia
+  </option>
 
-      <option value="United Kingdom">
-        🇬🇧 United Kingdom
-      </option>
+  <option value="France">
+    🇫🇷 France
+  </option>
 
-      <option value="Canada">
-        🇨🇦 Canada
-      </option>
+  <option value="Spain">
+    🇪🇸 Spain
+  </option>
 
-      <option value="United States">
-        🇺🇸 United States
-      </option>
+  <option value="Germany">
+    🇩🇪 Germany
+  </option>
 
-      <option value="Australia">
-        🇦🇺 Australia
-      </option>
+  <option value="Italy">
+    🇮🇹 Italy
+  </option>
 
-      <option value="France">
-        🇫🇷 France
-      </option>
+  <option value="Portugal">
+    🇵🇹 Portugal
+  </option>
 
-      <option value="Spain">
-        🇪🇸 Spain
-      </option>
+  <option value="Other">
+    🌎 Other
+  </option>
 
-      <option value="Germany">
-        🇩🇪 Germany
-      </option>
+</select>
 
-      <option value="Italy">
-        🇮🇹 Italy
-      </option>
-
-      <option value="Portugal">
-        🇵🇹 Portugal
-      </option>
-
-      <option value="Other">
-        🌎 Other
-      </option>
-
-    </select>
-
-  </section>
-
-
-  <div id="status">
+  </section>  <div id="status">
     Loading properties...
-  </div>
-
-
-  <section
+  </div>  <section
     id="propertyGrid"
     class="property-grid"
-  ></section>
+  ></section></main><script src="supabase.js"></script><script>
 
-</main>
-
-
-<script src="supabase.js"></script>
-
-
-<script>
 
 let allProperties = [];
 
 
-/* ================================
-   CURRENCY SYMBOL
-================================ */
+/* ==================================================
+   ESCAPE HTML
+================================================== */
 
+function escapeHtml(value) {
 
-function currencySymbol(currency) {
+  return String(value ?? "")
 
-  const symbols = {
-
-    GBP: "£",
-
-    CAD: "C$",
-
-    USD: "$",
-
-    AUD: "A$",
-
-    EUR: "€"
-
-  };
-
-
-  return symbols[currency] || currency;
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
 
 }
 
 
-/* ================================
-   LOAD PROPERTIES
-================================ */
+/* ==================================================
+   FORMAT CURRENCY
+================================================== */
 
+function formatCurrency(
+  amount,
+  currency
+) {
+
+  const safeCurrency =
+    currency || "GBP";
+
+
+  try {
+
+    return new Intl.NumberFormat(
+      undefined,
+      {
+        style: "currency",
+        currency: safeCurrency,
+        maximumFractionDigits: 2
+      }
+    ).format(
+      Number(amount) || 0
+    );
+
+  }
+
+  catch (error) {
+
+    return (
+      safeCurrency +
+      " " +
+      Number(amount || 0).toFixed(2)
+    );
+
+  }
+
+}
+
+
+/* ==================================================
+   GET RENTAL INFORMATION
+================================================== */
+
+function getRentalInfo(property) {
+
+  const type =
+    String(
+      property.property_type ||
+      "holiday_let"
+    )
+    .toLowerCase()
+    .trim();
+
+
+  /* LONG TERM */
+
+  if (
+    type === "long_term_rental" ||
+    type.includes("long")
+  ) {
+
+    return {
+
+      name:
+        "Long-Term Rental",
+
+      unit:
+        "month",
+
+      price:
+        property.price_per_month ??
+        property.price_per_night ??
+        0
+
+    };
+
+  }
+
+
+  /* SHORT TERM */
+
+  if (
+    type === "short_term_rental" ||
+    type.includes("short")
+  ) {
+
+    return {
+
+      name:
+        "Short-Term Rental",
+
+      unit:
+        "night",
+
+      price:
+        property.price_per_night ??
+        0
+
+    };
+
+  }
+
+
+  /* HOLIDAY LET */
+
+  return {
+
+    name:
+      "Holiday Let",
+
+    unit:
+      "night",
+
+    price:
+      property.price_per_night ??
+      0
+
+  };
+
+}
+
+
+/* ==================================================
+   LOAD PROPERTIES
+================================================== */
 
 async function loadProperties() {
 
   const status =
-    document.getElementById("status");
+    document.getElementById(
+      "status"
+    );
 
 
   try {
@@ -315,18 +398,19 @@ async function loadProperties() {
     const {
       data,
       error
-    } = await supabaseClient
+    } =
+      await supabaseClient
 
-      .from("properties")
+        .from("properties")
 
-      .select("*")
+        .select("*")
 
-      .order(
-        "created_at",
-        {
-          ascending: false
-        }
-      );
+        .order(
+          "created_at",
+          {
+            ascending: false
+          }
+        );
 
 
     if (error) {
@@ -344,10 +428,14 @@ async function loadProperties() {
       allProperties
     );
 
+  }
 
-  } catch (error) {
+  catch (error) {
 
-    console.error(error);
+    console.error(
+      "LOAD PROPERTIES ERROR:",
+      error
+    );
 
 
     status.textContent =
@@ -359,10 +447,9 @@ async function loadProperties() {
 }
 
 
-/* ================================
-   RENDER
-================================ */
-
+/* ==================================================
+   RENDER PROPERTIES
+================================================== */
 
 function renderProperties(properties) {
 
@@ -370,6 +457,7 @@ function renderProperties(properties) {
     document.getElementById(
       "propertyGrid"
     );
+
 
   const status =
     document.getElementById(
@@ -402,21 +490,22 @@ function renderProperties(properties) {
     function(property) {
 
 
-      const card =
-        document.createElement(
-          "article"
-        );
+      /* RENTAL INFO */
+
+      const rental =
+        getRentalInfo(property);
 
 
-      card.className =
-        "property-card";
+      /* PRICE */
 
-
-      const symbol =
-        currencySymbol(
+      const formattedPrice =
+        formatCurrency(
+          rental.price,
           property.currency
         );
 
+
+      /* LOCATION */
 
       const locationParts =
         [];
@@ -441,68 +530,131 @@ function renderProperties(properties) {
 
 
       const location =
-        locationParts.join(
-          ", "
-        ) ||
+        locationParts.join(", ") ||
         property.location ||
         "Location unavailable";
+
+
+      /* CARD */
+
+      const card =
+        document.createElement(
+          "article"
+        );
+
+
+      card.className =
+        "property-card";
 
 
       card.innerHTML = `
 
         <div class="property-image"></div>
 
+
         <div class="property-body">
 
+
+          <span class="property-type">
+
+            ${escapeHtml(
+              rental.name
+            )}
+
+          </span>
+
+
           <h2>
-            ${escapeHtml(property.name)}
+
+            ${escapeHtml(
+              property.name
+            )}
+
           </h2>
 
+
           <p class="location">
-            ${escapeHtml(location)}
+
+            📍 ${escapeHtml(
+              location
+            )}
+
           </p>
+
 
           <div class="details">
 
-            <div class="detail">
-              ${property.bedrooms} bedrooms
-            </div>
 
             <div class="detail">
-              ${property.bathrooms} bathrooms
+
+              🛏️ ${escapeHtml(
+                property.bedrooms ??
+                "—"
+              )} bedrooms
+
             </div>
 
+
             <div class="detail">
-              Up to ${property.max_guests} guests
+
+              🛁 ${escapeHtml(
+                property.bathrooms ??
+                "—"
+              )} bathrooms
+
             </div>
+
+
+            <div class="detail">
+
+              👥 Up to ${escapeHtml(
+                property.max_guests ??
+                "—"
+              )} guests
+
+            </div>
+
 
           </div>
 
+
           <div class="price">
 
-            ${symbol}${Number(
-              property.price_per_night
-            ).toFixed(2)}
+            ${escapeHtml(
+              formattedPrice
+            )}
 
             <span>
-              / night
+
+              / ${escapeHtml(
+                rental.unit
+              )}
+
             </span>
 
           </div>
 
+
           <a
             class="view-button"
-            href="property.html?id=${encodeURIComponent(property.id)}"
+            href="property.html?id=${encodeURIComponent(
+              property.id
+            )}"
           >
+
             View Property
+
           </a>
+
 
         </div>
 
       `;
 
 
-      grid.appendChild(card);
+      grid.appendChild(
+        card
+      );
 
     }
   );
@@ -510,16 +662,18 @@ function renderProperties(properties) {
 }
 
 
-/* ================================
-   SEARCH / FILTER
-================================ */
-
+/* ==================================================
+   FILTER PROPERTIES
+================================================== */
 
 function filterProperties() {
 
+
   const search =
     document
-      .getElementById("search")
+      .getElementById(
+        "search"
+      )
       .value
       .toLowerCase()
       .trim();
@@ -527,7 +681,9 @@ function filterProperties() {
 
   const country =
     document
-      .getElementById("countryFilter")
+      .getElementById(
+        "countryFilter"
+      )
       .value;
 
 
@@ -540,28 +696,37 @@ function filterProperties() {
 
           (property.name || "") +
           " " +
+
           (property.city || "") +
           " " +
+
           (property.country || "") +
           " " +
+
           (property.location || "")
 
-        ).toLowerCase();
+        )
+        .toLowerCase();
 
 
         const matchesSearch =
           !search ||
-          searchable.includes(search);
+          searchable.includes(
+            search
+          );
 
 
         const matchesCountry =
           !country ||
-          property.country === country;
+          property.country ===
+          country;
 
 
         return (
+
           matchesSearch &&
           matchesCountry
+
         );
 
       }
@@ -575,50 +740,14 @@ function filterProperties() {
 }
 
 
-/* ================================
-   SECURITY
-================================ */
-
-
-function escapeHtml(value) {
-
-  return String(value || "")
-
-    .replace(
-      /&/g,
-      "&amp;"
-    )
-
-    .replace(
-      /</g,
-      "&lt;"
-    )
-
-    .replace(
-      />/g,
-      "&gt;"
-    )
-
-    .replace(
-      /"/g,
-      "&quot;"
-    )
-
-    .replace(
-      /'/g,
-      "&#039;"
-    );
-
-}
-
-
-/* ================================
+/* ==================================================
    EVENTS
-================================ */
-
+================================================== */
 
 document
-  .getElementById("search")
+  .getElementById(
+    "search"
+  )
   .addEventListener(
     "input",
     filterProperties
@@ -626,18 +755,20 @@ document
 
 
 document
-  .getElementById("countryFilter")
+  .getElementById(
+    "countryFilter"
+  )
   .addEventListener(
     "change",
     filterProperties
   );
 
 
-/* START */
+/* ==================================================
+   START
+================================================== */
 
 loadProperties();
 
-</script>
 
-</body>
-  </html>
+</script></body></html>
