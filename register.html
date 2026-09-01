@@ -1,176 +1,299 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!DOCTYPE html><html lang="en"><head>
+  <meta charset="UTF-8"><meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-  <title>Create Owner Account | StayHaven UK</title>
+«»
 
-  <link rel="stylesheet" href="style.css">
-
-  <!-- Supabase -->
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-</head>
-
-<body>
-
-  <header class="navbar">
-    <div class="logo">
-      StayHaven<span>UK</span>
-    </div>
-
-    <nav>
-      <a href="index.html">Home</a>
-      <a href="properties.html">Holiday Lets</a>
-      <a href="login.html">Owner Login</a>
-    </nav>
-  </header>
+  <title>Create Account | StayHaven</title>  <link
+    rel="stylesheet"
+    href="style.css"
+  >  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script></head><body>  <!-- NAVIGATION -->  <header class="navbar"><a
+  href="index.html"
+  class="logo"
+>
+  StayHaven
+</a>
 
 
-  <main style="max-width:520px;margin:70px auto;padding:20px;">
+<nav>
 
-    <div style="text-align:center;margin-bottom:35px;">
-      <p class="eyebrow">PROPERTY OWNERS</p>
+  <a href="index.html">
+    Home
+  </a>
 
-      <h1>Create your owner account</h1>
+  <a href="properties.html">
+    Properties
+  </a>
 
-      <p style="color:#667085;margin-top:10px;">
-        Create an account to list and manage your holiday property.
-      </p>
-    </div>
+  <a href="login.html">
+    Login
+  </a>
+
+</nav>
+
+  </header>  <!-- REGISTER FORM -->  <main class="form-page"><div class="form-card">
+
+  <p class="eyebrow">
+    CREATE ACCOUNT
+  </p>
+
+  <h1>
+    List your property on StayHaven
+  </h1>
+
+  <p class="intro">
+    Create an owner account to manage your properties
+    and booking requests.
+  </p>
 
 
-    <form id="registerForm">
+  <form id="registerForm">
 
-      <label>Full Name</label>
+    <div class="form-group">
+
+      <label for="fullName">
+        Full Name
+      </label>
 
       <input
         type="text"
         id="fullName"
-        placeholder="Your full name"
         required
-        style="width:100%;padding:14px;margin:8px 0 20px;border:1px solid #ddd;border-radius:7px;"
+        placeholder="Your full name"
       >
 
+    </div>
 
-      <label>Email Address</label>
+
+    <div class="form-group">
+
+      <label for="email">
+        Email Address
+      </label>
 
       <input
         type="email"
         id="email"
-        placeholder="you@example.com"
         required
-        style="width:100%;padding:14px;margin:8px 0 20px;border:1px solid #ddd;border-radius:7px;"
+        placeholder="you@example.com"
       >
 
+    </div>
 
-      <label>Password</label>
+
+    <div class="form-group">
+
+      <label for="password">
+        Password
+      </label>
 
       <input
         type="password"
         id="password"
-        placeholder="Create a password"
-        minlength="6"
         required
-        style="width:100%;padding:14px;margin:8px 0 20px;border:1px solid #ddd;border-radius:7px;"
+        minlength="6"
+        placeholder="At least 6 characters"
       >
 
-
-      <button
-        type="submit"
-        class="primary-button"
-        style="border:0;width:100%;cursor:pointer;"
-      >
-        Create Account
-      </button>
-
-    </form>
+    </div>
 
 
-    <p id="message" style="text-align:center;margin-top:20px;"></p>
+    <button
+      type="submit"
+      id="registerButton"
+      class="submit-button"
+    >
+      Create Account
+    </button>
+
+  </form>
 
 
-    <p style="text-align:center;margin-top:25px;color:#667085;">
-      Already have an account?
-      <a href="login.html" style="color:#b88945;font-weight:700;">
-        Login
-      </a>
-    </p>
-
-  </main>
+  <div
+    id="message"
+    class="message"
+  ></div>
 
 
-  <script src="supabase.js"></script>
+  <p
+    style="margin-top:20px; color:#667085;"
+  >
+    Already have an account?
 
-  <script>
+    <a
+      href="login.html"
+      style="font-weight:700; color:#b88945;"
+    >
+      Login
+    </a>
 
-    const registerForm = document.getElementById("registerForm");
-    const message = document.getElementById("message");
+  </p>
 
-    registerForm.addEventListener("submit", async function(event) {
+</div>
 
-      event.preventDefault();
+  </main>  <!-- SCRIPTS -->  <script src="supabase.js"></script>  <script>
 
-      const fullName =
-        document.getElementById("fullName").value.trim();
+    const registerForm =
+      document.getElementById(
+        "registerForm"
+      );
 
-      const email =
-        document.getElementById("email").value.trim();
+    const registerButton =
+      document.getElementById(
+        "registerButton"
+      );
 
-      const password =
-        document.getElementById("password").value;
-
-
-      message.textContent = "Creating your account...";
-      message.style.color = "#667085";
-
-
-      try {
-
-        const { data, error } =
-          await supabaseClient.auth.signUp({
-
-            email: email,
-
-            password: password,
-
-            options: {
-              data: {
-                full_name: fullName
-              }
-            }
-
-          });
+    const message =
+      document.getElementById(
+        "message"
+      );
 
 
-        if (error) {
-          throw error;
+    registerForm.addEventListener(
+      "submit",
+      async function(event) {
+
+        event.preventDefault();
+
+
+        registerButton.disabled =
+          true;
+
+        registerButton.textContent =
+          "Creating account...";
+
+
+        message.className =
+          "message";
+
+
+        try {
+
+          const fullName =
+            document
+              .getElementById("fullName")
+              .value
+              .trim();
+
+
+          const email =
+            document
+              .getElementById("email")
+              .value
+              .trim();
+
+
+          const password =
+            document
+              .getElementById("password")
+              .value;
+
+
+          const {
+            data,
+            error
+          } =
+            await supabaseClient
+              .auth
+              .signUp({
+
+                email:
+                  email,
+
+                password:
+                  password,
+
+                options: {
+
+                  data: {
+
+                    full_name:
+                      fullName
+
+                  }
+
+                }
+
+              });
+
+
+          if (error) {
+
+            throw error;
+
+          }
+
+
+          message.textContent =
+            "Account created successfully!";
+
+
+          message.className =
+            "message success";
+
+
+          /*
+             If Supabase automatically logs
+             the user in, go to dashboard.
+          */
+
+          if (
+            data.session
+          ) {
+
+            setTimeout(
+              function() {
+
+                window.location.href =
+                  "dashboard.html";
+
+              },
+              800
+            );
+
+          }
+
+          else {
+
+            message.textContent =
+              "Account created! Please check your email to confirm your account, then log in.";
+
+          }
+
         }
 
 
-        message.textContent =
-          "Account created successfully! Check your email if confirmation is required.";
+        catch (error) {
 
-        message.style.color = "green";
+          console.error(
+            "REGISTER ERROR:",
+            error
+          );
 
 
-        registerForm.reset();
+          message.textContent =
+            error.message ||
+            "Unable to create account.";
 
 
-      } catch (error) {
+          message.className =
+            "message error";
 
-        console.error(error);
+        }
 
-        message.textContent =
-          error.message || "Registration failed.";
 
-        message.style.color = "red";
+        finally {
+
+          registerButton.disabled =
+            false;
+
+          registerButton.textContent =
+            "Create Account";
+
+        }
 
       }
+    );
 
-    });
-
-  </script>
-
-</body>
-        </html>
+  </script></body></html>
