@@ -1,840 +1,987 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Add Property | StayHaven</title><link rel="stylesheet" href="style.css"><script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script><style>
+<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8"><meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-.form-page {
-  max-width: 850px;
-  margin: 45px auto;
-  padding: 20px;
-}
+«»
 
-.form-card {
-  background: #ffffff;
-  border: 1px solid #eeeeee;
-  border-radius: 14px;
-  padding: 30px;
-}
+  <title>Add Property | StayHaven</title>  <link rel="stylesheet" href="style.css">  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
 
-.form-card h1 {
-  margin-bottom: 8px;
-}
+    .form-page {
+      max-width: 850px;
+      margin: 45px auto;
+      padding: 20px;
+    }
 
-.intro {
-  color: #667085;
-  margin-bottom: 30px;
-}
+    .form-card {
+      background: white;
+      border: 1px solid #eeeeee;
+      border-radius: 14px;
+      padding: 30px;
+    }
 
-.form-group {
-  margin-bottom: 20px;
-}
+    .form-card h1 {
+      margin-bottom: 8px;
+    }
 
-.form-group label.main-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 700;
-  margin-bottom: 10px;
-}
+    .intro {
+      color: #667085;
+      margin-bottom: 30px;
+    }
 
-.form-group input,
-.form-group textarea,
-.form-group select {
-  width: 100%;
-  box-sizing: border-box;
-  padding: 13px;
-  border: 1px solid #d0d5dd;
-  border-radius: 7px;
-  font-size: 14px;
-  background: white;
-}
+    .form-group {
+      margin-bottom: 20px;
+    }
 
-.form-group textarea {
-  min-height: 130px;
-  resize: vertical;
-}
+    .form-group label {
+      display: block;
+      font-size: 14px;
+      font-weight: 700;
+      margin-bottom: 7px;
+    }
 
-.two-column {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 15px;
-}
+    .form-group input,
+    .form-group textarea,
+    .form-group select {
+      width: 100%;
+      box-sizing: border-box;
+      padding: 13px;
+      border: 1px solid #d0d5dd;
+      border-radius: 7px;
+      font-size: 14px;
+      background: white;
+      color: #172033;
+    }
 
-.three-column {
-  display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  gap: 15px;
-}
+    .form-group select {
+      cursor: pointer;
+    }
 
-/* RENTAL TYPE */
+    .form-group textarea {
+      min-height: 130px;
+      resize: vertical;
+    }
 
-.rental-options {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 12px;
-}
+    .two-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 15px;
+    }
 
-.rental-option {
-  position: relative;
-}
+    .three-column {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 15px;
+    }
 
-.rental-option input {
-  position: absolute;
-  opacity: 0;
-  pointer-events: none;
-}
+    .submit-button {
+      width: 100%;
+      border: 0;
+      background: #b88945;
+      color: white;
+      padding: 15px;
+      border-radius: 7px;
+      cursor: pointer;
+      font-size: 15px;
+      font-weight: 700;
+    }
 
-.rental-option label {
-  display: block;
-  padding: 18px 12px;
-  border: 2px solid #e1e4e8;
-  border-radius: 10px;
-  background: white;
-  cursor: pointer;
-  text-align: center;
-  font-weight: 700;
-  color: #172033;
-  transition: 0.2s;
-}
+    .submit-button:hover {
+      opacity: 0.92;
+    }
 
-.rental-option label:hover {
-  border-color: #b88945;
-}
+    .submit-button:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+    }
 
-.rental-option input:checked + label {
-  border-color: #b88945;
-  background: #f5efe7;
-  color: #8b6333;
-}
+    .message {
+      display: none;
+      margin-top: 18px;
+      padding: 13px;
+      border-radius: 7px;
+      font-size: 14px;
+    }
 
-.type-description {
-  color: #667085;
-  font-size: 13px;
-  margin-top: 10px;
-}
+    .message.success {
+      display: block;
+      background: #e7f6ec;
+      color: #217a3a;
+    }
 
-.price-help {
-  color: #667085;
-  font-size: 12px;
-  margin-top: 6px;
-}
+    .message.error {
+      display: block;
+      background: #fdecec;
+      color: #b42318;
+    }
 
-.submit-button {
-  width: 100%;
-  border: 0;
-  background: #b88945;
-  color: white;
-  padding: 15px;
-  border-radius: 7px;
-  cursor: pointer;
-  font-size: 15px;
-  font-weight: 700;
-}
+    .back-link {
+      display: inline-block;
+      margin-bottom: 20px;
+      color: #172033;
+      text-decoration: none;
+      font-weight: 700;
+    }
 
-.submit-button:disabled {
-  opacity: .6;
-  cursor: not-allowed;
-}
+    .price-help {
+      color: #667085;
+      font-size: 12px;
+      margin-top: 6px;
+    }
 
-.message {
-  display: none;
-  margin-top: 18px;
-  padding: 13px;
-  border-radius: 7px;
-  font-size: 14px;
-}
+    .type-help {
+      color: #667085;
+      font-size: 12px;
+      margin-top: 6px;
+    }
 
-.message.success {
-  display: block;
-  background: #e7f6ec;
-  color: #217a3a;
-}
+    @media (max-width: 700px) {
 
-.message.error {
-  display: block;
-  background: #fdecec;
-  color: #b42318;
-}
+      .two-column,
+      .three-column {
+        grid-template-columns: 1fr;
+      }
 
-.back-link {
-  display: inline-block;
-  margin-bottom: 20px;
-  color: #172033;
-  text-decoration: none;
-  font-weight: 700;
-}
+      .form-card {
+        padding: 22px;
+      }
 
-@media (max-width: 700px) {
+    }
 
-  .two-column,
-  .three-column,
-  .rental-options {
-    grid-template-columns: 1fr;
-  }
+  </style></head><body><header class="navbar">  <div class="logo">
+    StayHaven
+  </div>  <nav><a href="index.html">
+  Home
+</a>
 
-  .form-card {
-    padding: 22px;
-  }
+<a href="properties.html">
+  Properties
+</a>
 
-}
+<a href="dashboard.html">
+  Dashboard
+</a>
 
-</style></head><body><header class="navbar"><div class="logo">
-StayHaven
-</div><nav><a href="index.html">
-Home
-</a><a href="properties.html">
-Properties
-</a><a href="dashboard.html">
-Dashboard
-</a></nav></header><main class="form-page"><a
+  </nav></header><main class="form-page"><a
 href="dashboard.html"
 class="back-link"
 
 «»
 
 ← Back to Dashboard
-</a>
 
-<div class="form-card"><p class="eyebrow">
-PROPERTY LISTING
-</p><h1>
-Add a Property
-</h1><p class="intro">
-Create a listing and make it available to guests.
-</p><form id="propertyForm"><!-- RENTAL TYPE --><div class="form-group"><label class="main-label">
-Property Type
-</label><div class="rental-options"><div class="rental-option"><input
-type="radio"
-id="holidayLet"
-name="propertyType"
-value="holiday_let"
-checked
+  </a>  <div class="form-card"><p class="eyebrow">
+  PROPERTY LISTING
+</p>
 
-«»
 
-<label for="holidayLet">
-🏡 Holiday Let
-</label></div><div class="rental-option"><input
-type="radio"
-id="shortTerm"
-name="propertyType"
-value="short_term_rental"
+<h1>
+  Add a Property
+</h1>
 
-«»
 
-<label for="shortTerm">
-🏢 Short-Term Rental
-</label></div><div class="rental-option"><input
-type="radio"
-id="longTerm"
-name="propertyType"
-value="long_term_rental"
+<p class="intro">
+  Create a listing and make it available to guests.
+</p>
 
-«»
 
-<label for="longTerm">
-🏠 Long-Term Rental
-</label></div></div><div
-id="typeDescription"
-class="type-description"
->
-Ideal for holiday homes, villas, cottages and vacation properties.
-</div></div><!-- PROPERTY NAME --><div class="form-group"><label
-class="main-label"
-for="propertyName"
 
-«»
+<form id="propertyForm">
 
-Property Name
-</label>
 
-<input
-type="text"
-id="propertyName"
-placeholder="e.g. Luxury Lakeside Villa"
-required
+  <!-- PROPERTY TYPE -->
 
-«»
+  <div class="form-group">
 
-</div><!-- LOCATION --><div class="form-group"><label
-class="main-label"
-for="location"
+    <label for="propertyType">
+      Property Type
+    </label>
 
-«»
 
-Location
-</label>
+    <select
+      id="propertyType"
+      name="propertyType"
+      required
+    >
 
-<input
-type="text"
-id="location"
-placeholder="City, Country"
-required
+      <option value="holiday_let">
+        Holiday Let
+      </option>
 
-«»
+      <option value="short_term_rental">
+        Short-Term Rental
+      </option>
 
-</div><!-- PRICE --><div class="two-column"><div class="form-group"><label
-class="main-label"
-for="price"
+      <option value="long_term_rental">
+        Long-Term Rental
+      </option>
 
-«»
+    </select>
 
-Rental Price
-</label>
 
-<input
-type="number"
-id="price"
-min="0"
-step="0.01"
-placeholder="150"
-required
+    <div class="type-help">
+      Choose the type of property you are listing.
+    </div>
 
-«»
+  </div>
+
+
+
+  <!-- PROPERTY NAME -->
+
+  <div class="form-group">
+
+    <label for="propertyName">
+      Property Name
+    </label>
+
+
+    <input
+      type="text"
+      id="propertyName"
+      name="propertyName"
+      placeholder="e.g. Luxury Lakeside Villa"
+      autocomplete="off"
+      required
+    >
+
+  </div>
+
+
+
+  <!-- LOCATION -->
+
+  <div class="form-group">
+
+    <label for="location">
+      Location
+    </label>
+
+
+    <input
+      type="text"
+      id="location"
+      name="location"
+      placeholder="City, Country"
+      autocomplete="off"
+      required
+    >
+
+  </div>
+
+
+
+  <!-- PRICE + CURRENCY -->
+
+  <div class="two-column">
+
+
+    <div class="form-group">
+
+      <label for="price">
+        Rental Price
+      </label>
+
+
+      <input
+        type="number"
+        id="price"
+        name="price"
+        min="0"
+        step="0.01"
+        placeholder="150"
+        required
+      >
+
+
+      <div
+        id="priceHelp"
+        class="price-help"
+      >
+        Holiday lets are charged per night.
+      </div>
+
+    </div>
+
+
+
+    <div class="form-group">
+
+      <label for="currency">
+        Currency
+      </label>
+
+
+      <select
+        id="currency"
+        name="currency"
+        required
+      >
+
+        <option value="GBP">
+          GBP (£) — British Pound
+        </option>
+
+        <option value="CAD">
+          CAD (CA$) — Canadian Dollar
+        </option>
+
+        <option value="USD">
+          USD ($) — US Dollar
+        </option>
+
+        <option value="EUR">
+          EUR (€) — Euro
+        </option>
+
+        <option value="AUD">
+          AUD (A$) — Australian Dollar
+        </option>
+
+        <option value="NZD">
+          NZD (NZ$) — New Zealand Dollar
+        </option>
+
+        <option value="CHF">
+          CHF (CHF) — Swiss Franc
+        </option>
+
+        <option value="ZAR">
+          ZAR (R) — South African Rand
+        </option>
+
+        <option value="KES">
+          KES (KSh) — Kenyan Shilling
+        </option>
+
+      </select>
+
+    </div>
+
+
+  </div>
+
+
+
+  <!-- PROPERTY DETAILS -->
+
+  <div class="three-column">
+
+
+    <div class="form-group">
+
+      <label for="bedrooms">
+        Bedrooms
+      </label>
+
+
+      <input
+        type="number"
+        id="bedrooms"
+        name="bedrooms"
+        min="0"
+        step="1"
+        value="1"
+        required
+      >
+
+    </div>
+
+
+
+    <div class="form-group">
+
+      <label for="bathrooms">
+        Bathrooms
+      </label>
+
+
+      <input
+        type="number"
+        id="bathrooms"
+        name="bathrooms"
+        min="0"
+        step="0.5"
+        value="1"
+        required
+      >
+
+    </div>
+
+
+
+    <div class="form-group">
+
+      <label for="maxGuests">
+        Maximum Guests
+      </label>
+
+
+      <input
+        type="number"
+        id="maxGuests"
+        name="maxGuests"
+        min="1"
+        step="1"
+        value="2"
+        required
+      >
+
+    </div>
+
+
+  </div>
+
+
+
+  <!-- DESCRIPTION -->
+
+  <div class="form-group">
+
+    <label for="description">
+      Description
+    </label>
+
+
+    <textarea
+      id="description"
+      name="description"
+      placeholder="Describe the property, amenities, location and anything guests should know..."
+      required
+    ></textarea>
+
+  </div>
+
+
+
+  <!-- SUBMIT -->
+
+  <button
+    type="submit"
+    id="submitButton"
+    class="submit-button"
+  >
+    Add Property
+  </button>
+
+
+</form>
+
+
 
 <div
-id="priceHelp"
-class="price-help"
->
-Holiday lets are charged per night.
-</div></div><div class="form-group"><label
-class="main-label"
-for="currency"
+  id="message"
+  class="message"
+  role="alert"
+></div>
 
-«»
+  </div></main><script src="supabase.js"></script><script>
 
-Currency
-</label>
+/* ==================================================
+   CHECK SUPABASE
+================================================== */
 
-<select
-id="currency"
-required
+if (
+  typeof supabaseClient === "undefined"
+) {
 
-«»
+  document.getElementById("message").textContent =
+    "Supabase could not be loaded. Please check supabase.js.";
 
-<option value="GBP">
-GBP (£) — British Pound
-</option><option value="CAD">
-CAD (CA$) — Canadian Dollar
-</option><option value="USD">
-USD ($) — US Dollar
-</option><option value="EUR">
-EUR (€) — Euro
-</option><option value="AUD">
-AUD (A$) — Australian Dollar
-</option><option value="NZD">
-NZD (NZ$) — New Zealand Dollar
-</option><option value="CHF">
-CHF (CHF) — Swiss Franc
-</option><option value="ZAR">
-ZAR (R) — South African Rand
-</option><option value="KES">
-KES (KSh) — Kenyan Shilling
-</option></select></div></div><!-- DETAILS --><div class="three-column"><div class="form-group"><label
-class="main-label"
-for="bedrooms"
+  document.getElementById("message").className =
+    "message error";
 
-«»
+}
 
-Bedrooms
-</label>
 
-<input
-type="number"
-id="bedrooms"
-min="0"
-value="1"
-required
-
-«»
-
-</div><div class="form-group"><label
-class="main-label"
-for="bathrooms"
-
-«»
-
-Bathrooms
-</label>
-
-<input
-type="number"
-id="bathrooms"
-min="0"
-step="0.5"
-value="1"
-required
-
-«»
-
-</div><div class="form-group"><label
-class="main-label"
-for="maxGuests"
-
-«»
-
-Maximum Guests
-</label>
-
-<input
-type="number"
-id="maxGuests"
-min="1"
-value="2"
-required
-
-«»
-
-</div></div><!-- DESCRIPTION --><div class="form-group"><label
-class="main-label"
-for="description"
-
-«»
-
-Description
-</label>
-
-<textarea
-id="description"
-placeholder="Describe the property, amenities, location and anything guests should know..."
-required
-></textarea></div><button
-type="submit"
-id="submitButton"
-class="submit-button"
-
-«»
-
-Add Property
-</button>
-
-</form><div
-id="message"
-class="message"
-></div></div></main><script src="supabase.js"></script><script>
-
-/* =========================================
+/* ==================================================
    ELEMENTS
-========================================= */
+================================================== */
 
 const propertyForm =
-document.getElementById("propertyForm");
+  document.getElementById("propertyForm");
 
 const submitButton =
-document.getElementById("submitButton");
+  document.getElementById("submitButton");
 
 const message =
-document.getElementById("message");
+  document.getElementById("message");
+
+const propertyType =
+  document.getElementById("propertyType");
 
 const priceInput =
-document.getElementById("price");
+  document.getElementById("price");
 
 const priceHelp =
-document.getElementById("priceHelp");
-
-const typeDescription =
-document.getElementById("typeDescription");
-
-
-
-/* =========================================
-   GET PROPERTY TYPE
-========================================= */
-
-function getPropertyType() {
-
-const selected =
-document.querySelector(
-'input[name="propertyType"]:checked'
-);
-
-return selected
-? selected.value
-: "holiday_let";
-
-}
-
-
-
-/* =========================================
-   UPDATE TYPE
-========================================= */
-
-function updatePropertyType() {
-
-const type =
-getPropertyType();
-
-
-if (
-type === "long_term_rental"
-) {
-
-priceInput.placeholder =
-"1200";
-
-priceHelp.textContent =
-"Long-term rentals are charged per month.";
-
-typeDescription.textContent =
-"Ideal for apartments, houses and other residential rentals.";
-
-}
-
-else if (
-type === "short_term_rental"
-) {
-
-priceInput.placeholder =
-"150";
-
-priceHelp.textContent =
-"Short-term rentals are charged per night.";
-
-typeDescription.textContent =
-"Suitable for short stays and flexible accommodation.";
-
-}
-
-else {
-
-priceInput.placeholder =
-"150";
-
-priceHelp.textContent =
-"Holiday lets are charged per night.";
-
-typeDescription.textContent =
-"Ideal for holiday homes, villas, cottages and vacation properties.";
-
-}
-
-}
-
-
-
-/* =========================================
-   RENTAL TYPE CHANGE
-========================================= */
-
-document
-.querySelectorAll(
-'input[name="propertyType"]'
-)
-.forEach(function(input) {
-
-input.addEventListener(
-"change",
-function() {
-
-updatePropertyType();
-
-}
-);
-
-});
-
-
-
-/* =========================================
-   SUBMIT
-========================================= */
-
-propertyForm.addEventListener(
-"submit",
-async function(event) {
-
-event.preventDefault();
-
-
-submitButton.disabled =
-true;
-
-submitButton.textContent =
-"Adding property...";
-
-
-message.className =
-"message";
-
-
-try {
-
-
-/* SUPABASE CHECK */
-
-if (
-typeof supabaseClient ===
-"undefined"
-) {
-
-throw new Error(
-"Supabase is not configured correctly. Check supabase.js."
-);
-
-}
-
-
-
-/* USER */
-
-const {
-data: {
-user
-},
-error: userError
-} =
-await supabaseClient.auth.getUser();
-
-
-if (userError) {
-
-throw userError;
-
-}
-
-
-if (!user) {
-
-window.location.href =
-"login.html";
-
-return;
-
-}
-
-
-
-/* VALUES */
-
-const type =
-getPropertyType();
-
-const name =
-document
-.getElementById("propertyName")
-.value
-.trim();
-
-const location =
-document
-.getElementById("location")
-.value
-.trim();
-
-const price =
-Number(
-priceInput.value
-);
+  document.getElementById("priceHelp");
 
 const currency =
-document
-.getElementById("currency")
-.value;
-
-const bedrooms =
-Number(
-document
-.getElementById("bedrooms")
-.value
-);
-
-const bathrooms =
-Number(
-document
-.getElementById("bathrooms")
-.value
-);
-
-const maxGuests =
-Number(
-document
-.getElementById("maxGuests")
-.value
-);
-
-const description =
-document
-.getElementById("description")
-.value
-.trim();
+  document.getElementById("currency");
 
 
+/* ==================================================
+   PRICE INFORMATION
+================================================== */
 
-/* VALIDATION */
+function updatePriceLabel() {
 
-if (!name) {
+  const type =
+    propertyType.value;
 
-throw new Error(
-"Please enter the property name."
-);
 
-}
+  if (
+    type === "long_term_rental"
+  ) {
 
-if (!location) {
+    priceInput.placeholder =
+      "1200";
 
-throw new Error(
-"Please enter the property location."
-);
+    priceHelp.textContent =
+      "Long-term rentals are charged per month.";
 
-}
+  }
 
-if (
-!Number.isFinite(price) ||
-price < 0
-) {
 
-throw new Error(
-"Please enter a valid rental price."
-);
+  else if (
+    type === "short_term_rental"
+  ) {
 
-}
+    priceInput.placeholder =
+      "150";
 
-if (bedrooms < 0) {
+    priceHelp.textContent =
+      "Short-term rentals are charged per night.";
 
-throw new Error(
-"Bedrooms cannot be negative."
-);
+  }
 
-}
 
-if (bathrooms < 0) {
+  else {
 
-throw new Error(
-"Bathrooms cannot be negative."
-);
+    priceInput.placeholder =
+      "150";
 
-}
+    priceHelp.textContent =
+      "Holiday lets are charged per night.";
 
-if (maxGuests < 1) {
-
-throw new Error(
-"Maximum guests must be at least 1."
-);
+  }
 
 }
 
 
+/*
+IMPORTANT:
 
-/* DATABASE RECORD */
+This only changes the text on the page.
 
-const propertyData = {
+It does NOT redirect anywhere.
+*/
 
-owner_id:
-user.id,
-
-name:
-name,
-
-location:
-location,
-
-currency:
-currency,
-
-bedrooms:
-bedrooms,
-
-bathrooms:
-bathrooms,
-
-max_guests:
-maxGuests,
-
-description:
-description,
-
-property_type:
-type
-
-};
-
-
-
-/* PRICE */
-
-if (
-type === "long_term_rental"
-) {
-
-propertyData.price_per_month =
-price;
-
-}
-
-else {
-
-propertyData.price_per_night =
-price;
-
-}
-
-
-
-/* INSERT */
-
-const {
-error
-} =
-await supabaseClient
-.from("properties")
-.insert(propertyData);
-
-
-if (error) {
-
-throw error;
-
-}
-
-
-
-/* SUCCESS */
-
-message.textContent =
-"Property added successfully!";
-
-message.className =
-"message success";
-
-
-setTimeout(
-function() {
-
-window.location.href =
-"dashboard.html";
-
-},
-1200
+propertyType.addEventListener(
+  "change",
+  updatePriceLabel
 );
 
 
-}
+/* ==================================================
+   FORM SUBMISSION
+================================================== */
 
-catch (error) {
+propertyForm.addEventListener(
+  "submit",
+  async function(event) {
 
-console.error(
-"ADD PROPERTY ERROR:",
-error
-);
-
-message.textContent =
-error.message ||
-"Unable to add property.";
-
-message.className =
-"message error";
-
-submitButton.disabled =
-false;
-
-submitButton.textContent =
-"Add Property";
-
-}
-
-}
-);
+    event.preventDefault();
 
 
-/* INITIAL */
+    submitButton.disabled =
+      true;
 
-updatePropertyType();
+    submitButton.textContent =
+      "Adding property...";
+
+
+    message.className =
+      "message";
+
+
+    try {
+
+
+      /* ==========================================
+         CHECK SUPABASE
+      ========================================== */
+
+      if (
+        typeof supabaseClient === "undefined"
+      ) {
+
+        throw new Error(
+          "Supabase client is not available. Check supabase.js."
+        );
+
+      }
+
+
+
+      /* ==========================================
+         GET CURRENT USER
+      ========================================== */
+
+      const {
+        data: {
+          user
+        },
+        error: userError
+      } =
+        await supabaseClient
+          .auth
+          .getUser();
+
+
+      if (userError) {
+
+        throw userError;
+
+      }
+
+
+      if (!user) {
+
+        throw new Error(
+          "You must be logged in to add a property."
+        );
+
+      }
+
+
+
+      /* ==========================================
+         GET FORM VALUES
+      ========================================== */
+
+      const type =
+        propertyType.value;
+
+
+      const name =
+        document
+          .getElementById("propertyName")
+          .value
+          .trim();
+
+
+      const location =
+        document
+          .getElementById("location")
+          .value
+          .trim();
+
+
+      const price =
+        Number(
+          priceInput.value
+        );
+
+
+      const currencyValue =
+        currency.value;
+
+
+      const bedrooms =
+        Number(
+          document
+            .getElementById("bedrooms")
+            .value
+        );
+
+
+      const bathrooms =
+        Number(
+          document
+            .getElementById("bathrooms")
+            .value
+        );
+
+
+      const maxGuests =
+        Number(
+          document
+            .getElementById("maxGuests")
+            .value
+        );
+
+
+      const description =
+        document
+          .getElementById("description")
+          .value
+          .trim();
+
+
+
+      /* ==========================================
+         VALIDATION
+      ========================================== */
+
+      if (!name) {
+
+        throw new Error(
+          "Please enter the property name."
+        );
+
+      }
+
+
+      if (!location) {
+
+        throw new Error(
+          "Please enter the property location."
+        );
+
+      }
+
+
+      if (
+        !Number.isFinite(price) ||
+        price < 0
+      ) {
+
+        throw new Error(
+          "Please enter a valid rental price."
+        );
+
+      }
+
+
+      if (
+        !Number.isFinite(bedrooms) ||
+        bedrooms < 0
+      ) {
+
+        throw new Error(
+          "Please enter a valid number of bedrooms."
+        );
+
+      }
+
+
+      if (
+        !Number.isFinite(bathrooms) ||
+        bathrooms < 0
+      ) {
+
+        throw new Error(
+          "Please enter a valid number of bathrooms."
+        );
+
+      }
+
+
+      if (
+        !Number.isFinite(maxGuests) ||
+        maxGuests < 1
+      ) {
+
+        throw new Error(
+          "Maximum guests must be at least 1."
+        );
+
+      }
+
+
+      if (!description) {
+
+        throw new Error(
+          "Please enter a property description."
+        );
+
+      }
+
+
+
+      /* ==========================================
+         BUILD DATABASE RECORD
+      ========================================== */
+
+      const propertyData = {
+
+        owner_id:
+          user.id,
+
+        name:
+          name,
+
+        location:
+          location,
+
+        currency:
+          currencyValue,
+
+        bedrooms:
+          bedrooms,
+
+        bathrooms:
+          bathrooms,
+
+        max_guests:
+          maxGuests,
+
+        description:
+          description,
+
+        property_type:
+          type
+
+      };
+
+
+
+      /*
+        Holiday Let
+        Short-Term Rental
+        -> price_per_night
+
+        Long-Term Rental
+        -> price_per_month
+      */
+
+      if (
+        type === "long_term_rental"
+      ) {
+
+        propertyData.price_per_month =
+          price;
+
+      }
+
+      else {
+
+        propertyData.price_per_night =
+          price;
+
+      }
+
+
+
+      /* ==========================================
+         INSERT PROPERTY
+      ========================================== */
+
+      const {
+        data: property,
+        error
+      } =
+        await supabaseClient
+
+          .from("properties")
+
+          .insert(propertyData)
+
+          .select()
+
+          .single();
+
+
+      if (error) {
+
+        throw error;
+
+      }
+
+
+
+      /* ==========================================
+         SUCCESS
+      ========================================== */
+
+      message.textContent =
+        "Property added successfully!";
+
+      message.className =
+        "message success";
+
+
+      /*
+        Reset the form after successful
+        database insertion.
+      */
+
+      propertyForm.reset();
+
+
+      propertyType.value =
+        "holiday_let";
+
+
+      currency.value =
+        "GBP";
+
+
+      updatePriceLabel();
+
+
+
+      /*
+        Return to dashboard after
+        successful submission only.
+      */
+
+      setTimeout(
+        function() {
+
+          window.location.href =
+            "dashboard.html";
+
+        },
+        1200
+      );
+
+
+    }
+
+
+    catch (error) {
+
+
+      console.error(
+        "ADD PROPERTY ERROR:",
+        error
+      );
+
+
+      message.textContent =
+        error.message ||
+        "Unable to add property.";
+
+      message.className =
+        "message error";
+
+
+      /*
+        Stay on the Add Property page
+        when there is an error.
+      */
+
+    }
+
+
+    finally {
+
+      submitButton.disabled =
+        false;
+
+      submitButton.textContent =
+        "Add Property";
+
+    }
+
+  });
+
+
+/* ==================================================
+   INITIAL PRICE LABEL
+================================================== */
+
+updatePriceLabel();
 
 </script></body></html>
