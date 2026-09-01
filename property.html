@@ -1,181 +1,124 @@
-<!DOCTYPE html>
-<html lang="en">
+<!DOCTYPE html><html lang="en"><head>  <meta charset="UTF-8"><meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
 
-<head>
+«»
 
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Property | StayHaven</title>
-
-  <link rel="stylesheet" href="style.css">
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-
-  <style>
-
-    body {
-      background: #f8f8f8;
-    }
+  <title>Property | StayHaven</title>  <link
+    rel="stylesheet"
+    href="style.css"
+  >  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>  <style>
 
     .property-page {
-      max-width: 1150px;
-      margin: 35px auto;
+      max-width: 1100px;
+      margin: 45px auto;
       padding: 20px;
     }
 
     .back-link {
       display: inline-block;
-      margin-bottom: 20px;
-      color: #172033;
-      text-decoration: none;
+      margin-bottom: 25px;
       font-weight: 700;
+      color: #172033;
     }
 
-    .gallery {
-      display: grid;
-      grid-template-columns: 2fr 1fr 1fr;
-      grid-template-rows: 220px 220px;
-      gap: 8px;
-      margin-bottom: 35px;
-      border-radius: 15px;
-      overflow: hidden;
-    }
-
-    .gallery-item {
-      position: relative;
-      overflow: hidden;
-      background: #eee;
-    }
-
-    .gallery-item:first-child {
-      grid-row: span 2;
-    }
-
-    .gallery-item img {
+    .property-hero {
       width: 100%;
-      height: 100%;
-      object-fit: cover;
-      display: block;
-      cursor: pointer;
-    }
-
-    .no-photo {
-      height: 100%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: #667085;
-    }
-
-    .gallery-count {
-      position: absolute;
-      bottom: 12px;
-      right: 12px;
-      background: rgba(0,0,0,.7);
-      color: white;
-      padding: 7px 10px;
-      border-radius: 6px;
-      font-size: 12px;
+      height: 420px;
+      border-radius: 16px;
+      margin-bottom: 35px;
+      background:
+        linear-gradient(
+          rgba(23, 32, 51, 0.12),
+          rgba(23, 32, 51, 0.12)
+        ),
+        url("https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1600&q=85")
+        center / cover no-repeat;
     }
 
     .property-layout {
       display: grid;
-      grid-template-columns: 1.7fr 1fr;
+      grid-template-columns: 1.6fr 0.9fr;
       gap: 35px;
       align-items: start;
     }
 
-    .property-info,
-    .booking-card {
-      background: white;
-      border: 1px solid #eee;
-      border-radius: 14px;
-      padding: 28px;
-    }
-
-    .property-info h1 {
-      margin: 5px 0 8px;
-      font-size: 34px;
-    }
-
-    .location {
-      color: #667085;
-      margin-bottom: 25px;
-    }
-
-    .property-description {
-      color: #444;
-      line-height: 1.7;
-      white-space: pre-line;
-    }
-
-    .features {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 10px;
-      margin: 25px 0;
-    }
-
-    .feature {
-      background: #f7f7f7;
-      border-radius: 8px;
-      padding: 15px;
-      text-align: center;
-    }
-
-    .feature strong {
-      display: block;
-      font-size: 20px;
-    }
-
-    .feature span {
-      color: #667085;
-      font-size: 12px;
-    }
-
-    .price {
-      font-size: 27px;
-      font-weight: 800;
-      color: #172033;
-      margin-bottom: 20px;
-    }
-
-    .price small {
-      font-size: 14px;
-      font-weight: 400;
-      color: #667085;
-    }
-
-    .rental-type {
+    .property-type {
       display: inline-block;
-      margin-bottom: 15px;
-      padding: 6px 10px;
+      padding: 6px 11px;
       border-radius: 20px;
       background: #f5efe7;
       color: #8b6333;
       font-size: 12px;
       font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .property-info h1 {
+      font-size: 42px;
+      line-height: 1.15;
+      margin-bottom: 12px;
+    }
+
+    .location {
+      color: #667085;
+      margin-bottom: 20px;
+    }
+
+    .price {
+      font-size: 25px;
+      font-weight: 800;
+      margin-bottom: 25px;
+    }
+
+    .details-box {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin-bottom: 30px;
+    }
+
+    .detail {
+      background: #f8f9fb;
+      padding: 12px 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #475467;
+    }
+
+    .description {
+      color: #475467;
+      white-space: pre-line;
     }
 
     .booking-card {
+      background: white;
+      border: 1px solid #eeeeee;
+      border-radius: 14px;
+      padding: 25px;
       position: sticky;
       top: 20px;
     }
 
     .booking-card h2 {
-      margin-top: 0;
+      margin-bottom: 8px;
+    }
+
+    .booking-card p {
+      color: #667085;
+      margin-bottom: 20px;
+      font-size: 14px;
     }
 
     .form-group {
-      margin-bottom: 16px;
+      margin-bottom: 15px;
     }
 
     .form-group label {
       display: block;
+      margin-bottom: 6px;
       font-size: 13px;
       font-weight: 700;
-      margin-bottom: 6px;
     }
 
     .form-group input,
@@ -186,7 +129,6 @@
       border: 1px solid #d0d5dd;
       border-radius: 7px;
       font-size: 14px;
-      background: white;
     }
 
     .form-group textarea {
@@ -194,33 +136,27 @@
       resize: vertical;
     }
 
-    .date-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 10px;
-    }
-
-    .booking-button {
+    .submit-button {
       width: 100%;
-      border: 0;
+      border: none;
       background: #b88945;
       color: white;
       padding: 14px;
       border-radius: 7px;
       cursor: pointer;
-      font-weight: 700;
       font-size: 15px;
+      font-weight: 700;
     }
 
-    .booking-button:disabled {
-      opacity: .6;
+    .submit-button:disabled {
+      opacity: 0.6;
       cursor: not-allowed;
     }
 
     .message {
       display: none;
       margin-top: 15px;
-      padding: 13px;
+      padding: 12px;
       border-radius: 7px;
       font-size: 14px;
     }
@@ -237,151 +173,80 @@
       color: #b42318;
     }
 
-    .loading {
-      max-width: 700px;
-      margin: 80px auto;
+    .loading,
+    .error-state {
+      padding: 50px 20px;
       text-align: center;
-      padding: 30px;
+      color: #667085;
     }
 
-    .error-box {
-      max-width: 700px;
-      margin: 80px auto;
-      background: #fdecec;
+    .error-state {
       color: #b42318;
-      padding: 25px;
-      border-radius: 10px;
     }
 
     @media (max-width: 800px) {
 
-      .gallery {
-        grid-template-columns: 1fr 1fr;
-        grid-template-rows: 220px 140px;
+      .property-page {
+        margin: 25px auto;
       }
 
-      .gallery-item:first-child {
-        grid-column: span 2;
-        grid-row: span 1;
+      .property-hero {
+        height: 280px;
       }
 
       .property-layout {
         grid-template-columns: 1fr;
       }
 
+      .property-info h1 {
+        font-size: 34px;
+      }
+
       .booking-card {
         position: static;
       }
 
-      .property-info h1 {
-        font-size: 27px;
-      }
-
     }
 
-    @media (max-width: 500px) {
-
-      .gallery {
-        grid-template-columns: 1fr;
-        grid-template-rows: 250px;
-      }
-
-      .gallery-item {
-        display: none;
-      }
-
-      .gallery-item:first-child {
-        display: block;
-        grid-column: span 1;
-      }
-
-      .features {
-        grid-template-columns: 1fr;
-      }
-
-      .date-row {
-        grid-template-columns: 1fr;
-      }
-
-    }
-
-  </style>
-
-</head>
-
-
-<body>
-
-<header class="navbar">
-
-  <div class="logo">
+  </style></head><body><header class="navbar">  <div class="logo">
     StayHaven
-  </div>
+  </div>  <nav><a href="index.html">
+  Home
+</a>
 
-  <nav>
-    <a href="index.html">Home</a>
-    <a href="properties.html">Holiday Lets</a>
-  </nav>
+<a href="properties.html">
+  Holiday Lets
+</a>
 
-</header>
+<a href="login.html">
+  Login
+</a>
 
-
-<main
-  id="pageContent"
+  </nav></header><main
+  id="propertyPage"
   class="property-page"
->
-
-  <div class="loading">
+>  <div class="loading">
     Loading property...
-  </div>
-
-</main>
-
-
-<script>
-
-/* ==================================================
-   SUPABASE
-================================================== */
-
-const SUPABASE_URL =
-  "https://hbuoucmdgtwryahlnjzf.supabase.co";
-
-const SUPABASE_KEY =
-  "sb_publishable_OqqklL691qHVkDvkZisQ5w_IhepZwCb";
-
-const supabaseClient =
-  window.supabase.createClient(
-    SUPABASE_URL,
-    SUPABASE_KEY
-  );
+  </div></main><footer>  <div class="footer-logo">
+    StayHaven
+  </div>  <p>
+    Discover places worth staying for.
+  </p>  <p class="copyright">
+    © 2026 StayHaven. All rights reserved.
+  </p></footer><script src="supabase.js"></script><script>
 
 
-/* ==================================================
-   PROPERTY ID
-================================================== */
-
-const params =
-  new URLSearchParams(
-    window.location.search
-  );
-
-const propertyId =
-  params.get("id");
-
-const pageContent =
-  document.getElementById(
-    "pageContent"
-  );
+let currentProperty = null;
 
 
-/* ==================================================
+/* =========================================
    ESCAPE HTML
-================================================== */
+========================================= */
 
 function escapeHtml(value) {
 
   return String(value ?? "")
+
     .replaceAll("&", "&amp;")
     .replaceAll("<", "&lt;")
     .replaceAll(">", "&gt;")
@@ -391,14 +256,18 @@ function escapeHtml(value) {
 }
 
 
-/* ==================================================
-   FORMAT CURRENCY
-================================================== */
+/* =========================================
+   CURRENCY
+========================================= */
 
-function formatCurrency(amount, currency) {
+function formatCurrency(
+  amount,
+  currency
+) {
 
   const safeCurrency =
     currency || "GBP";
+
 
   try {
 
@@ -428,147 +297,126 @@ function formatCurrency(amount, currency) {
 }
 
 
-/* ==================================================
-   RENTAL TYPE
-================================================== */
+/* =========================================
+   RENTAL INFO
+========================================= */
 
-function getRentalType(property) {
+function getRentalInfo(property) {
 
   const type =
     String(
-      property.property_type || ""
+      property.property_type ||
+      "holiday_let"
     )
     .toLowerCase()
     .trim();
 
-
-  /* LONG TERM RENTAL */
 
   if (
     type === "long_term_rental"
   ) {
 
     return {
-
       name: "Long-Term Rental",
-
       unit: "month",
-
-      bookingTitle: "Request to Rent",
-
-      personLabel: "Occupants",
-
-      startLabel: "Move-in",
-
-      endLabel: "Move-out"
-
+      price:
+        property.price_per_month ||
+        property.price_per_night ||
+        0
     };
 
   }
 
-
-  /* SHORT TERM RENTAL */
 
   if (
     type === "short_term_rental"
   ) {
 
     return {
-
       name: "Short-Term Rental",
-
       unit: "night",
-
-      bookingTitle: "Request to Book",
-
-      personLabel: "Guests",
-
-      startLabel: "Check-in",
-
-      endLabel: "Check-out"
-
+      price:
+        property.price_per_night ||
+        property.price_per_day ||
+        0
     };
 
   }
 
 
-  /* HOLIDAY LET */
-
   return {
-
     name: "Holiday Let",
-
     unit: "night",
-
-    bookingTitle: "Request to Book",
-
-    personLabel: "Guests",
-
-    startLabel: "Check-in",
-
-    endLabel: "Check-out"
-
+    price:
+      property.price_per_night ||
+      0
   };
 
 }
 
 
-/* ==================================================
-   GET PRICE
-
-   IMPORTANT:
-   The current database stores the price in
-   price_per_night for ALL property types.
-
-   We change the DISPLAY UNIT depending on
-   property_type.
-================================================== */
-
-function getPriceAmount(property) {
-
-  return Number(
-    property.price_per_night
-  ) || 0;
-
-}
-
-
-/* ==================================================
+/* =========================================
    LOAD PROPERTY
-================================================== */
+========================================= */
 
 async function loadProperty() {
 
+  const page =
+    document.getElementById(
+      "propertyPage"
+    );
+
+
   try {
 
-    if (!propertyId) {
+    if (
+      typeof supabaseClient ===
+      "undefined"
+    ) {
 
       throw new Error(
-        "Property ID is missing from the URL."
+        "Supabase connection is unavailable."
       );
 
     }
 
 
-    /* PROPERTY */
+    const params =
+      new URLSearchParams(
+        window.location.search
+      );
+
+
+    const propertyId =
+      params.get("id");
+
+
+    if (!propertyId) {
+
+      throw new Error(
+        "No property was selected."
+      );
+
+    }
+
 
     const {
       data: property,
-      error: propertyError
+      error
     } =
       await supabaseClient
         .from("properties")
         .select("*")
-        .eq("id", propertyId)
+        .eq(
+          "id",
+          propertyId
+        )
         .single();
 
 
-    if (propertyError) {
+    if (error) {
 
-      throw new Error(
-        "Property database error: " +
-        propertyError.message
-      );
+      throw error;
 
     }
 
@@ -582,143 +430,24 @@ async function loadProperty() {
     }
 
 
-    /* RENTAL TYPE */
-
-    const rentalType =
-      getRentalType(property);
+    currentProperty =
+      property;
 
 
-    /* PRICE */
-
-    const priceAmount =
-      getPriceAmount(property);
+    const rental =
+      getRentalInfo(
+        property
+      );
 
 
     const formattedPrice =
       formatCurrency(
-        priceAmount,
-        property.currency || "GBP"
+        rental.price,
+        property.currency
       );
 
 
-    /* PHOTOS */
-
-    const {
-      data: images,
-      error: imageError
-    } =
-      await supabaseClient
-        .from("property_images")
-        .select("*")
-        .eq(
-          "property_id",
-          propertyId
-        )
-        .order(
-          "is_cover",
-          {
-            ascending: false
-          }
-        )
-        .order(
-          "created_at",
-          {
-            ascending: true
-          }
-        );
-
-
-    if (imageError) {
-
-      throw new Error(
-        "Photo database error: " +
-        imageError.message
-      );
-
-    }
-
-
-    const photos =
-      images || [];
-
-
-    /* GALLERY */
-
-    let galleryHtml = "";
-
-
-    if (photos.length === 0) {
-
-      galleryHtml = `
-
-        <div class="gallery">
-
-          <div class="gallery-item">
-
-            <div class="no-photo">
-              No property photos available
-            </div>
-
-          </div>
-
-        </div>
-
-      `;
-
-    }
-
-    else {
-
-      const visiblePhotos =
-        photos.slice(0, 5);
-
-
-      galleryHtml = `
-
-        <div class="gallery">
-
-          ${
-            visiblePhotos.map(
-              (photo, index) => `
-
-                <div class="gallery-item">
-
-                  <img
-                    src="${escapeHtml(photo.image_url)}"
-                    alt="${escapeHtml(property.name)}"
-                  >
-
-                  ${
-                    index === 0 &&
-                    photos.length > 1
-
-                      ? `
-
-                        <span class="gallery-count">
-                          ${photos.length} photos
-                        </span>
-
-                      `
-
-                      : ""
-                  }
-
-                </div>
-
-              `
-            ).join("")
-          }
-
-        </div>
-
-      `;
-
-    }
-
-
-    /* DISPLAY */
-
-    pageContent.innerHTML = `
+    page.innerHTML = `
 
       <a
         href="properties.html"
@@ -728,7 +457,7 @@ async function loadProperty() {
       </a>
 
 
-      ${galleryHtml}
+      <div class="property-hero"></div>
 
 
       <div class="property-layout">
@@ -737,10 +466,10 @@ async function loadProperty() {
         <section class="property-info">
 
 
-          <span class="rental-type">
+          <span class="property-type">
 
             ${escapeHtml(
-              rentalType.name
+              rental.name
             )}
 
           </span>
@@ -758,55 +487,63 @@ async function loadProperty() {
           <p class="location">
 
             📍 ${escapeHtml(
-              property.location ||
-              "Location not provided"
+              property.location
             )}
 
           </p>
 
 
-          <div class="features">
+          <p class="price">
+
+            ${escapeHtml(
+              formattedPrice
+            )}
+
+            per ${escapeHtml(
+              rental.unit
+            )}
+
+          </p>
 
 
-            <div class="feature">
+          <div class="details-box">
 
-              <strong>
-                ${escapeHtml(
-                  property.bedrooms ?? "—"
-                )}
-              </strong>
 
-              <span>Bedrooms</span>
+            <div class="detail">
+
+              🛏️
+
+              ${escapeHtml(
+                property.bedrooms
+              )}
+
+              Bedrooms
 
             </div>
 
 
-            <div class="feature">
+            <div class="detail">
 
-              <strong>
-                ${escapeHtml(
-                  property.bathrooms ?? "—"
-                )}
-              </strong>
+              🚿
 
-              <span>Bathrooms</span>
+              ${escapeHtml(
+                property.bathrooms
+              )}
+
+              Bathrooms
 
             </div>
 
 
-            <div class="feature">
+            <div class="detail">
 
-              <strong>
-                ${escapeHtml(
-                  property.max_guests ?? "—"
-                )}
-              </strong>
+              👥 Up to
 
-              <span>
-                ${escapeHtml(
-                  rentalType.personLabel
-                )}
-              </span>
+              ${escapeHtml(
+                property.max_guests
+              )}
+
+              Guests
 
             </div>
 
@@ -819,7 +556,7 @@ async function loadProperty() {
           </h2>
 
 
-          <p class="property-description">
+          <p class="description">
 
             ${escapeHtml(
               property.description ||
@@ -832,27 +569,18 @@ async function loadProperty() {
         </section>
 
 
+
         <aside class="booking-card">
 
 
-          <div class="price">
-
-            ${escapeHtml(formattedPrice)}
-
-            <small>
-              / ${escapeHtml(rentalType.unit)}
-            </small>
-
-          </div>
-
-
           <h2>
-
-            ${escapeHtml(
-              rentalType.bookingTitle
-            )}
-
+            Request a Booking
           </h2>
+
+
+          <p>
+            Send your request directly to the property owner.
+          </p>
 
 
           <form id="bookingForm">
@@ -902,46 +630,32 @@ async function loadProperty() {
             </div>
 
 
-            <div class="date-row">
+            <div class="form-group">
+
+              <label for="checkIn">
+                Check-in
+              </label>
+
+              <input
+                type="date"
+                id="checkIn"
+                required
+              >
+
+            </div>
 
 
-              <div class="form-group">
+            <div class="form-group">
 
-                <label for="checkIn">
+              <label for="checkOut">
+                Check-out
+              </label>
 
-                  ${escapeHtml(
-                    rentalType.startLabel
-                  )}
-
-                </label>
-
-                <input
-                  type="date"
-                  id="checkIn"
-                  required
-                >
-
-              </div>
-
-
-              <div class="form-group">
-
-                <label for="checkOut">
-
-                  ${escapeHtml(
-                    rentalType.endLabel
-                  )}
-
-                </label>
-
-                <input
-                  type="date"
-                  id="checkOut"
-                  required
-                >
-
-              </div>
-
+              <input
+                type="date"
+                id="checkOut"
+                required
+              >
 
             </div>
 
@@ -949,20 +663,13 @@ async function loadProperty() {
             <div class="form-group">
 
               <label for="guests">
-
-                ${escapeHtml(
-                  rentalType.personLabel
-                )}
-
+                Number of Guests
               </label>
 
               <input
                 type="number"
                 id="guests"
                 min="1"
-                max="${Number(
-                  property.max_guests || 999
-                )}"
                 value="1"
                 required
               >
@@ -972,120 +679,150 @@ async function loadProperty() {
 
             <div class="form-group">
 
-              <label for="guestMessage">
+              <label for="bookingMessage">
                 Message
               </label>
 
               <textarea
-                id="guestMessage"
-                placeholder="Message to the owner..."
-              ></textarea>
-
-            </div>
+                id="bookingMessage"
+                placeholder="Tell the owner about your stay..."
+              ></textarea>        </div>
 
 
-            <button
-              type="submit"
-              id="bookingButton"
-              class="booking-button"
-            >
-
-              ${escapeHtml(
-                rentalType.bookingTitle
-              )}
-
-            </button>
+        <button
+          type="submit"
+          id="bookingButton"
+          class="submit-button"
+        >
+          Send Booking Request
+        </button>
 
 
-          </form>
+      </form>
 
 
-          <div
-            id="bookingMessage"
-            class="message"
-          ></div>
+      <div
+        id="bookingMessageBox"
+        class="message"
+      ></div>
 
 
-        </aside>
+    </aside>
 
 
-      </div>
+  </div>
 
-    `;
-
-
-    document
-      .getElementById("bookingForm")
-      .addEventListener(
-        "submit",
-        submitBooking
-      );
+`;
 
 
-  }
-
-  catch (error) {
-
-    console.error(
-      "PROPERTY PAGE ERROR:",
-      error
-    );
-
-
-    pageContent.innerHTML = `
-
-      <div class="error-box">
-
-        <h2>
-          Unable to load property
-        </h2>
-
-        <p>
-          ${escapeHtml(error.message)}
-        </p>
-
-        <a href="properties.html">
-          ← Back to Properties
-        </a>
-
-      </div>
-
-    `;
-
-  }
+setupBookingForm();
 
 }
 
+catch (error) {
 
-/* ==================================================
-   SUBMIT BOOKING
-================================================== */
+console.error(
+  "PROPERTY ERROR:",
+  error
+);
 
-async function submitBooking(event) {
+
+page.innerHTML = `
+
+  <div class="error-state">
+
+    <h2>
+      Unable to load property
+    </h2>
+
+    <p>
+
+      ${escapeHtml(
+        error.message
+      )}
+
+    </p>
+
+    <br>
+
+    <a
+      href="properties.html"
+      class="primary-button"
+    >
+      Back to Properties
+    </a>
+
+  </div>
+
+`;
+
+}
+
+}
+
+/* =========================================
+BOOKING FORM
+========================================= */
+
+function setupBookingForm() {
+
+const bookingForm =
+document.getElementById(
+"bookingForm"
+);
+
+if (!bookingForm) {
+
+return;
+
+}
+
+const bookingButton =
+document.getElementById(
+"bookingButton"
+);
+
+const messageBox =
+document.getElementById(
+"bookingMessageBox"
+);
+
+const checkIn =
+document.getElementById(
+"checkIn"
+);
+
+const checkOut =
+document.getElementById(
+"checkOut"
+);
+
+const today =
+new Date()
+.toISOString()
+.split("T")[0];
+
+checkIn.min =
+today;
+
+checkOut.min =
+today;
+
+bookingForm.addEventListener(
+"submit",
+async function(event) {
 
   event.preventDefault();
 
 
-  const button =
-    document.getElementById(
-      "bookingButton"
-    );
+  bookingButton.disabled =
+    true;
+
+  bookingButton.textContent =
+    "Sending...";
 
 
-  const message =
-    document.getElementById(
-      "bookingMessage"
-    );
-
-
-  button.disabled = true;
-
-
-  button.textContent =
-    "Sending request...";
-
-
-  message.className =
+  messageBox.className =
     "message";
 
 
@@ -1094,79 +831,119 @@ async function submitBooking(event) {
 
     const guestName =
       document
-        .getElementById("guestName")
+        .getElementById(
+          "guestName"
+        )
         .value
         .trim();
 
 
     const guestEmail =
       document
-        .getElementById("guestEmail")
+        .getElementById(
+          "guestEmail"
+        )
         .value
         .trim();
 
 
     const guestPhone =
       document
-        .getElementById("guestPhone")
+        .getElementById(
+          "guestPhone"
+        )
         .value
         .trim();
 
 
-    const checkIn =
-      document
-        .getElementById("checkIn")
-        .value;
+    const checkInDate =
+      checkIn.value;
 
 
-    const checkOut =
-      document
-        .getElementById("checkOut")
-        .value;
+    const checkOutDate =
+      checkOut.value;
 
 
     const guests =
       Number(
         document
-          .getElementById("guests")
+          .getElementById(
+            "guests"
+          )
           .value
       );
 
 
     const guestMessage =
       document
-        .getElementById("guestMessage")
+        .getElementById(
+          "bookingMessage"
+        )
         .value
         .trim();
 
 
-    /* VALIDATE DATES */
-
     if (
-      new Date(checkOut) <=
-      new Date(checkIn)
+      !guestName ||
+      !guestEmail ||
+      !checkInDate ||
+      !checkOutDate
     ) {
 
       throw new Error(
-        "The end date must be after the start date."
+        "Please complete all required fields."
       );
 
     }
 
 
-    /* INSERT BOOKING REQUEST */
+    if (
+      new Date(checkOutDate) <=
+      new Date(checkInDate)
+    ) {
+
+      throw new Error(
+        "Check-out must be after check-in."
+      );
+
+    }
+
+
+    if (
+      !Number.isFinite(guests) ||
+      guests < 1
+    ) {
+
+      throw new Error(
+        "Please enter a valid number of guests."
+      );
+
+    }
+
+
+    if (
+      currentProperty.max_guests &&
+      guests >
+      Number(
+        currentProperty.max_guests
+      )
+    ) {
+
+      throw new Error(
+        "The number of guests exceeds the property's maximum capacity."
+      );
+
+    }
+
 
     const {
       error
     } =
       await supabaseClient
-
         .from("bookings")
-
         .insert({
-
           property_id:
-            propertyId,
+            currentProperty.id,
 
           guest_name:
             guestName,
@@ -1178,10 +955,10 @@ async function submitBooking(event) {
             guestPhone || null,
 
           check_in:
-            checkIn,
+            checkInDate,
 
           check_out:
-            checkOut,
+            checkOutDate,
 
           guests:
             guests,
@@ -1191,7 +968,6 @@ async function submitBooking(event) {
 
           status:
             "pending"
-
         });
 
 
@@ -1202,20 +978,19 @@ async function submitBooking(event) {
     }
 
 
-    message.textContent =
-      "Your booking request has been sent successfully!";
+    messageBox.textContent =
+      "Booking request sent successfully! The owner will review your request.";
 
 
-    message.className =
+    messageBox.className =
       "message success";
 
 
-    document
-      .getElementById("bookingForm")
-      .reset();
+    bookingForm.reset();
 
 
   }
+
 
   catch (error) {
 
@@ -1225,39 +1000,38 @@ async function submitBooking(event) {
     );
 
 
-    message.textContent =
+    messageBox.textContent =
       error.message ||
-      "Unable to send your booking request.";
+      "Unable to send booking request.";
 
 
-    message.className =
+    messageBox.className =
       "message error";
 
   }
 
+
   finally {
 
-    button.disabled =
+    bookingButton.disabled =
       false;
 
-
-    button.textContent =
-      "Request to Book";
+    bookingButton.textContent =
+      "Send Booking Request";
 
   }
 
 }
 
+);
 
-/* ==================================================
-   START
-================================================== */
+}
+
+/* =========================================
+START
+========================================= */
 
 loadProperty();
 
-</script>
-
-
-</body>
-
+</script></body>
   </html>
